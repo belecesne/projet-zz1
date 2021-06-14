@@ -3,4 +3,5 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "graphics.h"
+#include "snake.h"
 #endif //SNAKE_MAIN_H

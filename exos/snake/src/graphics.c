@@ -51,20 +51,3 @@ void endSdl(char ok, char const *msg, SDL_Window *window, SDL_Renderer *renderer
     }
 }
 
-void drawSnake(SDL_Renderer *renderer, int x, int y, int w, int h, int r, int g, int b) {
-    SDL_Rect snake[5];
-    SDL_Rect rect;
-    int size;
-    size = h;
-    for (int i = 0; i < 5; i++) {
-        size -= 10;
-        rect.x = x + i*1.5;
-        rect.y = y + size;
-        rect.w = w - i * 3;
-        rect.h = h - i * 5;
-        snake[i] = rect;
-    }
-    SDL_SetRenderDrawColor(renderer,r, g, b, 255);
-    SDL_RenderDrawRects(renderer, snake, 5);
-    SDL_RenderPresent(renderer);
-}
