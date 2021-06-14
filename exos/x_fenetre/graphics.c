@@ -7,12 +7,19 @@ void initGraphics() {
     }
 }
 
-SDL_Window * creerFenetre(int xPos, int yPos, int width, int height) {
+SDL_Window * createWindow(int xPos, int yPos, int width, int height) {
     SDL_Window * window = SDL_CreateWindow("SDL Window", xPos, yPos, width, height, SDL_WINDOW_RESIZABLE);  
-    if (window_1 == NULL) {
+    if (window == NULL) {
         SDL_Log("Error : SDL window 1 creation - %s\n", SDL_GetError());   // échec de la création de la fenêtre
         SDL_Quit();
         exit(EXIT_FAILURE);
     }
     return window;
+}
+
+SDL_Window *** createWindowMatrix(int length) {
+    SDL_Window *** matrix = calloc(length, sizeof(SDL_Window***));
+    for(int i = 0; i < length; i++) {
+        
+    }
 }
