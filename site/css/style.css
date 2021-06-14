@@ -360,6 +360,7 @@ table.repartition {
 table.repartition td, table.repartition th {
   border: 1px solid #FFFFFF;
   padding: 10px 10px;
+  vertical-align: middle;
 }
 table.repartition tbody td {
   font-size: 12px;
