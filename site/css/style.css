@@ -100,30 +100,24 @@ a {
     text-decoration: none;
 }
 
-/* TABLEAU */
-
-#tab {
-    border-collapse: collapse;
-    width: 40%;
-
+.link:hover {
+    color: #373737;
+    text-decoration: none;
 }
 
-th,
-td {
-    border: 1px solid black;
-    width: 20%;
+.link:link {
+    color: #373737;
+    text-decoration: none;
 }
 
-.table_align_right {
-    text-align: right;
+.link:visited {
+    color: #373737;
+    text-decoration: none;
 }
 
-.table_align_left {
-    text-align: left;
-}
-
-th {
-    text-align: left;
+.link:focus {
+    color: #373737;
+    text-decoration: none;
 }
 
 /* CONTENU PRINCIPAL */
