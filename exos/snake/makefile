@@ -3,10 +3,9 @@ SDL_FLAGS=-lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
 CC = gcc
 BUILD_DIR=build
 SRC_DIR=src
-RAPPORT_DIR=rapport
 SOURCES=$(wildcard $(SRC_DIR)/*.c)
 OBJECTS=$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
-.PHONY: clean all rapport
+.PHONY: clean all
 
 all : dir snake
 
