@@ -38,7 +38,9 @@ void initMatrix(SDL_Window *** matrix, int length, int screen_width, int screen_
     curr_x = screen_width - window_x_size;
     curr_y = 0;
     for(int i = 0; i < length; i++) {
-        matrix[i][length-i] = createWindow(curr_x, curr_y, window_x_size, window_y_size);
+        if(matrix[i][length-i] == NULL) {
+            matrix[i][length-i] = createWindow(curr_x, curr_y, window_x_size, window_y_size);
+        }
         curr_x -= window_x_size;
         curr_y += window_y_size;
     }
