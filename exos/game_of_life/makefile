@@ -15,7 +15,7 @@ dir:
 
 game_of_life: $(OBJECTS)
 	@$(CC) -o $@ $^ $(FLAGS) $(SDL_FLAGS)
-	@echo "Executer le programme avec ./game"
+	@echo "Executer le programme avec ./game_of_life"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) -c -o $@ $< $(FLAGS) $(SDL_FLAGS)
