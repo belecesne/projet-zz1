@@ -354,4 +354,46 @@ a.link_footer:focus {
     }
 
 
+}/* TABLEAU */
+
+table.repartition {
+  background-color: #4F4F4F;
+  width: 1000px;
+  height: 240px;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.repartition td, table.repartition th {
+  border: 1px solid #FFFFFF;
+  padding: 10px 10px;
+}
+table.repartition tbody td {
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+table.repartition tr:nth-child(even) {
+  background: #848484;
+}
+table.repartition thead {
+  background: #282828;
+}
+table.repartition thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+}
+table.repartition tfoot td {
+  font-size: 13px;
+}
+table.repartition tfoot .links {
+  text-align: right;
+}
+table.repartition tfoot .links a{
+  display: inline-block;
+  background: #FFFFFF;
+  color: #398AA4;
+  padding: 2px 8px;
+  border-radius: 5px;
 }
