@@ -1,5 +1,4 @@
 #include "../headers/game.h"
-#include <stdio.h>
 
 int modulo(int a, int b) {
     while(a < 0) {
