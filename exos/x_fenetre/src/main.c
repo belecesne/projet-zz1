@@ -7,13 +7,14 @@ int main(int argc, char **argv) {
     
     initGraphics();
     
-    SDL_Window * win1 = createWindow(0, 0, 400, 800);
+    SDL_Window *** matrix = createWindowMatrix(10);
+    initMatrix(matrix, 10, 1920, 1080);
 
     /* Normalement, on devrait ici remplir les fenêtres... */
     SDL_Delay(2000);                           // Pause exprimée  en ms
 
     /* et on referme tout ce qu'on a ouvert en ordre inverse de la création */
-    SDL_DestroyWindow(win1);
+    destroyMatrix(matrix, 10);
 
     SDL_Quit();
     return 0;
