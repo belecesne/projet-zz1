@@ -1,0 +1,1 @@
+Ceci est une branche dédié a pré mergé les branches en vu de finir sur la master
