@@ -194,14 +194,14 @@ int main(int *argc, char *argv[]) {
         xDVD2W = xDVD2 + 117;
 
         if(yDVD2 >= yDVD1 - 68 && yDVD2 <= yDVD1H){
-        	if(xDVD2 == xDVD1W || xDVD1 == xDVD2W){
+        	if((xDVD2 >= xDVD1W - 1 && xDVD2 <= xDVD1W + 1) || (xDVD1 >= xDVD2W - 1 && xDVD1 <= xDVD2W + 1)){
 		        dxDVD1 = -dxDVD1;
 		        dxDVD2 = -dxDVD2;
         	}
         }
 
         if(xDVD2 >= xDVD1 - 117 && xDVD2 <= xDVD1W){
-        	if(yDVD2 == yDVD1H || yDVD1 == yDVD2H){
+        	if((yDVD2 >= yDVD1H - 1 && yDVD2 <= yDVD1H + 1) || (yDVD1 >= yDVD2H - 1 && yDVD1 <= yDVD2H + 1)){
 		        dyDVD1 = -dyDVD1;
 		        dyDVD2 = -dyDVD2;
         	}
