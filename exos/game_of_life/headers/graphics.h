@@ -8,5 +8,6 @@ SDL_Window * createWindow(int xPos, int yPos, int width, int height);
 SDL_Renderer * createRenderer(SDL_Window * window);
 void drawMatrix(SDL_Renderer * renderer, SDL_Window * window, int game[][30], int gameLength);
 void end_sdl(char ok, char const* msg, SDL_Window* window, SDL_Renderer* renderer);
+int getPosFromMouse(int mouseX, int mouseY, int* i, int* j, SDL_Window * window, int gameLength);
 
 #endif
