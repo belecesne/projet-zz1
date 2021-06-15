@@ -70,7 +70,7 @@ void drawMatrix(SDL_Renderer * renderer, SDL_Window * window, int game[][30], in
             rect.y = curr_pos_y;
             rect.w = rect_width;
             rect.h = rect_height;
-            if(game[i][j] == 1) {
+            if(!game[i][j]) {
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             }
             else {

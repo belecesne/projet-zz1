@@ -21,10 +21,10 @@ void applyRule(int game[][GAME_LENGTH], int copy[][GAME_LENGTH], int gameLength,
     int count = 1;
     for(int i = pointx-1; i <= pointx+1; i++) {
         for(int j = pointy-1; j <= pointy+1; j++) {
-            if((i != pointx) || (j != pointy)) {
+            if(!((i == pointx) && (j == pointy))) {
                 count += game[modulo(i, gameLength)][modulo(j, gameLength)];
             }
         }
     }
-    copy[pointx][pointy] = (game[pointx][pointy] == !valueToApply) ? rule[count] : game[pointx][pointy];
+    copy[pointx][pointy] = (rule[count] == valueToApply) ? rule[count] : game[pointx][pointy];
 }
