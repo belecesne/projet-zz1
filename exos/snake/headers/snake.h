@@ -6,5 +6,5 @@
 #include <stdlib.h>
 void completeArray();
 void drawCircle(SDL_Point *,int, int);
-void drawBall(SDL_Renderer *, SDL_DisplayMode);
+void drawBall(SDL_Renderer *, int, int);
 #endif //SNAKE_SNAKE_H
