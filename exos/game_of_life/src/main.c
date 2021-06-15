@@ -47,7 +47,6 @@ int main() {
 		SDL_Event event;
 		if(dragged) {
 			SDL_GetMouseState(&mouseX, &mouseY);
-			printf("%d %d\n", mouseX, mouseY);
 			error = getPosFromMouse(mouseX, mouseY, &chIndexI, &chIndexJ, window, GAME_LENGTH);
 			if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && !error) {
 				game[chIndexI][chIndexJ] = 0;
