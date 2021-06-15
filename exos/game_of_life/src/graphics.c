@@ -90,7 +90,6 @@ int getPosFromMouse(int mouseX, int mouseY, int* i, int* j, SDL_Window * window,
     SDL_GetWindowSize(window, &screenWidth, &screenHeight);
     const int rectWidth = screenWidth / gameLength;
     const int rectHeight = screenHeight / gameLength;
-    printf("r : %d %d\n", rectWidth, rectHeight);
     int itemp = 0;
     int jtemp = 0;
     int done = 0;
