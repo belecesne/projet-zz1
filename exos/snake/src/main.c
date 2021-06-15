@@ -193,17 +193,20 @@ int main(int *argc, char *argv[]) {
         xDVD1W = xDVD1 + 117;
         xDVD2W = xDVD2 + 117;
 
-        if((yDVD1 >= yDVD2 && yDVD2 <= yDVD1H && xDVD1W == xDVD2) || (yDVD1 >= yDVD2H && yDVD2H <= yDVD1H && xDVD2W == xDVD1))
-        {
-            dxDVD1 = -dxDVD1;
-            dxDVD2 = -dxDVD2;
+        if(yDVD2 >= yDVD1 - 68 && yDVD2 <= yDVD1H){
+        	if(xDVD2 == xDVD1W || xDVD1 == xDVD2W){
+		        dxDVD1 = -dxDVD1;
+		        dxDVD2 = -dxDVD2;
+        	}
         }
-        /*
-        else if((xDVD1 >= xDVD2 && xDVD2 <= xDVD1W && yDVD1H == yDVD2) || (xDVD1 >= xDVD2W && xDVD2W <= xDVD1W && yDVD2H == yDVD1))
-        {
-            dyDVD1 = -dyDVD1;
-            dyDVD2 = -dyDVD2;
-        }*/
+
+        if(xDVD2 >= xDVD1 - 117 && xDVD2 <= xDVD1W){
+        	if(yDVD2 == yDVD1H || yDVD1 == yDVD2H){
+		        dyDVD1 = -dyDVD1;
+		        dyDVD2 = -dyDVD2;
+        	}
+        }
+
         xDVD1 += speed * dxDVD1;
         yDVD1 += speed * dyDVD1;
         xDVD2 += speed * dxDVD2;
