@@ -12,7 +12,7 @@ int main(int *argc, char *argv[]) {
     snakeRender = createRenderer(snakeWindow);
     srand(time(NULL));
     int speed, currentTextureDVD1 = (rand() % 7), prevTextDVD1, precSpeed, currentTextureDVD2 = (rand() %
-                                                                                                 7), prevTextDVD2;
+                                                                                                 7), prevTextDVD2,yDVD1H,yDVD2H,xDVD1W,xDVD2W;
     texture[0] = IMG_LoadTexture(snakeRender, "data/dvd_blanc.png");
     texture[1] = IMG_LoadTexture(snakeRender, "data/dvd_bleu.png");
     texture[2] = IMG_LoadTexture(snakeRender, "data/dvd_jaune.png");
@@ -155,7 +155,6 @@ int main(int *argc, char *argv[]) {
         SDL_RenderClear(snakeRender);
 
         drawDVD(snakeRender, texture[currentTextureDVD1], xDVD1, yDVD1);
-        SDL_Delay(5);
         drawDVD(snakeRender, texture[currentTextureDVD2], xDVD2, yDVD2);
         SDL_RenderPresent(snakeRender);
 
@@ -189,6 +188,22 @@ int main(int *argc, char *argv[]) {
                 currentTextureDVD2 = (rand() % 7);
             }
         }
+        yDVD1H = yDVD1 + 68;
+        yDVD2H = yDVD2 + 68;
+        xDVD1W = xDVD1 + 117;
+        xDVD2W = xDVD2 + 117;
+
+        if((yDVD1 >= yDVD2 && yDVD2 <= yDVD1H && xDVD1W == xDVD2) || (yDVD1 >= yDVD2H && yDVD2H <= yDVD1H && xDVD2W == xDVD1))
+        {
+            dxDVD1 = -dxDVD1;
+            dxDVD2 = -dxDVD2;
+        }
+        /*
+        else if((xDVD1 >= xDVD2 && xDVD2 <= xDVD1W && yDVD1H == yDVD2) || (xDVD1 >= xDVD2W && xDVD2W <= xDVD1W && yDVD2H == yDVD1))
+        {
+            dyDVD1 = -dyDVD1;
+            dyDVD2 = -dyDVD2;
+        }*/
         xDVD1 += speed * dxDVD1;
         yDVD1 += speed * dyDVD1;
         xDVD2 += speed * dxDVD2;

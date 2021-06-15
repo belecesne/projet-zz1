@@ -36,5 +36,4 @@ void drawDVD(SDL_Renderer* renderer, SDL_Texture * texture, int x, int y) {
     SDL_Rect destination = {x,y,117,68};
     SDL_QueryTexture(texture, NULL, NULL,&source.w,&source.h);
     SDL_RenderCopy(renderer, texture, &source, &destination);
-    SDL_RenderPresent(renderer);
 }
