@@ -35,7 +35,6 @@ int main(int *argc, char *argv[]) {
     } else if (y > WINDOW_H - 68) {
         y -= 68;
     }
-    printf("%d - %d\n", x, y);
     switch (posX) {
         case 1:
             dx = 1;
@@ -64,19 +63,15 @@ int main(int *argc, char *argv[]) {
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
                         case SDLK_UP:
-                            printf("UP\n");
                             y += precSpeed * dy;
                             break;
                         case SDLK_DOWN:
-                            printf("DOWN\n");
                             y -= precSpeed * dy;
                             break;
                         case SDLK_LEFT:
-                            printf("LEFT\n");
                             x -= precSpeed * dx;
                             break;
                         case SDLK_RIGHT:
-                            printf("RIGHT\n");
                             x += precSpeed * dx;
                             break;
                         case SDLK_a:
@@ -93,11 +88,10 @@ int main(int *argc, char *argv[]) {
                             break;
                         case SDLK_SPACE:
 
-                            if(speed){
+                            if (speed) {
                                 precSpeed = speed;
                                 speed = 0;
-                            }
-                            else {
+                            } else {
                                 speed = precSpeed;
                             }
                             break;
@@ -107,31 +101,28 @@ int main(int *argc, char *argv[]) {
             }
 
         }
-        for (int i = 0; i < 15; i++) {
-            drawDVD(snakeRender, texture[currentTexture], x, y);
-            SDL_RenderPresent(snakeRender);
-            SDL_RenderClear(snakeRender);
 
-            if (x + dx > WINDOW_W - 117 || x + dx < 0) {
-                dx = -dx;
-                prevText = currentTexture;
-                while(prevText == currentTexture) {
-                    currentTexture = (rand() % 7);
-                }
-                printf("%d - %d\n",prevText, currentTexture);
-            }
-            if (y + dy > WINDOW_H - 68 || y + dy < 0) {
-                dy = -dy;
-                prevText = currentTexture;
-                while(prevText == currentTexture) {
-                    currentTexture = (rand() % 7);
-                }
-                printf("%d - %d\n",prevText, currentTexture);
-            }
+        drawDVD(snakeRender, texture[currentTexture], x, y);
+        SDL_RenderPresent(snakeRender);
+        SDL_RenderClear(snakeRender);
 
-            x += speed * dx;
-            y += speed * dy;
+        if (x + dx > WINDOW_W - 117 || x + dx < 0) {
+            dx = -dx;
+            prevText = currentTexture;
+            while (prevText == currentTexture) {
+                currentTexture = (rand() % 7);
+            }
         }
+        if (y + dy > WINDOW_H - 68 || y + dy < 0) {
+            dy = -dy;
+            prevText = currentTexture;
+            while (prevText == currentTexture) {
+                currentTexture = (rand() % 7);
+            }
+        }
+        x += speed * dx;
+        y += speed * dy;
+
         SDL_Delay(1);
     }
 
