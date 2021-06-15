@@ -2,6 +2,7 @@
 #define GRAPHICS
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 void initGraphics();
 SDL_Window * createWindow(int, int, int, int);

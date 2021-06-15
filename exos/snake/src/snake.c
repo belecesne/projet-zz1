@@ -30,3 +30,11 @@ void drawBall(SDL_Renderer *renderer, int x, int y,int size) {
     SDL_SetRenderDrawColor(renderer,255, 0, 0, 255);
     SDL_RenderDrawLines(renderer, circle,40);
 }
+
+void drawDVD(SDL_Renderer* renderer, SDL_Texture * texture, int x, int y) {
+    SDL_Rect source = {0};
+    SDL_Rect destination = {x,y,117,68};
+    SDL_QueryTexture(texture, NULL, NULL,&source.w,&source.h);
+    SDL_RenderCopy(renderer, texture, &source, &destination);
+    SDL_RenderPresent(renderer);
+}
