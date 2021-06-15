@@ -15,6 +15,7 @@ void copyMatrix(int copy[][GAME_LENGTH], int matrix[][GAME_LENGTH], int length) 
     }
 }
 
+
 void applyRule(int game[][GAME_LENGTH], int copy[][GAME_LENGTH], int gameLength, int * rule, int pointx, int pointy) {
     int valueToApply = rule[0];
     int count = 1;
