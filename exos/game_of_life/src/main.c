@@ -25,6 +25,18 @@ int main() {
 	SDL_bool program_on = SDL_TRUE;
 	while(program_on){
 		SDL_Event event;
+		for(int i = 0; i < GAME_LENGTH && program_on; i++){
+			for(int j = 0; j < GAME_LENGTH; j++){
+				if(game[i][j]){
+					applyRule(game, copy, GAME_LENGTH, survie, i, j);
+				} else{
+					applyRule(game, copy, GAME_LENGTH, naissance, i, j);
+				}
+			}
+		}
+		copyMatrix(copy, game, GAME_LENGTH);
+		drawMatrix(renderer, window, game, GAME_LENGTH);
+		SDL_RenderPresent(renderer);
 		while(program_on && SDL_PollEvent(&event)){
 			switch(event.type){
 				case SDL_QUIT:
@@ -33,20 +45,8 @@ int main() {
 				default:
 					break;
 			}
-			for(int i = 0; i < GAME_LENGTH && program_on; i++){
-				for(int j = 0; j < GAME_LENGTH; j++){
-					if(game[i][j]){
-						applyRule(game, copy, GAME_LENGTH, survie, i, j);
-					} else{
-						applyRule(game, copy, GAME_LENGTH, naissance, i, j);
-					}
-				}
-			}
-			copyMatrix(copy, game, GAME_LENGTH);
-			drawMatrix(renderer, window, game, GAME_LENGTH);
-			SDL_RenderPresent(renderer);
-			SDL_Delay(100);
 		}
+		SDL_Delay(100);
 	}
     end_sdl(1, "Fin de la SDL", window, renderer);
 }

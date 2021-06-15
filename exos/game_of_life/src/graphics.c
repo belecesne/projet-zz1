@@ -62,7 +62,8 @@ void drawMatrix(SDL_Renderer * renderer, SDL_Window * window, int game[][30], in
     SDL_RenderFillRect(renderer, &bg);
     const int rect_width = screen_width / gameLength;
     const int rect_height = screen_height / gameLength;
-    int curr_pos_x, curr_pos_y = 0;
+    int curr_pos_x = 0;
+    int curr_pos_y = 0;
     for(int i = 0; i < gameLength; i++) {
         for(int j = 0; j < gameLength; j++) {
             SDL_Rect rect;
