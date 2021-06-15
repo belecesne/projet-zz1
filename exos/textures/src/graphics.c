@@ -1,46 +1,35 @@
-#include "../headers/graphics.h"
+#include "./headers/graphics.h"
 
-
-
-SDL_Texture* load_texture_from_image(char  *  file_image_name, SDL_Window *window, SDL_Renderer *renderer ){
-	SDL_Texture* my_texture;
-
-	my_texture = IMG_LoadTexture(renderer,"./img/Maze.png");
-	if (my_texture == NULL) end_sdl(0, "Echec du chargement de l'image dans la texture", window, renderer);
-
-	return my_texture;
+void initGraphics() {
+	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+		SDL_Log("Error : SDL initialisation - %s\n", SDL_GetError());      // l'initialisation de la SDL a échoué
+		exit(EXIT_FAILURE);
+	}
 }
 
-void play_with_texture_1(SDL_Texture *my_texture, SDL_Window *window, SDL_Renderer *renderer) {
-	SDL_Rect
-			source = {0},                         // Rectangle définissant la zone de la texture à récupérer
-	window_dimensions = {0},              // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
-	destination = {0};                    // Rectangle définissant où la zone_source doit être déposée dans le renderer
+SDL_Window *createWindow(int xPos, int yPos, int width, int height) {
+	SDL_Window *window = SDL_CreateWindow("DVD", xPos, yPos, width, height, SDL_WINDOW_RESIZABLE);
+	if (window == NULL) {
+		endSdl(0, "Erreur dans la creation de la fenetre", window, NULL);
+	}
 
-	SDL_GetWindowSize(
-			window, &window_dimensions.w,
-			&window_dimensions.h);                    // Récupération des dimensions de la fenêtre
-	SDL_QueryTexture(my_texture, NULL, NULL,
-	                 &source.w, &source.h);       // Récupération des dimensions de l'image
-
-	destination = window_dimensions;              // On fixe les dimensions de l'affichage à  celles de la fenêtre
-
-	/* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */
-
-	SDL_RenderCopy(renderer, my_texture,
-	               &source,
-	               &destination);                 // Création de l'élément à afficher
-	SDL_RenderPresent(renderer);                  // Affichage
-	SDL_Delay(2000);                              // Pause en ms
-
-	SDL_RenderClear(renderer);                    // Effacer la fenêtre
+	return window;
 }
 
+SDL_Renderer *createRenderer(SDL_Window *window) {
+	SDL_Renderer *renderer;
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == NULL) {
+		endSdl(0, "Erreur dans la création du renderer", window, renderer);
+	} else {
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+		SDL_RenderPresent(renderer);
+	}
+	return renderer;
+}
 
-void end_sdl(char ok,                                                 // fin normale : ok = 0 ; anormale ok = 1
-             char const* msg,                                    // message à afficher
-             SDL_Window* window,                                 // fenêtre à fermer
-             SDL_Renderer* renderer) {                           // renderer à fermer
+void endSdl(char ok, char const *msg, SDL_Window *window, SDL_Renderer *renderer) {
 	char msg_formated[255];
 	int l;
 
@@ -53,11 +42,12 @@ void end_sdl(char ok,                                                 // fin nor
 	}
 
 	if (renderer != NULL) SDL_DestroyRenderer(renderer);
-	if (window != NULL)   SDL_DestroyWindow(window);
+	if (window != NULL) SDL_DestroyWindow(window);
 
 	SDL_Quit();
-
+	IMG_Quit();
 	if (!ok) {
 		exit(EXIT_FAILURE);
 	}
 }
+
