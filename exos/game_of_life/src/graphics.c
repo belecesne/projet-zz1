@@ -62,7 +62,8 @@ void drawMatrix(SDL_Renderer * renderer, SDL_Window * window, int game[][30], in
     SDL_RenderFillRect(renderer, &bg);
     const int rect_width = screen_width / gameLength;
     const int rect_height = screen_height / gameLength;
-    int curr_pos_x, curr_pos_y = 0;
+    int curr_pos_x = 0;
+    int curr_pos_y = 0;
     for(int i = 0; i < gameLength; i++) {
         for(int j = 0; j < gameLength; j++) {
             SDL_Rect rect;
@@ -82,4 +83,35 @@ void drawMatrix(SDL_Renderer * renderer, SDL_Window * window, int game[][30], in
         curr_pos_x = 0;
         curr_pos_y += rect_height;
     }
-}    
+}
+
+int getPosFromMouse(int mouseX, int mouseY, int* i, int* j, SDL_Window * window, int gameLength) {
+    int screenWidth, screenHeight;
+    SDL_GetWindowSize(window, &screenWidth, &screenHeight);
+    const int rectWidth = screenWidth / gameLength;
+    const int rectHeight = screenHeight / gameLength;
+    printf("r : %d %d\n", rectWidth, rectHeight);
+    int itemp = 0;
+    int jtemp = 0;
+    int done = 0;
+    while(!done && (itemp < gameLength)) {
+        if((itemp * rectWidth) > mouseX) {
+            done = 1;
+        }
+        else {
+            itemp++;
+        }
+    }
+    done = 0;
+    while(!done && (jtemp < gameLength)) {
+        if((jtemp * rectHeight) > mouseY) {
+            done = 1;
+        }
+        else {
+            jtemp++;
+        }
+    }
+    *i = jtemp-1;
+    *j = itemp-1;
+    return EXIT_SUCCESS;
+}
