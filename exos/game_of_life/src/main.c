@@ -3,10 +3,9 @@
 #include <unistd.h>
 
 int main() {
+    int survie[10] = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+    int naissance[10] = {1, 0, 0, 1, 1, 0, 0, 0, 0, 0};
     initGraphics();
-    int survie[3][3] = {{0, 0, 0},{0,0,0},{0, 0, 0}};
-    int zombie_au_pied[3][3] = {{1, 1, 1},{1, 0, 1},{0, 1, 1}};
-    int naissance[3][3] = {{1, 1, 1},{1, 1, 1},{1, 1, 1}};
     int game[GAME_LENGTH][GAME_LENGTH] = {
                         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -46,16 +45,16 @@ int main() {
     drawMatrix(renderer, window, game, GAME_LENGTH);
     SDL_RenderPresent(renderer);
     SDL_Delay(3000);
-
+    int copy[GAME_LENGTH][GAME_LENGTH];
     while(1) {
         SDL_Delay(500);
         for(int i = 0; i < GAME_LENGTH; i++) {
             for(int j = 0; j < GAME_LENGTH; j++) {
-                applyRule(game, GAME_LENGTH, survie, i, j);
-                applyRule(game, GAME_LENGTH, naissance, i, j);
-                applyRule(game, GAME_LENGTH, zombie_au_pied, i, j);
+                applyRule(game, copy, GAME_LENGTH, survie, i, j);
+                applyRule(game, copy, GAME_LENGTH, naissance, i, j);
             }
         }
+        copyMatrix(copy, game, GAME_LENGTH);
         drawMatrix(renderer, window, game, GAME_LENGTH);
         SDL_RenderPresent(renderer);
     }
