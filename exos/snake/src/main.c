@@ -53,18 +53,47 @@ int main(int * argc, char *argv[]) {
                 case SDL_QUIT :
                     program_on = SDL_FALSE;
                     break;
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym){
+                        case SDLK_UP:
+                            printf("UP\n");
+                            y+= SPEED*dy;
+                            break;
+                        case SDLK_DOWN:
+                            printf("DOWN\n");
+                            y-=SPEED*dy;
+                            break;
+                        case SDLK_LEFT:
+                            printf("LEFT\n");
+                            x-=SPEED*dx;
+                            break;
+                        case SDLK_RIGHT:
+                            printf("RIGHT\n");
+                            x+=SPEED*dx;
+                            break;
+                    }
                 default:
                     break;
             }
 
         }
-        drawBall(snakeRender,x,y);
-        SDL_RenderPresent(snakeRender);
-        SDL_SetRenderDrawColor(snakeRender,0, 0, 0, 255);
-        SDL_RenderClear(snakeRender);
+        for(int i = 0; i < 15; i++) {
+            drawBall(snakeRender, x, y, BALL_RADIUS);
+            SDL_RenderPresent(snakeRender);
+            SDL_SetRenderDrawColor(snakeRender, 0, 0, 0, 255);
+            SDL_RenderClear(snakeRender);
 
-        x+=10;
-        SDL_Delay(50);
+            if (x + dx > WINDOW_W - BALL_RADIUS || x + dx < BALL_RADIUS) {
+                dx = -dx;
+            }
+            if (y + dy > WINDOW_H - BALL_RADIUS || y + dy < BALL_RADIUS) {
+                dy = -dy;
+            }
+
+            x += SPEED*dx;
+            y += SPEED*dy;
+        }
+        SDL_Delay(10);
     }
 
     endSdl(1, "Fermeture Normale", snakeWindow, snakeRender);

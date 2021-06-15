@@ -14,9 +14,9 @@ void completeArray() {
     }
 }
 
-void drawCircle(SDL_Point *circle, int x, int y) {
+void drawCircle(SDL_Point *circle, int x, int y, int size) {
 
-    int angle = 0, size = 50;
+    int angle = 0;
     for (int i = 0; i < 40; i++, angle = (angle + 10) % 360) {
         circle[i].x = x - COS[angle] * size;
         circle[i].y = y - SIN[angle] * size;
@@ -24,9 +24,9 @@ void drawCircle(SDL_Point *circle, int x, int y) {
     }
 }
 
-void drawBall(SDL_Renderer *renderer, int x, int y) {
+void drawBall(SDL_Renderer *renderer, int x, int y,int size) {
     SDL_Point circle[40];
-    drawCircle(circle,x, y);
+    drawCircle(circle,x, y,size);
     SDL_SetRenderDrawColor(renderer,255, 0, 0, 255);
     SDL_RenderDrawLines(renderer, circle,40);
 }
