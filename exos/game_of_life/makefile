@@ -1,4 +1,4 @@
-FLAGS=-Wall -Wextra -Wdeclaration-after-statement -Werror=vla -g
+FLAGS=-Wall -Wextra -Werror=vla -g
 SDL_FLAGS=-lSDL2
 CC = gcc
 BUILD_DIR=build

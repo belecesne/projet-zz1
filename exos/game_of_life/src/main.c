@@ -46,17 +46,19 @@ int main() {
     drawMatrix(renderer, window, game, GAME_LENGTH);
     SDL_RenderPresent(renderer);
     SDL_Delay(3000);
-
-    while(1) {
+/*
+    int k = 0;
+    while(k < 10000000) {
+    	k++;
         SDL_Delay(500);
         for(int i = 0; i < GAME_LENGTH; i++) {
             for(int j = 0; j < GAME_LENGTH; j++) {
                 applyRule(game, GAME_LENGTH, survie, i, j);
                 applyRule(game, GAME_LENGTH, naissance, i, j);
-                applyRule(game, GAME_LENGTH, zombie_au_pied, i, j);
+                //applyRule(game, GAME_LENGTH, zombie_au_pied, i, j);
             }
         }
         drawMatrix(renderer, window, game, GAME_LENGTH);
         SDL_RenderPresent(renderer);
-    }
+    }*/
 }
