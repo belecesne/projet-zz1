@@ -26,10 +26,6 @@ int main(int argc, char *argv[]) {
 				{0, 700}};
     while (program_on) {
         SDL_Event event;
-	SDL_RenderClear(renderer);
-	createAllPlatforms(renderer, plat1, coordArray);
-	nextPlatform(coordArray, window);
-	
         while (program_on && SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT :
@@ -74,6 +70,8 @@ int main(int argc, char *argv[]) {
         }
 
 
+
+
         if (player.isJumping) {
             if (player.jumpTime >= JUMPTIME) {
                 player.isJumping = 0;
@@ -83,8 +81,13 @@ int main(int argc, char *argv[]) {
                 jump(&player);
             }
         }
+ 
+	// Plateforme
+	SDL_RenderClear(renderer);
+	createAllPlatforms(renderer, plat1, coordArray);
+	//nextPlatform(coordArray, window);
 
-        SDL_RenderClear(renderer);
+	// Saut
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderDrawRect(renderer, &(player.rect));
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
