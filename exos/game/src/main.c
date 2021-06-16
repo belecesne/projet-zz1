@@ -29,8 +29,6 @@ int main(int argc, char *argv[]) {
 	SDL_RenderClear(renderer);
 	createAllPlatforms(renderer, plat1, coordArray);
 	nextPlatform(coordArray, window);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(1000);
 	
         while (program_on && SDL_PollEvent(&event)) {
             switch (event.type) {
