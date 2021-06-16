@@ -81,6 +81,8 @@ int main(int argc, char *argv[]) {
                 jump(&player);
             }
         }
+
+	int coll = collision(&player, coordArray);
  
 	// Plateforme
 	SDL_RenderClear(renderer);
