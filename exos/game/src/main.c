@@ -13,35 +13,65 @@ int main(int argc, char *argv[]) {
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
-    player_t player = {{25, 644, 100, 100}, SPEED, JUMPLENGTH, 0, 1, 1, 0};
+    player_t player = {{25, 644, 100, 100}, DX, JUMPLENGTH, 0, 1, 1, 0};
     SDL_bool program_on = SDL_TRUE;
     SDL_Texture *plat1 = IMG_LoadTexture(renderer, "data/plat1.png");
 
 
     SDL_Texture *texture = IMG_LoadTexture(renderer, "./data/ninja.png");
     SDL_Texture *background = IMG_LoadTexture(renderer, "./data/bg.svg");
-    SDL_Rect *framesSaut = loadAnimationPos(2, 9, 300, 300);
+    SDL_Rect *framesJump = loadAnimationPos(2, 9, 300, 300);
     SDL_Rect *framesStatic = loadAnimationPos(0, 5, 300, 300);
     SDL_Rect *framesRun = loadAnimationPos(1, 6, 300, 300);
     SDL_QueryTexture(background, NULL, NULL, &sourceBg.w, &sourceBg.h);
     SDL_GetWindowSize(window, &destBg.w, &destBg.h);
 
-    int i, currentFrameRun = 0, currentFrameIdle = 0,flipped = 0, win = 1;
+    int i, currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, win = 1, jumpDelay = 0, repeat = 0;
 
-	SDL_Point coordArray[8] = {{0, 100},
-				{150, 200},
-				{300, 300},
-				{0, 400},
-				{150, 500},
-				{300, 600},
-				{0, 700}};
+    SDL_Point coordArray[8] = {{0,   100},
+                               {150, 200},
+                               {300, 300},
+                               {0,   400},
+                               {150, 500},
+                               {300, 600},
+                               {0,   700}};
     while (program_on) {
         SDL_Event event;
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, background, &sourceBg, &destBg);
         createAllPlatforms(renderer, plat1, coordArray);
 
+        const Uint8 *state = SDL_GetKeyboardState(NULL);
+        if (state[SDL_SCANCODE_RIGHT]) {
+            flipped = 0;
+            player.dx = DX;
+            player.isMoving = 1;
+            moveLeft(&player);
+            if (!player.isJumping) {
+                drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player, flipped);
+                currentFrameRun = (currentFrameRun + 1) % 6;
 
+            }
+        }
+        if (state[SDL_SCANCODE_LEFT]) {
+            flipped = 1;
+            player.dx = -DX;
+            player.isMoving = 1;
+
+            moveLeft(&player);
+            if (!player.isJumping) {
+                drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player, flipped);
+                currentFrameRun = (currentFrameRun + 1) % 6;
+
+            }
+
+        }
+        if (state[SDL_SCANCODE_UP]) {
+            if (!player.isJumping) {
+                player.isJumping = 1;
+            }
+
+        }
         while (program_on && SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT :
@@ -49,35 +79,7 @@ int main(int argc, char *argv[]) {
                     break;
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
-                        case SDLK_UP:
-                            if (!player.isJumping) {
-                                player.isJumping = 1;
-                            }
-
-                            // JUMP
-                            break;
-                        case SDLK_LEFT:
-                            flipped = 1;
-                            player.dx = -1;
-                            player.isMoving = 1;
-
-                            moveLeft(&player);
-                            drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player,flipped);
-                            currentFrameRun = (currentFrameRun + 1) % 6;
-                            break;
-                        case SDLK_RIGHT:
-                            flipped = 0;
-                            player.dx = 1;
-                            player.isMoving = 1;
-
-                            moveRight(WINDOW_W, &player);
-                            //drawAnimationLoop(framesRun, 6, texture, background, 10,window,renderer);
-                            drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player,flipped);
-                            currentFrameRun = (currentFrameRun + 1) % 6;
-                            // MARCHE DROITE
-                            break;
                         case SDLK_r:
-                            // reinit
                             break;
                         default:
                             break;
@@ -88,10 +90,10 @@ int main(int argc, char *argv[]) {
         }
 
 
-
         if (!player.isMoving) {
-            printf("Joueur au repos : affichage frame\n");
-            drawOneFrame(framesStatic, 5, texture, window, renderer, currentFrameIdle, &player,flipped);
+            if (!player.isJumping) {
+                drawOneFrame(framesStatic, 5, texture, window, renderer, currentFrameIdle, &player, flipped);
+            }
             i++;
 
             if (i == 6) {
@@ -102,7 +104,6 @@ int main(int argc, char *argv[]) {
         player.isMoving = 0;
 
 
-
         if (player.isJumping) {
             if (player.jumpTime >= JUMPLENGTH) {
                 player.jumpTime = 0;
@@ -110,36 +111,51 @@ int main(int argc, char *argv[]) {
                 player.isJumping = 0;
 
             } else {
+                drawOneFrame(framesJump, 9, texture, window, renderer, currentFrameJump, &player, flipped);
+                if (currentFrameJump < 6 && !repeat) {
+                    currentFrameJump = (currentFrameJump + 1);
+                }
+                if (currentFrameJump <= 6 && repeat) {
+                    repeat = 1;
+                    currentFrameJump = (currentFrameJump) % 6+3;
+                    jumpDelay = 0;
+                } else if (player.jumpTime > JUMPLENGTH / 2) {
+                    currentFrameJump = 7;
+                }
                 jump(&player);
             }
         }
 
         int coll = collision(&player, coordArray);
         if (coll == 0 || coll == 1) {
-            player.dy = 0;
+            player.dy = 1;
             player.isJumping = 0;
+            player.onPlatform = 1;
+            player.jumpTime = 0;
+            if (coll == 1) {
+                coll = 0;
+                nextPlatform(coordArray, window);
+                player.rect.y += 100;
+
+            }
+
         }
-        if(coll == -1 && !player.isJumping)
-        {
+        if (coll == -1) {
+            player.onPlatform = 0;
+
+        }
+        if (coll == -1 && !player.isJumping && !player.onPlatform) {
             win = 0;
-        }
-        if(win == 0)
-        {
+            player.onPlatform = 0;
             printf("Defaite\n");
             break;
         }
         // Plateforme
-        SDL_RenderClear(renderer);
-        createAllPlatforms(renderer, plat1, coordArray);
-        //nextPlatform(coordArray, window);
 
-	// Saut
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderDrawRect(renderer, &(player.rect));
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        // Saut
         SDL_RenderPresent(renderer);
         SDL_Delay(30);
     }
-	endSdl(1, "Fermeture normale", window, renderer);
+    endSdl(1, "Fermeture normale", window, renderer);
     return 0;
 }
