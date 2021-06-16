@@ -7,12 +7,25 @@ int main(int argc, char *argv[]) {
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_Rect sourceBg = {0}, destBg = {0};
+    SDL_Rect sourceBg = {0}, destBg = {0}, posScore={300,0,150,50};
 
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
+    char scoreString[15];
+    if (TTF_Init() < 0) {
+        endSdl(0, "Erreur dans l'init de TTF", window, renderer);
+    }
+    TTF_Font *font = NULL;
+    font = TTF_OpenFont("./data/asianninja.ttf", 25);
+    if (font == NULL) {
+        endSdl(0, "Erreur dans l'ouverture de la police", window, renderer);
+    }
+    SDL_Color color = {0,0, 0, 255};
+    SDL_Surface *textSurface = NULL;
+    SDL_Texture *textTexture = NULL;
+
     player_t player = {{25, 644, 100, 100}, DX, JUMPLENGTH, 0, 1, 1, 0};
     SDL_bool program_on = SDL_TRUE;
     SDL_Texture *plat1 = IMG_LoadTexture(renderer, "data/plat1.png");
@@ -26,7 +39,8 @@ int main(int argc, char *argv[]) {
     SDL_QueryTexture(background, NULL, NULL, &sourceBg.w, &sourceBg.h);
     SDL_GetWindowSize(window, &destBg.w, &destBg.h);
 
-    int i, currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, win = 1, jumpDelay = 0, repeat = 0;
+    int i;
+    int currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, win = 1, jumpDelay = 0, repeat = 0, score = 0;
 
     SDL_Point coordArray[8] = {{0,   100},
                                {150, 200},
@@ -40,26 +54,33 @@ int main(int argc, char *argv[]) {
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, background, &sourceBg, &destBg);
         createAllPlatforms(renderer, plat1, coordArray);
-
+        sprintf(scoreString,"Score : %d",score);
+        textSurface = TTF_RenderText_Blended(font, scoreString, color);
+        textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+        if (textTexture == NULL){
+            endSdl(0, "Impossible de créer la surface", window, renderer);
+        }
+        SDL_QueryTexture(textTexture, NULL, NULL, &posScore.w, &posScore.h);
+        SDL_RenderCopy(renderer, textTexture, NULL, &posScore);
         const Uint8 *state = SDL_GetKeyboardState(NULL);
-        if (state[SDL_SCANCODE_RIGHT]) {
+        if (state[SDL_SCANCODE_RIGHT] ) {
             flipped = 0;
             player.dx = DX;
             player.isMoving = 1;
             moveLeft(&player);
-            if (!player.isJumping) {
+            if (!player.isJumping && win) {
                 drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player, flipped);
                 currentFrameRun = (currentFrameRun + 1) % 6;
 
             }
         }
-        if (state[SDL_SCANCODE_LEFT]) {
+        if (state[SDL_SCANCODE_LEFT] ) {
             flipped = 1;
             player.dx = -DX;
             player.isMoving = 1;
 
             moveLeft(&player);
-            if (!player.isJumping) {
+            if (!player.isJumping && win) {
                 drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player, flipped);
                 currentFrameRun = (currentFrameRun + 1) % 6;
 
@@ -90,7 +111,7 @@ int main(int argc, char *argv[]) {
         }
 
 
-        if (!player.isMoving) {
+        if (!player.isMoving && win) {
             if (!player.isJumping) {
                 drawOneFrame(framesStatic, 5, texture, window, renderer, currentFrameIdle, &player, flipped);
             }
@@ -112,7 +133,11 @@ int main(int argc, char *argv[]) {
 
             } else {
                 drawOneFrame(framesJump, 9, texture, window, renderer, currentFrameJump, &player, flipped);
-                currentFrameJump = (currentFrameJump + 1);
+                if (jumpDelay == 2) {
+                    currentFrameJump = (currentFrameJump + 1) % 9;
+                    jumpDelay = 0;
+                }
+                jumpDelay++;
                 if (currentFrameJump == 7 && player.jumpTime <= JUMPLENGTH / 2) {
                     currentFrameJump = 3;
                 } else if (player.jumpTime > JUMPLENGTH / 2) {
@@ -133,23 +158,29 @@ int main(int argc, char *argv[]) {
                 nextPlatform(coordArray, window);
                 player.rect.y += 100;
                 currentFrameJump = 0;
+                score++;
 
             }
 
         }
         if (coll == -1) {
             player.onPlatform = 0;
-
         }
         if (coll == -1 && !player.isJumping && !player.onPlatform) {
             win = 0;
+            player.dy = 1;
+            player.rect.y += JUMPSPEED*player.dy;
+            drawOneFrame(framesJump, 9, texture, window, renderer, 7, &player, flipped);
             player.onPlatform = 0;
             printf("Defaite\n");
-            break;
         }
         // Plateforme
 
         // Saut
+        if(win == 0 && player.rect.y >= WINDOW_H)
+        {
+            break;
+        }
         SDL_RenderPresent(renderer);
         SDL_Delay(30);
     }

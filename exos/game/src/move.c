@@ -41,7 +41,7 @@ int collision(player_t* player, SDL_Point *coordArray){
 	if((xPlayer >= xCurrentPlat - 33 && xPlayer <= xCurrentPlat + 117) && yPlayer + 100 <= yCurrentPlat + 48 && yPlayer + 100 >= yCurrentPlat +40){
 		printf("Courant\n");
 		return 0;
-	} else if((xPlayer >= xNextPlat - 33 && xPlayer <= xNextPlat + 117) && yPlayer + 100 <= yNextPlat + 48 && yPlayer + 100 >= yNextPlat +40){
+	} else if((xPlayer >= xNextPlat - 33 && xPlayer <= xNextPlat + 117) && yPlayer + 100 <= yNextPlat + 48 && yPlayer + 100 >= yNextPlat +40 && player->dy > 0){
 		printf("saut réussi\n");
 		return 1;
 	} else {
