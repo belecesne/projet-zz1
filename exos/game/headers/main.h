@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "graphics.h"
 
 #define WINDOW_H 800
 #define WINDOW_W 450
