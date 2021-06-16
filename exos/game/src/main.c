@@ -22,6 +22,22 @@ int main(int argc, char *argv[]) {
                     break;
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
+                        case SDLK_UP:
+                            printf("UP\n");
+                            // JUMP
+                            break;
+                        case SDLK_LEFT:
+                            printf("LEFT\n");
+                            // MARCHE GAUCHE
+                            break;
+                        case SDLK_RIGHT:
+                            printf("RIGHT\n");
+                            // MARCHE DROITE
+                            break;
+                        case SDLK_r:
+                            printf("R\n");
+                            // reinit
+                            break;
                         default:
                             break;
                     }
