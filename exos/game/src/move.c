@@ -3,7 +3,7 @@
 
 void moveLeft(player_t *player) {
     if (((player->rect.x) - SPEED) > 0) {
-        (player->rect.x) -= SPEED;
+        (player->rect.x) += (player->dx)*SPEED;
     } else if (((player->rect.x)) > 0) {
         (player->rect.x) = 0;
     }
@@ -11,7 +11,7 @@ void moveLeft(player_t *player) {
 
 void moveRight(int weight, player_t *player) {
     if (((player->rect.x) + player->rect.w + SPEED) < weight) {
-        (player->rect.x) += SPEED;
+        (player->rect.x) += (player->dx)*SPEED;
     } else if (((player->rect.x) + player->rect.w) < weight) {
         (player->rect.x) = (weight - player->rect.w);
     }
