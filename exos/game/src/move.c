@@ -38,10 +38,10 @@ int collision(player_t* player, SDL_Point *coordArray){
 	int yCurrentPlat = coordArray[6].y;
 	int xNextPlat = coordArray[5].x;
 	int yNextPlat = coordArray[5].y;
-	if((xPlayer >= xCurrentPlat - 33 && xPlayer <= xCurrentPlat + 117) && !player->isJumping && yPlayer + 100 <= yCurrentPlat + 44){
-		printf("%d %d\n", yPlayer, yCurrentPlat);
+	if((xPlayer >= xCurrentPlat - 33 && xPlayer <= xCurrentPlat + 117) && yPlayer + 100 == yCurrentPlat + 44){
+		printf("Courant\n");
 		return 0;
-	} else if((xPlayer >= xNextPlat - 33 && xPlayer <= xNextPlat + 117) && yPlayer + 100 <= yNextPlat + 44){
+	} else if((xPlayer >= xNextPlat - 33 && xPlayer <= xNextPlat + 117) && (yPlayer + 100 == yNextPlat + 44)){
 		printf("saut réussi\n");
 		return 1;
 	} else {

@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
-    player_t player = {{0, 500, 100, 100}, SPEED, JUMPLENGTH, 0, 1, 1, 0};
+    player_t player = {{25, 644, 100, 100}, SPEED, JUMPLENGTH, 0, 1, 1, 0};
     SDL_bool program_on = SDL_TRUE;
     SDL_Texture *plat1 = IMG_LoadTexture(renderer, "data/plat1.png");
 
@@ -26,15 +26,15 @@ int main(int argc, char *argv[]) {
     SDL_QueryTexture(background, NULL, NULL, &sourceBg.w, &sourceBg.h);
     SDL_GetWindowSize(window, &destBg.w, &destBg.h);
 
-    int i, currentFrameRun = 0, currentFrameIdle = 0,flipped = 0;
+    int i, currentFrameRun = 0, currentFrameIdle = 0,flipped = 0, win = 1;
 
-    SDL_Point coordArray[8] = {{0,   100},
-                               {150, 200},
-                               {300, 300},
-                               {0,   400},
-                               {150, 500},
-                               {300, 600},
-                               {0,   700}};
+	SDL_Point coordArray[8] = {{0, 100},
+				{150, 200},
+				{300, 300},
+				{0, 400},
+				{150, 500},
+				{300, 600},
+				{0, 700}};
     while (program_on) {
         SDL_Event event;
         SDL_RenderClear(renderer);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
                             flipped = 0;
                             player.dx = 1;
                             player.isMoving = 1;
-                            
+
                             moveRight(WINDOW_W, &player);
                             //drawAnimationLoop(framesRun, 6, texture, background, 10,window,renderer);
                             drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player,flipped);
@@ -103,7 +103,6 @@ int main(int argc, char *argv[]) {
 
 
 
-        printf("Le joueur saute ? %d\n",player.isJumping);
         if (player.isJumping) {
             if (player.jumpTime >= JUMPLENGTH) {
                 player.jumpTime = 0;
@@ -111,26 +110,36 @@ int main(int argc, char *argv[]) {
                 player.isJumping = 0;
 
             } else {
-                printf("Saut : %d\n",player.jumpTime);
                 jump(&player);
             }
         }
 
-        //int coll = collision(&player, coordArray);
-
+        int coll = collision(&player, coordArray);
+        if (coll == 0 || coll == 1) {
+            player.dy = 0;
+            player.isJumping = 0;
+        }
+        if(coll == -1 && !player.isJumping)
+        {
+            win = 0;
+        }
+        if(win == 0)
+        {
+            printf("Defaite\n");
+            break;
+        }
         // Plateforme
+        SDL_RenderClear(renderer);
+        createAllPlatforms(renderer, plat1, coordArray);
         //nextPlatform(coordArray, window);
 
-        // Saut
-/*
+	// Saut
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderDrawRect(renderer, &(player.rect));
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-*/
         SDL_RenderPresent(renderer);
         SDL_Delay(30);
-        //player.isMoving = 0;
     }
-    endSdl(1, "Fermeture normale", window, renderer);
+	endSdl(1, "Fermeture normale", window, renderer);
     return 0;
 }
