@@ -2,7 +2,10 @@
 #define GAME_ZZ1_PLAYER_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#define JUMPTIME 500
+#define JUMPHEIGH 150
+#define SPEED 4
+#define JUMPSPEED 10
+
 typedef struct player_t {
     SDL_Rect rect;
     int dx;
