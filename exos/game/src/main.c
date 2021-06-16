@@ -112,13 +112,9 @@ int main(int argc, char *argv[]) {
 
             } else {
                 drawOneFrame(framesJump, 9, texture, window, renderer, currentFrameJump, &player, flipped);
-                if (currentFrameJump < 6 && !repeat) {
-                    currentFrameJump = (currentFrameJump + 1);
-                }
-                if (currentFrameJump <= 6 && repeat) {
-                    repeat = 1;
-                    currentFrameJump = (currentFrameJump) % 6+3;
-                    jumpDelay = 0;
+                currentFrameJump = (currentFrameJump + 1);
+                if (currentFrameJump == 7) {
+                    currentFrameJump = 3;
                 } else if (player.jumpTime > JUMPLENGTH / 2) {
                     currentFrameJump = 7;
                 }
