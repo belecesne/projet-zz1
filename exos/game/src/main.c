@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
                                 player.isJumping = 1;
                             }
 
-                            //moveUp(&player);
                             // JUMP
                             break;
                         case SDLK_LEFT:
@@ -76,10 +75,6 @@ int main(int argc, char *argv[]) {
                             drawOneFrame(framesRun, 6, texture, window, renderer, currentFrameRun, &player,flipped);
                             currentFrameRun = (currentFrameRun + 1) % 6;
                             // MARCHE DROITE
-                            break;
-                        case SDLK_DOWN:
-                            moveDown(WINDOW_H, &player);
-                            // BAS
                             break;
                         case SDLK_r:
                             // reinit
