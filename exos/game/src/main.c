@@ -132,6 +132,7 @@ int main(int argc, char *argv[]) {
                 coll = 0;
                 nextPlatform(coordArray, window);
                 player.rect.y += 100;
+                currentFrameJump = 0;
 
             }
 
