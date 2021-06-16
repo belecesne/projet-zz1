@@ -9,6 +9,8 @@
 #include "graphics.h"
 #include "move.h"
 #include "player.h"
+#include "animation.h"
+#include "platform.h"
 
 #define WINDOW_H 800
 #define WINDOW_W 450

@@ -1,15 +1,9 @@
 #include "../headers/main.h"
-#include "../headers/platform.h"
+
 
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
-
-	SDL_Texture * texture = IMG_LoadTexture(renderer, "../data/ninja.png");
-	SDL_Texture * background = IMG_LoadTexture(renderer, "../data/bg.svg");
-	SDL_Rect * framesSaut = loadAnimationPos(2, 9, 300, 300);
-	SDL_Rect * framesSatic = loadAnimationPos(0, 9, 300, 300);
-	SDL_Rect * framesRun = loadAnimationPos(1, 9, 300, 300);
 
     SDL_DisplayMode disp;
     SDL_Window *window;
@@ -18,9 +12,16 @@ int main(int argc, char *argv[]) {
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
-    player_t player = {{250, 500, 100, 100}, SPEED, JUMPTIME, 0, 1, 1};
+    player_t player = {{0, 500, 100, 100}, SPEED, JUMPTIME, 0, 1, 1, 0};
     SDL_bool program_on = SDL_TRUE;
 	SDL_Texture * plat1 = IMG_LoadTexture(renderer, "data/plat1.png"); 
+
+
+	SDL_Texture * texture = IMG_LoadTexture(renderer, "./data/ninja.png");
+	SDL_Texture * background = IMG_LoadTexture(renderer, "./data/bg.svg");
+	SDL_Rect * framesSaut = loadAnimationPos(2, 9, 300, 300);
+	SDL_Rect * framesStatic = loadAnimationPos(0, 5, 300, 300);
+	SDL_Rect * framesRun = loadAnimationPos(1, 6, 300, 300);
 	int i;
 
 	SDL_Point coordArray[8] = {{0, 100},
@@ -30,6 +31,7 @@ int main(int argc, char *argv[]) {
 				{150, 500},
 				{300, 600},
 				{0, 700}};
+	int currentFrame = 0;
     while (program_on) {
         SDL_Event event;
         while (program_on && SDL_PollEvent(&event)) {
@@ -55,8 +57,11 @@ int main(int argc, char *argv[]) {
                             break;
                         case SDLK_RIGHT:
                             printf("RIGHT\n");
-                            drawAnimationLoop(frames, 9, texture, background, 10, window, renderer);
                             moveRight(WINDOW_W, &player);
+				SDL_RenderClear(renderer);
+				//drawAnimationLoop(framesRun, 6, texture, background, 10,window,renderer);
+				drawOneFrame(framesRun, 6, texture, window, renderer, &currentFrame, &player);
+				player.isMoving = 1;
                             // MARCHE DROITE
                             break;
                         case SDLK_DOWN:
@@ -77,8 +82,10 @@ int main(int argc, char *argv[]) {
         }
 
 
-
-
+	if(!player.isMoving){
+		SDL_RenderClear(renderer);
+		drawOneFrame(framesStatic, 5, texture, window, renderer, &currentFrame, &player);
+	}
         if (player.isJumping) {
             if (player.jumpTime >= JUMPTIME) {
                 player.isJumping = 0;
@@ -89,19 +96,21 @@ int main(int argc, char *argv[]) {
             }
         }
 
-	int coll = collision(&player, coordArray);
+	//int coll = collision(&player, coordArray);
  
 	// Plateforme
-	SDL_RenderClear(renderer);
-	createAllPlatforms(renderer, plat1, coordArray);
+		createAllPlatforms(renderer, plat1, coordArray);
 	//nextPlatform(coordArray, window);
 
 	// Saut
+/*
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderDrawRect(renderer, &(player.rect));
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+*/
         SDL_RenderPresent(renderer);
-        SDL_Delay(10);
+        SDL_Delay(50);
+	player.isMoving = 0;
     }
 	endSdl(1, "Fermeture normale", window, renderer);
     return 0;

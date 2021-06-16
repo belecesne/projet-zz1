@@ -2,7 +2,7 @@
 #define GAME_ZZ1_PLAYER_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#define JUMPTIME 350
+#define JUMPTIME 500
 typedef struct player_t {
     SDL_Rect rect;
     int dx;
@@ -10,5 +10,6 @@ typedef struct player_t {
     int isJumping;
     int jumpTime;
     int onPlatform;
+int isMoving;
 }player_t;
 #endif //GAME_ZZ1_PLAYER_H

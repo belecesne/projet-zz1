@@ -17,6 +17,16 @@ void drawAnimationLoop(SDL_Rect * frames, int nb_frames, SDL_Texture * texture, 
     }
 }
 
+void drawOneFrame(SDL_Rect * frames, int nb_frames, SDL_Texture * texture, SDL_Window * window, SDL_Renderer * renderer, int * currentFrame, player_t * player) {
+    SDL_Rect source = {0}, dest = {0};
+dest.x = player->rect.x;
+dest.y = player->rect.y;
+    dest.w = 100;
+    dest.h = 100;
+    SDL_RenderCopy(renderer, texture, frames + *currentFrame, &dest);
+	*currentFrame = (*currentFrame + 1) % nb_frames;
+}
+
 SDL_Rect * loadAnimationPos(int line, int numberColumns, int lineHeight, int columnWidth) {
     SDL_Rect * frames = malloc(numberColumns * sizeof(SDL_Rect));
     int yCurr = line*lineHeight, xCurr = 0;
@@ -28,7 +38,4 @@ SDL_Rect * loadAnimationPos(int line, int numberColumns, int lineHeight, int col
         xCurr += columnWidth;
     }
     return frames;
-}
-
-int main() {
 }
