@@ -1,7 +1,7 @@
 #include "../headers/main.h"
 
 
-int main(int argc, char * argc[]) {
+int main(int argc, char * argv[]) {
     srand(time(NULL));
 
     SDL_DisplayMode disp;
@@ -10,7 +10,7 @@ int main(int argc, char * argc[]) {
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, WINDOW_W, WINDOW_H);
-    renderer = createRenderer(windows);
+    renderer = createRenderer(window);
     SDL_Delay(3000);
     return 0;
 }
