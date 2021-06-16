@@ -1,4 +1,5 @@
 #include "../headers/main.h"
+#include "../headers/platform.h"
 
 
 int main(int argc, char *argv[]) {
@@ -13,8 +14,23 @@ int main(int argc, char *argv[]) {
     renderer = createRenderer(window);
 
     SDL_bool program_on = SDL_TRUE;
+	SDL_Texture * plat1 = IMG_LoadTexture(renderer, "data/plat1.png"); 
+	int i;
+
+	SDL_Point coordArray[8] = {{0, 100},
+				{150, 200},
+				{300, 300},
+				{0, 400},
+				{150, 500},
+				{300, 600},
+				{0, 700}};
     while (program_on) {
         SDL_Event event;
+	SDL_RenderClear(renderer);
+	createAllPlatforms(renderer, plat1, coordArray);
+	SDL_RenderPresent(renderer);
+	SDL_Delay(10);
+	
         while (program_on && SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT :
