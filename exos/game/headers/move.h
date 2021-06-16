@@ -7,5 +7,5 @@
 void moveLeft(player_t *);
 void moveRight(int,player_t *);
 void jump(player_t *);
-int collision(player_t*, SDL_Point *);
+int collision(player_t*, SDL_Point *, int);
 #endif //GAME_ZZ1_MOVE_H c

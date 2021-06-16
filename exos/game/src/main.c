@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 
-		int coll = collision(&player, coordArray);
+		int coll = collision(&player, coordArray, WINDOW_H);
 		if (coll == 0 || coll == 1) {
 			player.dy = 1;
 			player.isJumping = 0;
