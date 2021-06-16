@@ -8,6 +8,7 @@
 #include <time.h>
 #include "graphics.h"
 #include "move.h"
+#include "player.h"
 
 #define WINDOW_H 800
 #define WINDOW_W 450

@@ -1,11 +1,12 @@
 #ifndef GAME_ZZ1_MOVE_H
 #define GAME_ZZ1_MOVE_H
 #include <SDL2/SDL.h>
-#define SPEED 20
+#include "player.h"
+#define SPEED 1000
 
-void moveUp(SDL_Rect *);
-void moveLeft(SDL_Rect *);
-void moveRight(int,SDL_Rect *);
-void moveDown(int, SDL_Rect *);
+void moveUp(player_t *);
+void moveLeft(player_t *);
+void moveRight(int,player_t *);
+void moveDown(int, player_t *);
 
 #endif //GAME_ZZ1_MOVE_H
