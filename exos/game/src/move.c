@@ -19,13 +19,13 @@ void moveRight(int weight, player_t *player) {
 
 
 void jump(player_t *player) {
-    if (player->jumpTime < (JUMPHEIGH / 2)-1) {
+    if (player->jumpTime < (JUMPLENGTH / 2)) {
         player->dy = -1;
     } else {
         player->dy = 1;
     }
     if (player->isJumping) {
-        player->jumpTime++;
+        player->jumpTime+=JUMPSPEED;
         player->rect.y = player->rect.y + JUMPSPEED * player->dy;
     }
 

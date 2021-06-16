@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
-    player_t player = {{0, 500, 100, 100}, SPEED, JUMPHEIGH, 0, 1, 1, 0};
+    player_t player = {{0, 500, 100, 100}, SPEED, JUMPLENGTH, 0, 1, 1, 0};
     SDL_bool program_on = SDL_TRUE;
     SDL_Texture *plat1 = IMG_LoadTexture(renderer, "data/plat1.png");
 
@@ -100,9 +100,12 @@ int main(int argc, char *argv[]) {
             }
         }
         player.isMoving = 0;
+
+
+
         printf("Le joueur saute ? %d\n",player.isJumping);
         if (player.isJumping) {
-            if (player.jumpTime >= JUMPHEIGH) {
+            if (player.jumpTime >= JUMPLENGTH) {
                 player.jumpTime = 0;
                 player.dy = 0;
                 player.isJumping = 0;

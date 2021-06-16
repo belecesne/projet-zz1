@@ -2,7 +2,7 @@
 #define GAME_ZZ1_PLAYER_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#define JUMPHEIGH 150
+#define JUMPLENGTH 300 // HAUTEUR DE SAUT DIVISBLE PAR DEUX SINON ERREUR ( Hauteur = 2* longueur du saut)
 #define SPEED 4
 #define JUMPSPEED 10
 
