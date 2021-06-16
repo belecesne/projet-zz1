@@ -17,21 +17,26 @@ void drawAnimationLoop(SDL_Rect * frames, int nb_frames, SDL_Texture * texture, 
     }
 }
 
+SDL_Rect * loadAnimationPos(int line, int numberColumns, int lineHeight, int columnWidth) {
+    SDL_Rect * frames = malloc(numberColumns * sizeof(SDL_Rect));
+    int yCurr = line*lineHeight, xCurr = 0;
+    for(int i = 0; i < numberColumns; i++) {
+        frames[i].x = xCurr;
+        frames[i].y = yCurr;
+        frames[i].w = columnWidth;
+        frames[i].h = lineHeight;
+        xCurr += columnWidth;
+    }
+    return frames;
+}
+
 int main() {
     initGraphics();
     SDL_Window * window = createWindow(0, 0, 450, 800);
     SDL_Renderer * renderer = createRenderer(window);
     SDL_Texture * texture = IMG_LoadTexture(renderer, "../data/ninja.png");
     SDL_Texture * texture2 = IMG_LoadTexture(renderer, "../data/bg.svg");
-    SDL_Rect * frames = malloc(9* sizeof(SDL_Texture *));
-    int xCurr = 0;
-    for(int i = 0; i < 9; i++) {
-        frames[i].x = xCurr;
-        frames[i].y = 600;
-        frames[i].w = 300;
-        frames[i].h = 300;
-        xCurr += 300;
-    }
+    SDL_Rect * frames = loadAnimationPos(2, 9, 300, 300);
     while(1) {
         drawAnimationLoop(frames, 9, texture, texture2, 10, window, renderer);
     }
