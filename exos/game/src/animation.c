@@ -31,13 +31,4 @@ SDL_Rect * loadAnimationPos(int line, int numberColumns, int lineHeight, int col
 }
 
 int main() {
-    initGraphics();
-    SDL_Window * window = createWindow(0, 0, 450, 800);
-    SDL_Renderer * renderer = createRenderer(window);
-    SDL_Texture * texture = IMG_LoadTexture(renderer, "../data/ninja.png");
-    SDL_Texture * texture2 = IMG_LoadTexture(renderer, "../data/bg.svg");
-    SDL_Rect * frames = loadAnimationPos(2, 9, 300, 300);
-    while(1) {
-        drawAnimationLoop(frames, 9, texture, texture2, 10, window, renderer);
-    }
 }

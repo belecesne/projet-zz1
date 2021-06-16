@@ -5,6 +5,12 @@
 int main(int argc, char *argv[]) {
     srand(time(NULL));
 
+	SDL_Texture * texture = IMG_LoadTexture(renderer, "../data/ninja.png");
+	SDL_Texture * background = IMG_LoadTexture(renderer, "../data/bg.svg");
+	SDL_Rect * framesSaut = loadAnimationPos(2, 9, 300, 300);
+	SDL_Rect * framesSatic = loadAnimationPos(0, 9, 300, 300);
+	SDL_Rect * framesRun = loadAnimationPos(1, 9, 300, 300);
+
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -49,6 +55,7 @@ int main(int argc, char *argv[]) {
                             break;
                         case SDLK_RIGHT:
                             printf("RIGHT\n");
+                            drawAnimationLoop(frames, 9, texture, background, 10, window, renderer);
                             moveRight(WINDOW_W, &player);
                             // MARCHE DROITE
                             break;
