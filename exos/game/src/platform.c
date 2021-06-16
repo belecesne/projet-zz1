@@ -15,3 +15,18 @@ void createAllPlatforms(SDL_Renderer * renderer, SDL_Texture * texture, SDL_Poin
 		createOnePlatform(renderer, texture, x, y);
 	}
 }
+
+void nextPlatform(SDL_Point * coordArray, SDL_Window * window){
+	int i;
+	for(i = 6; i > 0; i--){
+		coordArray[i] = coordArray[i-1];
+		coordArray[i].y += 100;
+	}
+	int winWidth, winHeight;
+	SDL_GetWindowSize(window, &winWidth, &winHeight);
+	int columnWidth = winWidth / 3;
+	int column = rand() % 3;
+	int x = column * columnWidth;
+	coordArray[0].x = x;
+	coordArray[0].y = 100;
+}
