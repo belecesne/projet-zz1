@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include "player.h"
 #define SPEED 20
-#define JUMPSPEED 3
+#define JUMPSPEED 4
 
 void moveUp(player_t *);
 void moveLeft(player_t *);
@@ -11,4 +11,4 @@ void moveRight(int,player_t *);
 void moveDown(int, player_t *);
 void jump(player_t *);
 
-#endif //GAME_ZZ1_MOVE_H
+#endif //GAME_ZZ1_MOVE_H c

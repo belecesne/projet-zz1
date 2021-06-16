@@ -34,10 +34,10 @@ void moveDown(int height, player_t *player) {
 }
 
 void jump(player_t *player) {
-    if (player->jumpTime < (JUMPTIME / 2) - 1) {
-        player->dy = -JUMPSPEED;
+    if (player->jumpTime < (JUMPTIME / 2)-1) {
+        player->dy = -1;
     } else {
-        player->dy = JUMPSPEED;
+        player->dy = 1;
     }
     if (player->isJumping) {
         player->jumpTime += JUMPSPEED;
