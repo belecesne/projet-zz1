@@ -1,5 +1,5 @@
-FLAGS=-Wall -Wextra -Wdeclaration-after-statement -Werror=vla -g
-SDL_FLAGS=-lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
+FLAGS=-Wall -Wextra -Werror=vla -g
+SDL_FLAGS=-lSDL2 -lSDL2_image -lSDL2_ttf
 CC = gcc
 BUILD_DIR=build
 SRC_DIR=src
