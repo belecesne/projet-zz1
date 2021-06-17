@@ -113,7 +113,7 @@ int main(int argc, char* argv[]){
 
 		if(!player.isMoving && win){
 			if(!player.isJumping){
-				drawOneFrame(framesStatic, 5, texture, window, renderer, currentFrameIdle, &player, flipped);
+				drawOneFrame(framesStatic, texture, renderer, currentFrameIdle, &player, flipped);
 			}
 			i++;
 
@@ -170,7 +170,7 @@ int main(int argc, char* argv[]){
 			win = 0;
 			player.dy = 1;
 			player.rect.y += JUMPSPEED * player.dy;
-			drawOneFrame(framesJump, 9, texture, window, renderer, 7, &player, flipped);
+			drawOneFrame(framesJump, texture, renderer, 7, &player, flipped);
 			player.onPlatform = 0;
 			printf("Defaite\n");
 		}
