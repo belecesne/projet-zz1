@@ -2,24 +2,9 @@
 #include "../headers/graphics.h"
 #include <string.h>
 
-void drawAnimationLoop(SDL_Rect *frames, int nb_frames, SDL_Texture *texture, SDL_Texture *background, int frameRate,
-                       SDL_Window *window, SDL_Renderer *renderer) {
-    SDL_Rect source = {0}, dest = {0}, sourceBg = {0}, destBg = {0};
-    dest.w = 100;
-    dest.h = 100;
-    SDL_QueryTexture(background, NULL, NULL, &sourceBg.w, &sourceBg.h);
-    SDL_GetWindowSize(window, &destBg.w, &destBg.h);
-    for (int i = 0; i < nb_frames; i++) {
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, texture, frames + i, &dest);
-        SDL_RenderPresent(renderer);
-        SDL_Delay(1000 / frameRate);
-    }
-}
-
-void drawOneFrame(SDL_Rect *frames, int nb_frames, SDL_Texture *texture, SDL_Window *window, SDL_Renderer *renderer,
+void drawOneFrame(SDL_Rect *frames, SDL_Texture *texture, SDL_Renderer *renderer,
                   int currentFrame, player_t *player, int flipped) {
-    SDL_Rect source = {0}, dest = {0};
+    SDL_Rect dest = {0};
     dest.x = player->rect.x;
     dest.y = player->rect.y;
     dest.w = 100;
