@@ -68,8 +68,7 @@ int main(int argc, char* argv[]){
 		}
 		SDL_QueryTexture(textTexture, NULL, NULL, &posScore.w, &posScore.h);
 		SDL_RenderCopy(renderer, textTexture, NULL, &posScore);
-		if(lose)
-			const Uint8* state = SDL_GetKeyboardState(NULL);
+		const Uint8* state = SDL_GetKeyboardState(NULL);
 		if(state[SDL_SCANCODE_RIGHT] && !lose){
 			flipped = 0;
 			player.dx = DX;
