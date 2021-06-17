@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
 			player.dx = DX;
 			player.isMoving = 1;
 			moveRight(WINDOW_W, &player);
-			if(!player.isJumping){
+			if(!player.isJumping && coll){
 				drawOneFrame(framesRun, texture, renderer, currentFrameRun, &player, flipped);
 				currentFrameRun = (currentFrameRun + 1) % 6;
 
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]){
 			player.isMoving = 1;
 
 			moveLeft(&player);
-			if(!player.isJumping){
+			if(!player.isJumping && coll){
 				drawOneFrame(framesRun, texture, renderer, currentFrameRun, &player, flipped);
 				currentFrameRun = (currentFrameRun + 1) % 6;
 
@@ -118,7 +118,7 @@ int main(int argc, char* argv[]){
 		}
 
 		// Animation statique
-		if(!player.isMoving && !player.isJumping && win){
+		if(!player.isMoving && !player.isJumping && coll){
 			drawOneFrame(framesStatic, texture, renderer, currentFrameIdle, &player, flipped);
 			i++;
 
