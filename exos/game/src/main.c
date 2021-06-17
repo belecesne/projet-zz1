@@ -174,7 +174,7 @@ int main(int argc, char* argv[]){
 		}
 
 		// Gestion des collisions
-		coll = collision(&player, &platforms, WINDOW_H);
+		coll = collision(&player, &platforms);
 
 		if(coll == 1){
 			player.canJump = 1;
