@@ -7,9 +7,15 @@
 #include <stdlib.h>
 #include <time.h>
 
+typedef struct platform_c{
+	SDL_Point coordArray[7];
+	int head;
+	int size;
+} platform_t;
+
 void createOnePlatform(SDL_Renderer *, SDL_Texture *, int, int);
-void createAllPlatforms(SDL_Renderer *, SDL_Texture *, SDL_Point *);
-void nextPlatform(SDL_Point *, SDL_Window *);
+void createAllPlatforms(SDL_Renderer *, SDL_Texture *, platform_t *);
+void nextPlatform(platform_t *, SDL_Window *);
 
 
 #endif //PROJETTZZ1_GAME_PLATFORM_H

@@ -47,18 +47,18 @@ int main(int argc, char* argv[]){
 	int i = 0;
 	int currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, jumpDelay = 0, score = 0, coll = 1, lose = 0;
 
-	SDL_Point coordArray[8] = {{0,   100},
-	                           {150, 200},
-	                           {300, 300},
-	                           {0,   400},
-	                           {150, 500},
-	                           {300, 600},
-	                           {0,   700}};
+	platform_t platforms = {{{0,   100},
+			                        {150, 200},
+			                        {300, 300},
+			                        {0,   400},
+			                        {150, 500},
+			                        {300, 600},
+			                        {0,   700}}, 0, 7};
 	while(program_on){
 		SDL_Event event;
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, background, &sourceBg, &destBg);
-		createAllPlatforms(renderer, plat1, coordArray);
+		createAllPlatforms(renderer, plat1, &platforms);
 		if(lose){
 			SDL_Rect rect = {0, 0, 450, 800};
 			SDL_SetRenderDrawColor(renderer, 50, 50, 50, 100);
@@ -174,7 +174,7 @@ int main(int argc, char* argv[]){
 		}
 
 		// Gestion des collisions
-		coll = collision(&player, coordArray, WINDOW_H);
+		coll = collision(&player, &platforms, WINDOW_H);
 
 		if(coll == 1){
 			player.canJump = 1;
@@ -188,7 +188,7 @@ int main(int argc, char* argv[]){
 			player.isJumping = 0;
 			player.jumpTime = 0;
 			player.dy = 0;
-			nextPlatform(coordArray, window);
+			nextPlatform(&platforms, window);
 			player.rect.y += 100;
 			currentFrameJump = 0;
 			score++;
@@ -201,7 +201,6 @@ int main(int argc, char* argv[]){
 
 		// Gestion de la défaite
 		if(player.rect.y >= WINDOW_H){
-			printf("Défaite\n");
 			lose = 1;
 			coll = 1;
 		}

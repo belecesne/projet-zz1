@@ -31,7 +31,7 @@ void jump(player_t *player) {
 
 }
 
-int collision(player_t* player, SDL_Point *coordArray, int windowH){
+int collision(player_t* player, SDL_Point *coordArray){
 	int xPlayer = player->rect.x;
 	int yPlayer = player->rect.y;
 	int xCurrentPlat = coordArray[6].x;
