@@ -192,18 +192,18 @@ int main(int argc, char *argv[]) {
 				y1 += SPEED * dy;
 
 				break;
-			case 1:
-				if (dvd2.coo[0].y >= dvd1.coo[0].y - DVDSIZE_H && dvd2.coo[0].y <= dvd1.coo[1].y) {
-					if ((dvd2.coo[0].x >= dvd1.coo[1].x - 1 && dvd2.coo[0].x <= dvd1.coo[1].x + 1) ||
-					    (dvd1.coo[0].x >= dvd2.coo[1].x - 1 && dvd1.coo[0].x <= dvd2.coo[1].x + 1)) {
+			case 1:{
+				if(dvd2.coo[0].y >= dvd1.coo[0].y - DVDSIZE_H && dvd2.coo[0].y <= dvd1.coo[1].y){
+					if((dvd2.coo[0].x >= dvd1.coo[1].x - 1 && dvd2.coo[0].x <= dvd1.coo[1].x + 1) ||
+					   (dvd1.coo[0].x >= dvd2.coo[1].x - 1 && dvd1.coo[0].x <= dvd2.coo[1].x + 1)){
 						dvd1.dx = -dvd1.dx;
 						dvd2.dx = -dvd2.dx;
 					}
 				}
 
-				if (dvd2.coo[0].x >= dvd1.coo[0].x - DVDSIZE_W && dvd2.coo[0].x <= dvd1.coo[1].x) {
-					if ((dvd2.coo[0].y >= dvd1.coo[1].y - 1 && dvd2.coo[0].y <= dvd1.coo[1].y + 1) ||
-					    (dvd1.coo[0].y >= dvd2.coo[1].y - 1 && dvd1.coo[0].y <= dvd2.coo[1].y + 1)) {
+				if(dvd2.coo[0].x >= dvd1.coo[0].x - DVDSIZE_W && dvd2.coo[0].x <= dvd1.coo[1].x){
+					if((dvd2.coo[0].y >= dvd1.coo[1].y - 1 && dvd2.coo[0].y <= dvd1.coo[1].y + 1) ||
+					   (dvd1.coo[0].y >= dvd2.coo[1].y - 1 && dvd1.coo[0].y <= dvd2.coo[1].y + 1)){
 						dvd1.dy = -dvd1.dy;
 						dvd2.dy = -dvd2.dy;
 					}
@@ -215,56 +215,56 @@ int main(int argc, char *argv[]) {
 
 
 				// DVD 1
-				if (dvd1.coo[0].x + dvd1.dx > WINDOW_W - DVDSIZE_W || dvd1.coo[0].x + dvd1.dx < 0) {
+				if(dvd1.coo[0].x + dvd1.dx > WINDOW_W - DVDSIZE_W || dvd1.coo[0].x + dvd1.dx < 0){
 					dvd1.dx = -dvd1.dx;
 					dvd1.prevText = dvd1.currText;
-					while (dvd1.prevText == dvd1.currText) {
+					while(dvd1.prevText == dvd1.currText){
 						dvd1.currText = (rand() % 7);
 					}
-					if (dvd1.dx > 0) {
+					if(dvd1.dx > 0){
 						moveWindowLeft(window, dvd1.windowMovingSpeed);
-					} else {
+					} else{
 						moveWindowRight(window, disp, dvd1.windowMovingSpeed);
 					}
 				}
-				if (dvd1.coo[0].y + dvd1.dy > WINDOW_H - DVDSIZE_H || dvd1.coo[0].y + dvd1.dy < 0) {
+				if(dvd1.coo[0].y + dvd1.dy > WINDOW_H - DVDSIZE_H || dvd1.coo[0].y + dvd1.dy < 0){
 					dvd1.dy = -dvd1.dy;
 					dvd1.prevText = dvd1.currText;
-					while (dvd1.prevText == dvd1.currText) {
+					while(dvd1.prevText == dvd1.currText){
 						dvd1.currText = (rand() % 7);
 					}
-					if (dvd1.dy > 0) {
+					if(dvd1.dy > 0){
 						moveWindowUp(window, dvd2.windowMovingSpeed);
 
-					} else {
+					} else{
 						moveWindowDown(window, disp, dvd2.windowMovingSpeed);
 					}
 
 				}
 				// DVD 2
-				if (dvd2.coo[0].x + dvd2.dx > WINDOW_W - DVDSIZE_W || dvd2.coo[0].x + dvd2.dx < 0) {
+				if(dvd2.coo[0].x + dvd2.dx > WINDOW_W - DVDSIZE_W || dvd2.coo[0].x + dvd2.dx < 0){
 					dvd2.dx = -dvd2.dx;
 					dvd2.prevText = dvd2.currText;
-					while (dvd2.prevText == dvd2.currText) {
+					while(dvd2.prevText == dvd2.currText){
 						dvd2.currText = (rand() % 7);
 					}
-					if (dvd2.dx > 0) {
+					if(dvd2.dx > 0){
 						moveWindowLeft(window, dvd2.windowMovingSpeed);
-					} else {
+					} else{
 						moveWindowRight(window, disp, dvd2.windowMovingSpeed);
 					}
 
 				}
-				if (dvd2.coo[0].y + dvd2.dy > WINDOW_H - DVDSIZE_H || dvd2.coo[0].y + dvd2.dy < 0) {
+				if(dvd2.coo[0].y + dvd2.dy > WINDOW_H - DVDSIZE_H || dvd2.coo[0].y + dvd2.dy < 0){
 					dvd2.dy = -dvd2.dy;
 					dvd2.prevText = dvd2.currText;
-					while (dvd2.prevText == dvd2.currText) {
+					while(dvd2.prevText == dvd2.currText){
 						dvd2.currText = (rand() % 7);
 					}
-					if (dvd2.dy > 0) {
+					if(dvd2.dy > 0){
 						moveWindowUp(window, dvd2.windowMovingSpeed);
 
-					} else {
+					} else{
 						moveWindowDown(window, disp, dvd2.windowMovingSpeed);
 					}
 				}
@@ -278,6 +278,7 @@ int main(int argc, char *argv[]) {
 				dvd2.coo[1].x = dvd2.coo[0].x + DVDSIZE_W;
 				dvd2.coo[1].y = dvd2.coo[0].y + DVDSIZE_H;
 				break;
+			}
 		}
 
 
