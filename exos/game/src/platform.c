@@ -10,8 +10,8 @@ void createOnePlatform(SDL_Renderer *renderer, SDL_Texture * texture, int x, int
 void createAllPlatforms(SDL_Renderer * renderer, SDL_Texture * texture, platform_t * platforms){
 	int x, y, i = platforms->head, n = platforms->size;
 	while((i + 1) % n != platforms->head){
-		x = platforms.coordArray[i].x;
-		y = platforms.coordArray[i].y;
+		x = platforms->coordArray[i].x;
+		y = platforms->coordArray[i].y;
 		createOnePlatform(renderer, texture, x, y);
 		i = (i + 1) % n;
 	}
@@ -23,7 +23,7 @@ void nextPlatform(platform_t * platforms, SDL_Window * window){
 	int columnWidth = winWidth / 3;
 	int column = rand() % 3;
 	int x = column * columnWidth;
-	coordArray[platforms->head].x = x;
-	coordArray[platforms->head].y = 100;
+	platforms->coordArray[platforms->head].x = x;
+	platforms->coordArray[platforms->head].y = 100;
 	platforms->head = (platforms->head + 1) % platforms->size;
 }
