@@ -113,7 +113,7 @@ void printClassUnionFind(union_find_t * unionFind, int node){
 void printAllClassesUnionFind(union_find_t * unionFind){
     printf("\n{");
     for(int i =0; i< unionFind->size; i++){
-        if(unionFind->level[i] == 0){
+        if(unionFind->level[i] != -1){
             printClassUnionFind(unionFind,i);
             printf(",");
         }
