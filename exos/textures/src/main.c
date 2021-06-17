@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
 		SDL_Delay(80);
 		i++;
 	}
-
+	SDL_DestroyTexture(sprite);
 	endSdl(1, "Fermeture Normale", window, renderer);
 	return 0;
 }

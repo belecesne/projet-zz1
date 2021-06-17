@@ -207,6 +207,14 @@ int main(int argc, char* argv[]){
 		SDL_RenderPresent(renderer);
 		SDL_Delay(30);
 	}
+	TTF_Quit();
+	SDL_FreeSurface(textSurface);
+	SDL_FreeSurface(endSurface);
+	SDL_DestroyTexture(plat1);
+	SDL_DestroyTexture(texture);
+	SDL_DestroyTexture(background);
+	SDL_DestroyTexture(textTexture);
+	SDL_DestroyTexture(endTexture);
 	endSdl(1, "Fermeture normale", window, renderer);
 	return 0;
 }
