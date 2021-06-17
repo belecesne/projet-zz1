@@ -9,7 +9,7 @@ tas_t * creerTas() {
 }
 
 void reallocTas(tas_t * tas) {
-    tas->array = realloc(tas->array, 2 * tas->length);
+    tas->array = realloc(tas->array, 2 * tas->length * sizeof(int));
     tas->length *= 2;
 }
 
@@ -54,23 +54,12 @@ void libererTas(tas_t * tas) {
 
 void tri_tas(int * tab, int taille) {
     tas_t * tas = creerTas();
-    printf("Tas insertion\n");
     for(int i = 0; i < taille; i++) {
         ajoutTas(tas, tab[i]);
-        for(int i = 0; i < tas->length; i++) {
-            printf("%d ", tas->array[i]);
-        }
-        printf("\n");
     }
-    printf("Tas suppression\n");
     for(int i = 0; i < taille; i++) {
         tab[i] = racineTas(tas);
         suppressionRacine(tas);
-        for(int i = 0; i < tas->length; i++) {
-            printf("%d ", tas->array[i]);
-        }
-        printf("\n");
-        printf("indexToInsert : %d\n", tas->indexToInsert);
     }
     libererTas(tas);
 }

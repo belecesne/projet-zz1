@@ -1,24 +1,40 @@
 #include "../headers/tas.h"
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+int inf(int * a, int * b) {
+    return *a-*b;
+}
+
+void testFunctions(int lengthToTest) {
+    printf("Test avec une instance de %d d'entiers\n", lengthToTest);
+    int * tab = malloc(lengthToTest * sizeof(int));
+    for(int i = 0; i < lengthToTest; i++) {
+        tab[i] = rand()%100;
+    }
+    int * arrayCopy = malloc(lengthToTest * sizeof(int));
+    memcpy(arrayCopy, tab, lengthToTest*sizeof(int));
+    printf("Temps mis pour la fonction qsort:\n");
+    clock_t begin = clock();
+    qsort(tab, lengthToTest, sizeof(int), inf);
+    clock_t end = clock();
+    printf("Fini en %ld ms\n", (unsigned long) ((end-begin) * 1000 / CLOCKS_PER_SEC));
+    printf("Temps mis pour l'algorithme de tri par tas\n");
+    begin = clock();
+    tri_tas(arrayCopy, lengthToTest);
+    end = clock();
+    printf("Fini en %ld ms\n\n", (unsigned long) ((end-begin) * 1000 / CLOCKS_PER_SEC));
+    free(tab);
+    free(arrayCopy);
+}
 
 int main() {
-    int * tab = malloc(10 * sizeof(int));
-    tab[0] = 10;
-    tab[1] = 9;
-    tab[2] = 8;
-    tab[3] = 7;
-    tab[4] = 6;
-    tab[5] = 5;
-    tab[6] = 4;
-    tab[7] = 3;
-    tab[8] = 2;
-    tab[9] = 1;
-    for(int i = 0; i < 10; i++) {
-        printf("%d ", tab[i]);
-    }
-    printf("\n");
-    tri_tas(tab, 10);
-    for(int i = 0; i < 10; i++) {
-        printf("%d ", tab[i]);
-    }
-    printf("\n");
+    srand(time(NULL));
+    testFunctions(10);
+    testFunctions(100);
+    testFunctions(1000);
+    testFunctions(10000);
+    testFunctions(100000);
+    testFunctions(1000000);
 }
