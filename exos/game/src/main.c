@@ -174,7 +174,7 @@ int main(int argc, char* argv[]){
 		}
 
 		// Gestion des collisions
-		coll = collision(&player, &platforms);
+		coll = collision(&player, coordArray);
 
 		if(coll == 1){
 			player.canJump = 1;
@@ -188,7 +188,7 @@ int main(int argc, char* argv[]){
 			player.isJumping = 0;
 			player.jumpTime = 0;
 			player.dy = 0;
-			nextPlatform(&platforms, window);
+			nextPlatform(coordArray, window);
 			player.rect.y += 100;
 			currentFrameJump = 0;
 			score++;
