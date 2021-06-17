@@ -56,8 +56,8 @@ int main(int argc, char* argv[]){
 		createAllPlatforms(renderer, plat1, coordArray);
 		if(lose){
 			SDL_Rect rect = {0, 0, 450, 800};
-			SDL_SetRenderDrawColor(renderer, 100, 100, 100, 100);
-			SDL_RenderFillRect(renderer, &rect);
+			SDL_SetRenderDrawColor(renderer, 100, 100, 100, 50);
+			SDL_RenderDrawRect(renderer, &rect);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		}
 		sprintf(scoreString, "Score : %d", score);
