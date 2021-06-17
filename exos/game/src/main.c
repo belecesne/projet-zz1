@@ -154,36 +154,31 @@ int main(int argc, char* argv[]){
 		// Gestion des collisions
 		int coll = collision(&player, coordArray, WINDOW_H);
 
-		if(coll == 0 || coll == 1){
-			player.dy = 1;
+		if(coll == 0){
 			player.isJumping = 0;
-			player.onPlatform = 1;
 			player.jumpTime = 0;
-			if(coll == 1){
-				coll = 0;
-				nextPlatform(coordArray, window);
-				player.rect.y += 100;
-				currentFrameJump = 0;
-				score++;
-
-			}
-
+			player.dy = 0;
+		}
+		if(coll == 1){
+			coll = 0;
+			player.isJumping = 0;
+			player.jumpTime = 0;
+			player.dy = 0;
+			nextPlatform(coordArray, window);
+			player.rect.y += 100;
+			currentFrameJump = 0;
+			score++;
 		}
 		if(coll == -1){
-			player.onPlatform = 0;
-		}
-		if(coll == -1 && !player.isJumping && !player.onPlatform){
-			win = 0;
 			player.dy = 1;
 			player.rect.y += JUMPSPEED * player.dy;
 			drawOneFrame(framesJump, texture, renderer, 7, &player, flipped);
-			player.onPlatform = 0;
-			printf("Defaite\n");
 		}
 
 		// Gestion de la défaite
-		if(win == 0 && player.rect.y >= WINDOW_H){
-			break;
+		if(player.rect.y >= WINDOW_H){
+			printf("Défaite\n");
+			program_on = SDL_FALSE;
 		}
 		SDL_RenderPresent(renderer);
 		SDL_Delay(30);

@@ -38,11 +38,11 @@ int collision(player_t* player, SDL_Point *coordArray, int windowH){
 	int yCurrentPlat = coordArray[6].y;
 	int xNextPlat = coordArray[5].x;
 	int yNextPlat = coordArray[5].y;
-	if((xPlayer >= xCurrentPlat - 33 && xPlayer <= xCurrentPlat + 117) && yPlayer + 100 <= yCurrentPlat + 48 && yPlayer + 100 >= yCurrentPlat +40){
+	if((xPlayer >= xCurrentPlat - 33 && xPlayer <= xCurrentPlat + 117) && yPlayer + 100 <= yCurrentPlat + 48 && yPlayer + 100 >= yCurrentPlat +40 && !player->isJumping){
 		return 0;
-	} else if((xPlayer >= xNextPlat - 33 && xPlayer <= xNextPlat + 117) && yPlayer + 100 <= yNextPlat + 48 && yPlayer + 100 >= yNextPlat +40 && player->dy > 0){
+	} else if((xPlayer >= xNextPlat - 33 && xPlayer <= xNextPlat + 117) && yPlayer + 100 <= yNextPlat + 48 && yPlayer + 100 >= yNextPlat +40 && !player->isJumping){
 		return 1;
-	} else if(yPlayer + 100 >= windowH){
+	} else if(player->isJumping){
 		return 2;
 	} else {
 		return -1;
