@@ -74,7 +74,7 @@ int main(int argc, char* argv[]){
 
 			}
 		}
-		if(state[SDL_SCANCODE_LEFT]){
+		else if(state[SDL_SCANCODE_LEFT]){
 			flipped = 1;
 			player.dx = -DX;
 			player.isMoving = 1;
@@ -101,6 +101,12 @@ int main(int argc, char* argv[]){
 				case SDL_KEYDOWN:
 					switch(event.key.keysym.sym){
 						case SDLK_r:
+							break;
+						case SDLK_q:
+							program_on = SDL_FALSE;
+							break;
+						case SDLK_ESCAPE:
+							program_on = SDL_FALSE;
 							break;
 						default:
 							break;
