@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 	SDL_GetWindowSize(window, &destBg.w, &destBg.h);
 
 	int i;
-	int currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, win = 1, jumpDelay = 0, score = 0;
+	int currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, win = 1, jumpDelay = 0, score = 0, coll = 1;
 
 	SDL_Point coordArray[8] = {{0,   100},
 	                           {150, 200},
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]){
 
 		// Animation du saut
 		if(player.isJumping){
-			if(player.jumpTime >= JUMPLENGTH){
+			if(player.jumpTime >= JUMPLENGTH && coll){
 				player.jumpTime = 0;
 				player.dy = 0;
 				player.isJumping = 0;
@@ -152,14 +152,14 @@ int main(int argc, char* argv[]){
 		}
 
 		// Gestion des collisions
-		int coll = collision(&player, coordArray, WINDOW_H);
+		coll = collision(&player, coordArray, WINDOW_H);
 
-		if(coll == 0){
+		if(coll == 1){
 			player.isJumping = 0;
 			player.jumpTime = 0;
 			player.dy = 0;
 		}
-		if(coll == 1){
+		if(coll == 2){
 			coll = 0;
 			player.isJumping = 0;
 			player.jumpTime = 0;
@@ -169,7 +169,7 @@ int main(int argc, char* argv[]){
 			currentFrameJump = 0;
 			score++;
 		}
-		if(coll == -1){
+		if(coll == 0){
 			player.dy = 1;
 			player.rect.y += JUMPSPEED * player.dy;
 			drawOneFrame(framesJump, texture, renderer, 7, &player, flipped);
