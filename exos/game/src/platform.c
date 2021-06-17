@@ -9,11 +9,12 @@ void createOnePlatform(SDL_Renderer *renderer, SDL_Texture * texture, int x, int
 
 void createAllPlatforms(SDL_Renderer * renderer, SDL_Texture * texture, platform_t * platforms){
 	int x, y, i = platforms->head, n = platforms->size;
-	while((i + 1) % n != platforms->head){
+	while(1){
 		x = platforms->coordArray[i].x;
 		y = platforms->coordArray[i].y;
 		createOnePlatform(renderer, texture, x, y);
 		i = (i + 1) % n;
+		if(i == platforms->head) break;
 	}
 }
 
