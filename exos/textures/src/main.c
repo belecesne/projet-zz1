@@ -1,6 +1,6 @@
 #include "../headers/main.h"
 
-int main(int *argc, char *argv[]){
+int main(int argc, char *argv[]){
 	SDL_DisplayMode disp;
 	SDL_Window * window;
 	SDL_Renderer * renderer;
