@@ -160,7 +160,7 @@ int main(int argc, char* argv[]){
 			player.dy = 0;
 		}
 		if(coll == 2){
-			coll = 0;
+			coll = 1;
 			player.isJumping = 0;
 			player.jumpTime = 0;
 			player.dy = 0;
