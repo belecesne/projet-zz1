@@ -13,6 +13,7 @@ int main(int argc, char* argv[]){
 	SDL_GetCurrentDisplayMode(0, &disp);
 	window = createWindow(10, 10, WINDOW_W, WINDOW_H);
 	renderer = createRenderer(window);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
 	char scoreString[15];
 	if(TTF_Init() < 0){
 		endSdl(0, "Erreur dans l'init de TTF", window, renderer);
