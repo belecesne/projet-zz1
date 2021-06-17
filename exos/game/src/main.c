@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 	SDL_GetWindowSize(window, &destBg.w, &destBg.h);
 
 	int i = 0;
-	int currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, jumpDelay = 0, score = 0, coll = 1;
+	int currentFrameRun = 0, currentFrameIdle = 0, currentFrameJump = 0, flipped = 0, jumpDelay = 0, score = 0, coll = 1, lose = 0;
 
 	SDL_Point coordArray[8] = {{0,   100},
 	                           {150, 200},
@@ -54,6 +54,12 @@ int main(int argc, char* argv[]){
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, background, &sourceBg, &destBg);
 		createAllPlatforms(renderer, plat1, coordArray);
+		if(lose){
+			SDL_Rect rect = {0, 0, 450, 800};
+			SDL_SetRenderDrawColor(renderer, 100, 100, 100, 100);
+			SDL_RenderFillRect(renderer, &rect);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		}
 		sprintf(scoreString, "Score : %d", score);
 		textSurface = TTF_RenderText_Blended(font, scoreString, color);
 		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
@@ -62,8 +68,9 @@ int main(int argc, char* argv[]){
 		}
 		SDL_QueryTexture(textTexture, NULL, NULL, &posScore.w, &posScore.h);
 		SDL_RenderCopy(renderer, textTexture, NULL, &posScore);
-		const Uint8* state = SDL_GetKeyboardState(NULL);
-		if(state[SDL_SCANCODE_RIGHT]){
+		if(lose)
+			const Uint8* state = SDL_GetKeyboardState(NULL);
+		if(state[SDL_SCANCODE_RIGHT] && !lose){
 			flipped = 0;
 			player.dx = DX;
 			player.isMoving = 1;
@@ -73,8 +80,7 @@ int main(int argc, char* argv[]){
 				currentFrameRun = (currentFrameRun + 1) % 6;
 
 			}
-		}
-		else if(state[SDL_SCANCODE_LEFT]){
+		} else if(state[SDL_SCANCODE_LEFT] && !lose){
 			flipped = 1;
 			player.dx = -DX;
 			player.isMoving = 1;
@@ -87,7 +93,7 @@ int main(int argc, char* argv[]){
 			}
 
 		}
-		if(state[SDL_SCANCODE_UP]){
+		if(state[SDL_SCANCODE_UP] && !lose){
 			if(!player.isJumping && player.canJump){
 				player.isJumping = 1;
 				player.canJump = 0;
@@ -122,7 +128,7 @@ int main(int argc, char* argv[]){
 			drawOneFrame(framesStatic, texture, renderer, currentFrameIdle, &player, flipped);
 			i++;
 
-			if(i == 6){
+			if(i == 4){
 				currentFrameIdle = (currentFrameIdle + 1) % 5;
 				i = 0;
 			}
@@ -181,7 +187,8 @@ int main(int argc, char* argv[]){
 		// Gestion de la défaite
 		if(player.rect.y >= WINDOW_H){
 			printf("Défaite\n");
-			program_on = SDL_FALSE;
+			lose = 1;
+			coll = 1;
 		}
 		SDL_RenderPresent(renderer);
 		SDL_Delay(30);
