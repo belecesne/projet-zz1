@@ -39,6 +39,7 @@ int main() {
 
         printClassUnionFind(unionFind,3);
         printAllClassesUnionFind(unionFind);
+        makeGraphvizGraph(unionFind, "graph");
         freeUnionFind(unionFind);
     }
 

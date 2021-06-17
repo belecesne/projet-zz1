@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define DEFAULT_UNION_FIND_SIZE 11
 
@@ -21,4 +22,5 @@ int rootNodeUnionFind(union_find_t *, int);
 void fusionUnionFind(union_find_t * unionFind, int, int);
 void printClassUnionFind(union_find_t *, int);
 void printAllClassesUnionFind(union_find_t *);
+void makeGraphvizGraph(union_find_t *, char *);
 #endif //UNION_FIND_ADRIEN_ZZ1_UNION_FIND_H

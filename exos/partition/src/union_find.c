@@ -78,14 +78,17 @@ void printUnionFind(union_find_t * unionFind) {
         if (xRoot != yRoot) { // Ils sont dans la même classe
             if (unionFind->level[xRoot] < unionFind->level[yRoot]) { //
                 unionFind->partition[xRoot] = yRoot;
-                unionFind->level[xRoot]--;
+                unionFind->level[xRoot] = -1;
 
-            } else {
+            }
+            else if (unionFind->level[xRoot] > unionFind->level[yRoot]) {
                 unionFind->partition[yRoot] = xRoot;
-                unionFind->level[yRoot]--;
-                if (unionFind->level[xRoot] == unionFind->level[yRoot]) {
-                    unionFind->level[xRoot]++;
-                }
+                unionFind->level[yRoot] = -1;
+            }
+            else {
+                unionFind->partition[yRoot] = xRoot;
+                unionFind->level[yRoot] = -1;
+                unionFind->level[xRoot]++;
             }
         }
     }
@@ -116,4 +119,23 @@ void printAllClassesUnionFind(union_find_t * unionFind){
         }
     }
     printf("\b}\n");
+}
+
+void makeGraphvizGraph(union_find_t * union_find, char * fileName) {
+    char fullFileName[BUFSIZ];
+    strcpy(fullFileName, fileName);
+    strcat(fullFileName, ".dot");
+    FILE* dotFile = fopen(fullFileName, "w");
+    fputs("digraph G {\n", dotFile);
+    for(int i = 0; i < (union_find->size); i++) {
+        fprintf(dotFile, "   \"%d\" -> \"%d\";\n", i, union_find->partition[i]);
+    }
+    fputs("}", dotFile);
+    fclose(dotFile);
+    strcpy(fullFileName, "dot -Tsvg ");
+    strcat(fullFileName, fileName);
+    strcat(fullFileName, ".dot > ");
+    strcat(fullFileName, fileName);
+    strcat(fullFileName, ".svg");
+    system(fullFileName);
 }
