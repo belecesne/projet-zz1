@@ -6,7 +6,7 @@
 int inf(int * a, int * b) {
     return *a-*b;
 }
-
+/*
 void testFunctions(int lengthToTest) {
     printf("Test avec une instance de %d d'entiers\n", lengthToTest);
     int * tab = malloc(lengthToTest * sizeof(int));
@@ -28,8 +28,9 @@ void testFunctions(int lengthToTest) {
     free(tab);
     free(arrayCopy);
 }
-
+*/
 int main() {
+	/*
     srand(time(NULL));
     testFunctions(10);
     testFunctions(100);
@@ -37,4 +38,21 @@ int main() {
     testFunctions(10000);
     testFunctions(100000);
     testFunctions(1000000);
+    */
+	tas_t * tas = creerTas();
+	for(int i = 31; i > 0; i--){
+		ajoutTas(tas, i);
+	}
+
+	afficherTas(tas);
+
+	printf("------------------------\n");
+
+	for(int j = 1; j < 28; j++){
+		suppressionRacine(tas);
+	}
+
+	afficherTas(tas);
+
+	libererTas(tas);
 }

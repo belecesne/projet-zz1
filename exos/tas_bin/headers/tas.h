@@ -2,6 +2,8 @@
 #define TAS_H
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #define DEFAULT_LENGTH 10
 
 typedef struct tas_s {
@@ -12,8 +14,10 @@ typedef struct tas_s {
 
 tas_t* creerTas();
 void ajoutTas(tas_t * tas, int valeur);
+void reallocTas(tas_t *, float);
 int racineTas(tas_t * tas);
-void supressionRacine(tas_t* tas);
+int suppressionRacine(tas_t* tas);
 void libererTas(tas_t * tas);
 void tri_tas(int * tab, int taille);
+void afficherTas(tas_t *);
 #endif

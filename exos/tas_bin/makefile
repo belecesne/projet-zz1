@@ -1,4 +1,4 @@
-FLAGS=-Wall -Wextra -Wdeclaration-after-statement -Werror=vla -g
+FLAGS=-Wall -Wextra -Werror=vla -g
 SDL_FLAGS=-lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
 CC = gcc
 BUILD_DIR=build
@@ -7,14 +7,14 @@ SOURCES=$(wildcard $(SRC_DIR)/*.c)
 OBJECTS=$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 .PHONY: clean all
 
-all : dir game
+all : dir tas_bin
 
 dir:
 	@if [ ! -d "build" ]; then mkdir $(BUILD_DIR); fi
 
-game: $(OBJECTS)
+tas_bin: $(OBJECTS)
 	@$(CC) -o $@ $^ $(FLAGS) $(SDL_FLAGS)
-	@echo "Executer le programme avec ./game"
+	@echo "Executer le programme avec ./tas_bin"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) -c -o $@ $< $(FLAGS) $(SDL_FLAGS)
