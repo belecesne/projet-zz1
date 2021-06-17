@@ -6,14 +6,14 @@ SOURCES=$(wildcard $(SRC_DIR)/*.c)
 OBJECTS=$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 .PHONY: clean all
 
-all : dir tas_bin
+all : dir partition
 
 dir:
 	@if [ ! -d "build" ]; then mkdir $(BUILD_DIR); fi
 
-tas_bin: $(OBJECTS)
+partition: $(OBJECTS)
 	@$(CC) -o $@ $^ $(FLAGS)
-	@echo "Executer le programme avec ./tas_bin"
+	@echo "Executer le programme avec ./partition"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) -c -o $@ $< $(FLAGS)
