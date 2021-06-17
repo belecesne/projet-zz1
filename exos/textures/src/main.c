@@ -9,15 +9,16 @@ int main(int *argc, char *argv[]) {
 	window = createWindow(100, 100, 500, 500);
 	renderer = createRenderer(window);
 
-	SDL_Texture * sprite = IMG_LoadTexture(renderer, './data/stripe_player.png');
-	SDL_Rect * frames = loadAnimationPos(2, 8, 150, 50),  dest = {0, 200, 0, 0};
+	SDL_Texture * sprite = IMG_LoadTexture(renderer, "./data/ninja.png");
+	SDL_Rect * frames = loadAnimationPos(1, 6, 300, 300),  dest = {100, 200, 0, 0};
 	int i = 0, currentFrame = 0;
-	while(i < 1000000){
+	while(i < 30){
 		SDL_RenderClear(renderer);
 		drawOneFrame(frames, sprite, renderer, currentFrame, dest, 0);
-		currentFrame = (currentFrame + 1) % 8;
+		currentFrame = (currentFrame + 1) % 6;
+		dest.x += 5;
 		SDL_RenderPresent(renderer);
-		SDL_Delay(100);
+		SDL_Delay(80);
 		i++;
 	}
 

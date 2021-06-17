@@ -1,4 +1,4 @@
-#include "./headers/graphics.h"
+#include "../headers/graphics.h"
 
 void initGraphics() {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -8,7 +8,7 @@ void initGraphics() {
 }
 
 SDL_Window *createWindow(int xPos, int yPos, int width, int height) {
-	SDL_Window *window = SDL_CreateWindow("DVD", xPos, yPos, width, height, SDL_WINDOW_RESIZABLE);
+	SDL_Window *window = SDL_CreateWindow("Animation", xPos, yPos, width, height, SDL_WINDOW_RESIZABLE);
 	if (window == NULL) {
 		endSdl(0, "Erreur dans la creation de la fenetre", window, NULL);
 	}
@@ -44,8 +44,8 @@ void endSdl(char ok, char const *msg, SDL_Window *window, SDL_Renderer *renderer
 	if (renderer != NULL) SDL_DestroyRenderer(renderer);
 	if (window != NULL) SDL_DestroyWindow(window);
 
-	SDL_Quit();
 	IMG_Quit();
+	SDL_Quit();
 	if (!ok) {
 		exit(EXIT_FAILURE);
 	}
