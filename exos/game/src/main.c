@@ -7,25 +7,29 @@ int main(int argc, char* argv[]){
 	SDL_DisplayMode disp;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	SDL_Rect sourceBg = {0}, destBg = {0}, posScore = {300, 0, 150, 50};
+	SDL_Rect sourceBg = {0}, destBg = {0}, posScore = {300, 0, 150, 50}, posEnd = {100, 100, 100, 50};
 
 	initGraphics();
 	SDL_GetCurrentDisplayMode(0, &disp);
 	window = createWindow(10, 10, WINDOW_W, WINDOW_H);
 	renderer = createRenderer(window);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	char scoreString[15];
 	if(TTF_Init() < 0){
 		endSdl(0, "Erreur dans l'init de TTF", window, renderer);
 	}
-	TTF_Font* font = NULL;
+	TTF_Font* font = NULL, * fontEnd = NULL;
 	font = TTF_OpenFont("./data/asianninja.ttf", 25);
 	if(font == NULL){
 		endSdl(0, "Erreur dans l'ouverture de la police", window, renderer);
 	}
+	fontEnd = TTF_OpenFont("./data/asianninja.ttf", 50);
+	if(fontEnd == NULL){
+		endSdl(0, "Erreur dans l'ouverture de la police", window, renderer);
+	}
 	SDL_Color color = {0, 0, 0, 255};
-	SDL_Surface* textSurface = NULL;
-	SDL_Texture* textTexture = NULL;
+	SDL_Surface* textSurface = NULL, *endSurface = NULL;
+	SDL_Texture* textTexture = NULL, *endTexture = NULL;
 
 	player_t player = {{25, 644, 100, 100}, DX, JUMPLENGTH, 0, 1, 1, 0};
 	SDL_bool program_on = SDL_TRUE;
@@ -57,9 +61,20 @@ int main(int argc, char* argv[]){
 		createAllPlatforms(renderer, plat1, coordArray);
 		if(lose){
 			SDL_Rect rect = {0, 0, 450, 800};
-			SDL_SetRenderDrawColor(renderer, 100, 100, 100, 50);
-			SDL_RenderDrawRect(renderer, &rect);
+			SDL_SetRenderDrawColor(renderer, 50, 50, 50, 100);
+			SDL_RenderFillRect(renderer, &rect);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			posScore.x = 225 - posScore.w / 2;
+			posScore.y = 450 - posScore.h / 2;
+			endSurface = TTF_RenderText_Blended(fontEnd, "Perdu", color);
+			endTexture = SDL_CreateTextureFromSurface(renderer, endSurface);
+			if(endTexture == NULL){
+				endSdl(0, "Impossible de créer la surface", window, renderer);
+			}
+			SDL_QueryTexture(endTexture, NULL, NULL, &posEnd.w, &posEnd.h);
+			posEnd.x = 225 - posEnd.w / 2;
+			posEnd.y = 400 - posEnd.h / 2;
+			SDL_RenderCopy(renderer, endTexture, NULL, &posEnd);
 		}
 		sprintf(scoreString, "Score : %d", score);
 		textSurface = TTF_RenderText_Blended(font, scoreString, color);
