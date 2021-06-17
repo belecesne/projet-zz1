@@ -2,12 +2,18 @@
 #define GRAPHICS
 
 #include <SDL2/SDL.h>
+#include "game.h"
 
 void initGraphics();
-SDL_Window * createWindow(int xPos, int yPos, int width, int height);
-SDL_Renderer * createRenderer(SDL_Window * window);
-void drawMatrix(SDL_Renderer * renderer, SDL_Window * window, int game[][30], int gameLength);
-void end_sdl(char ok, char const* msg, SDL_Window* window, SDL_Renderer* renderer);
-int getPosFromMouse(int mouseX, int mouseY, int* i, int* j, SDL_Window * window, int gameLength);
+
+SDL_Window* createWindow(int, int, int, int);
+
+SDL_Renderer* createRenderer(SDL_Window*);
+
+void drawMatrix(SDL_Renderer*, SDL_Window*, int[][GAME_LENGTH], int);
+
+void end_sdl(char, char const*, SDL_Window*, SDL_Renderer*);
+
+int getPosFromMouse(int, int, int*, int*, SDL_Window*, int);
 
 #endif
