@@ -13,7 +13,7 @@ typedef struct player_t {
     int dy;
     int isJumping;
     int jumpTime;
-    int onPlatform;
-int isMoving;
+    int canJump;
+	int isMoving;
 }player_t;
 #endif //GAME_ZZ1_PLAYER_H

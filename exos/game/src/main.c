@@ -88,8 +88,9 @@ int main(int argc, char* argv[]){
 
 		}
 		if(state[SDL_SCANCODE_UP]){
-			if(!player.isJumping && coll){
+			if(!player.isJumping && player.canJump){
 				player.isJumping = 1;
+				player.canJump = 0;
 			}
 
 		}
@@ -155,12 +156,14 @@ int main(int argc, char* argv[]){
 		coll = collision(&player, coordArray, WINDOW_H);
 
 		if(coll == 1){
+			player.canJump = 1;
 			player.isJumping = 0;
 			player.jumpTime = 0;
 			player.dy = 0;
 		}
 		if(coll == 2){
 			coll = 1;
+			player.canJump = 1;
 			player.isJumping = 0;
 			player.jumpTime = 0;
 			player.dy = 0;
