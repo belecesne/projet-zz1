@@ -67,7 +67,7 @@ int main(int argc, char* argv[]){
 			flipped = 0;
 			player.dx = DX;
 			player.isMoving = 1;
-			moveLeft(&player);
+			moveRight(WINDOW_W, &player);
 			if(!player.isJumping && win){
 				drawOneFrame(framesRun, texture, renderer, currentFrameRun, &player, flipped);
 				currentFrameRun = (currentFrameRun + 1) % 6;
