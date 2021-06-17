@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
 
 		}
 		if(state[SDL_SCANCODE_UP]){
-			if(!player.isJumping){
+			if(!player.isJumping && coll){
 				player.isJumping = 1;
 			}
 
