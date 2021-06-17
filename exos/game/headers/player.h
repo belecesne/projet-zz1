@@ -2,7 +2,7 @@
 #define GAME_ZZ1_PLAYER_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#define JUMPLENGTH 360 // HAUTEUR DE SAUT DIVISBLE PAR DEUX SINON ERREUR ( Hauteur = 2* longueur du saut)
+#define JUMPLENGTH 340// HAUTEUR DE SAUT DIVISBLE PAR DEUX SINON ERREUR ( Hauteur = 2* longueur du saut)
 #define SPEED 1
 #define JUMPSPEED 5
 #define DX 5

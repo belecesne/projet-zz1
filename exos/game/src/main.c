@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
 			player.dx = DX;
 			player.isMoving = 1;
 			moveRight(WINDOW_W, &player);
-			if(!player.isJumping && win){
+			if(!player.isJumping){
 				drawOneFrame(framesRun, texture, renderer, currentFrameRun, &player, flipped);
 				currentFrameRun = (currentFrameRun + 1) % 6;
 
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]){
 			player.isMoving = 1;
 
 			moveLeft(&player);
-			if(!player.isJumping && win){
+			if(!player.isJumping){
 				drawOneFrame(framesRun, texture, renderer, currentFrameRun, &player, flipped);
 				currentFrameRun = (currentFrameRun + 1) % 6;
 
@@ -116,11 +116,9 @@ int main(int argc, char* argv[]){
 			}
 		}
 
-
-		if(!player.isMoving && win){
-			if(!player.isJumping){
-				drawOneFrame(framesStatic, texture, renderer, currentFrameIdle, &player, flipped);
-			}
+		// Animation statique
+		if(!player.isMoving && !player.isJumping && win){
+			drawOneFrame(framesStatic, texture, renderer, currentFrameIdle, &player, flipped);
 			i++;
 
 			if(i == 6){
@@ -130,7 +128,7 @@ int main(int argc, char* argv[]){
 		}
 		player.isMoving = 0;
 
-
+		// Animation du saut
 		if(player.isJumping){
 			if(player.jumpTime >= JUMPLENGTH){
 				player.jumpTime = 0;
@@ -153,7 +151,9 @@ int main(int argc, char* argv[]){
 			}
 		}
 
+		// Gestion des collisions
 		int coll = collision(&player, coordArray, WINDOW_H);
+
 		if(coll == 0 || coll == 1){
 			player.dy = 1;
 			player.isJumping = 0;
@@ -180,9 +180,8 @@ int main(int argc, char* argv[]){
 			player.onPlatform = 0;
 			printf("Defaite\n");
 		}
-		// Plateforme
 
-		// Saut
+		// Gestion de la défaite
 		if(win == 0 && player.rect.y >= WINDOW_H){
 			break;
 		}
