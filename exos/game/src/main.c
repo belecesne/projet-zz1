@@ -130,7 +130,7 @@ int main(int argc, char* argv[]){
 
 		// Animation du saut
 		if(player.isJumping){
-			if(player.jumpTime >= JUMPLENGTH && coll){
+			if(player.jumpTime >= JUMPLENGTH && !coll){
 				player.jumpTime = 0;
 				player.dy = 0;
 				player.isJumping = 0;
