@@ -1,5 +1,5 @@
-FLAGS=-Wall -Wextra -Wdeclaration-after-statement -Werror=vla -g
-SDL_FLAGS=-lSDL2 
+FLAGS=-Wall -Wextra -Werror=vla -g
+SDL_FLAGS=
 CC = gcc
 BUILD_DIR=build
 SRC_DIR=src
@@ -7,14 +7,14 @@ SOURCES=$(wildcard $(SRC_DIR)/*.c)
 OBJECTS=$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 .PHONY: clean all
 
-all : dir x_fenetre
+all : dir tas_bin
 
 dir:
 	@if [ ! -d "build" ]; then mkdir $(BUILD_DIR); fi
 
-x_fenetre: $(OBJECTS)
+tas_bin: $(OBJECTS)
 	@$(CC) -o $@ $^ $(FLAGS) $(SDL_FLAGS)
-	@echo "Executer le programme avec ./x_fenetre"
+	@echo "Executer le programme avec ./tas_bin"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) -c -o $@ $< $(FLAGS) $(SDL_FLAGS)

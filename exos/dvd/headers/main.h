@@ -1,5 +1,5 @@
-#ifndef SNAKE_MAIN_H
-#define SNAKE_MAIN_H
+#ifndef DVD_MAIN_H
+#define DVD_MAIN_H
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <stdlib.h>
@@ -10,4 +10,4 @@
 #define WINDOW_H 700
 #define BALL_RADIUS 50
 #define SPEED 2
-#endif //SNAKE_MAIN_H
+#endif //DVD_MAIN_H
