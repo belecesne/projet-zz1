@@ -26,7 +26,7 @@ maillon_t * nouvelle_liste() {
 /*                                                                                                     */
 /* En sortie: retourne le nouveau maillon                   										   */
 /* --------------------------------------------------------------------------------------------------- */
-maillon_t * nouveau_maillon(int valeur, erreur_t * erreur) {
+maillon_t * nouveau_maillon(int valeur) {
     maillon_t* maillon = calloc(1, sizeof(maillon_t));
     if (maillon == NULL){
         printf("Malloc raté\n");
@@ -46,7 +46,7 @@ maillon_t * nouveau_maillon(int valeur, erreur_t * erreur) {
 /*                                                                                                               */
 /* En sortie: rien                                             										             */
 /* ------------------------------------------------------------------------------------------------------------- */
-void adjonction(maillon_t ** cellule_precedente, maillon_t * nouveau_maillon, erreur_t * erreur) {
+void adjonction(maillon_t ** cellule_precedente, maillon_t * nouveau_maillon) {
     if(cellule_precedente != NULL) {
         if (nouveau_maillon == NULL){
             printf("Aucun nouveau maillon n'a été ajouté\n");

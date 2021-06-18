@@ -1,10 +1,8 @@
-#ifndef LISTE
-#define LISTE
+#ifndef LISTE_CHAINEE_H
+#define LISTE_CHAINEE_H
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "booleen.h"
-#include "erreur.h"
 
 typedef struct maillon_s {
 	int				  valeur;
@@ -12,9 +10,9 @@ typedef struct maillon_s {
 } maillon_t;
 
 maillon_t * nouvelle_liste();
-maillon_t * nouveau_maillon(int, erreur_t *);
-void adjonction(maillon_t **, maillon_t *, erreur_t *);
+maillon_t * nouveau_maillon(int);
+void adjonction(maillon_t **, maillon_t *);
 void suppression(maillon_t **);
 void afficher_liste(maillon_t **);
 void liberer_liste(maillon_t **);
-#endif
+#endif  // LISTE_CHAINEE_H
