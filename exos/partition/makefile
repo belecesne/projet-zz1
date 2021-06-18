@@ -1,4 +1,4 @@
-FLAGS=-Wall -Wextra -Wdeclaration-after-statement -Werror=vla -g
+FLAGS=-Wall -Wextra -Werror=vla -g
 CC = gcc
 BUILD_DIR=build
 SRC_DIR=src
