@@ -19,7 +19,6 @@ int main() {
 
         fusionUnionFind(unionFind, 5, 9);
 
-        fusionUnionFind(unionFind, 4, 6);
 
         fusionUnionFind(unionFind, 8, 7);
 
@@ -29,7 +28,7 @@ int main() {
 
         printClassUnionFind(unionFind,3);
         printAllClassesUnionFind(unionFind);
-
+        afficher_liste(getClassNode(unionFind,3),"--> ");
         makeGraphvizGraph(unionFind, "graph");
         freeUnionFind(unionFind);
     }

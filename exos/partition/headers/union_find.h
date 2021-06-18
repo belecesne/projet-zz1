@@ -34,4 +34,8 @@ void printAllClassesUnionFind(union_find_t *);
 
 void makeGraphvizGraph(union_find_t *, char *);
 
+liste_t *getClassNode(union_find_t *, int);
+
+liste_t **getAllClasses(union_find_t *);
+
 #endif //UNION_FIND_ADRIEN_ZZ1_UNION_FIND_H
