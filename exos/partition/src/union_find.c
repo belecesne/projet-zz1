@@ -1,25 +1,26 @@
 #include "../headers/union_find.h"
 
 
-union_find_t * createUnionFind(int size, int * erreur){
+union_find_t *createUnionFind(int size, int *erreur) {
     *erreur = 0;
-    union_find_t * unionFind;
+    union_find_t *unionFind;
     unionFind = malloc(sizeof(union_find_t));
-    if(unionFind == NULL) {
+    if (unionFind == NULL) {
         *erreur = 1;
-    }
-    else{
-        unionFind->partition = malloc(size*sizeof(int));
-        if(unionFind->partition == NULL) {
+    } else {
+        unionFind->partition = malloc(size * sizeof(int));
+        if (unionFind->partition == NULL) {
             *erreur = 2;
-        }
-        else {
-            unionFind->level = malloc(size*sizeof(int));
-            if(unionFind->partition == NULL) {
+        } else {
+            unionFind->level = malloc(size * sizeof(int));
+            if (unionFind->partition == NULL) {
                 *erreur = 3;
-            }
-            else {
+            } else {
                 unionFind->size = size;
+                unionFind->classes = malloc(size * sizeof(liste_t *));
+                if (unionFind->classes == NULL) {
+                    *erreur = 4;
+                }
             }
         }
     }
@@ -27,107 +28,111 @@ union_find_t * createUnionFind(int size, int * erreur){
 }
 
 
-void freeUnionFind(union_find_t * unionFind) {
-    if(unionFind){
-        if(unionFind->partition){
+void freeUnionFind(union_find_t *unionFind) {
+    if (unionFind) {
+        if (unionFind->partition) {
             free(unionFind->partition);
             unionFind->partition = NULL;
         }
-        if(unionFind->level){
+        if (unionFind->level) {
             free(unionFind->level);
             unionFind->level = NULL;
         }
+        if (unionFind->classes) {
+            for (int i = 0; i < unionFind->size; i++) {
+                liberer_liste(unionFind->classes[i]);
+            }
+            free(unionFind->classes);
+        }
         free(unionFind);
-        unionFind = NULL;
-    }
-}
-void initUnionFind(union_find_t * unionFind){
-    for(int i = 0; i < unionFind->size; ++i){
-        unionFind->level[i] = 0;
-        unionFind->partition[i] = i;
     }
 }
 
-void printUnionFind(union_find_t * unionFind) {
+void initUnionFind(union_find_t *unionFind) {
+    for (int i = 0; i < unionFind->size; ++i) {
+        unionFind->level[i] = 0;
+        unionFind->partition[i] = i;
+        unionFind->classes[i] = nouvelle_liste();
+        insertionTete(unionFind->classes[i], nouveau_maillon(i));
+    }
+}
+
+void printUnionFind(union_find_t *unionFind) {
     printf("-----------------------------------------------\n");
     printf("Hauteur :\n");
-    for(int i = 0; i < unionFind->size; i++){
-        printf("%d - ",unionFind->level[i]);
+    for (int i = 0; i < unionFind->size; i++) {
+        printf("%d - ", unionFind->level[i]);
     }
     printf("\nValeur :\n");
-    for(int i = 0; i < unionFind->size; i++){
-        printf("%d - ",unionFind->partition[i]);
+    for (int i = 0; i < unionFind->size; i++) {
+        printf("%d - ", unionFind->partition[i]);
     }
     printf("\n\n");
     printf("-----------------------------------------------\n\n");
 
 }
 
- int rootNodeUnionFind(union_find_t * unionFind, int node){
-    while(node != unionFind->partition[node]){
+
+int rootNodeUnionFind(union_find_t *unionFind, int node) {
+    while (node != unionFind->partition[node]) {
         node = unionFind->partition[node];
     }
     return node;
- }
+}
 
- void fusionUnionFind(union_find_t * unionFind, int x, int y) {
+void fusionUnionFind(union_find_t *unionFind, int x, int y) {
     int xRoot, yRoot;
-    if(x < unionFind->size && y < unionFind->size) {
+    if (x < unionFind->size && y < unionFind->size) {
         xRoot = rootNodeUnionFind(unionFind, x);
         yRoot = rootNodeUnionFind(unionFind, y);
-        if (xRoot != yRoot) { // Ils sont dans la même classe
+        if (xRoot != yRoot) { // Ils ne sont pas dans la même classe
             if (unionFind->level[xRoot] < unionFind->level[yRoot]) { //
                 unionFind->partition[xRoot] = yRoot;
                 unionFind->level[xRoot] = -1;
+                fusion_liste(unionFind->classes[xRoot], unionFind->classes[yRoot]);
 
-            }
-            else if (unionFind->level[xRoot] > unionFind->level[yRoot]) {
+            } else if (unionFind->level[xRoot] > unionFind->level[yRoot]) {
                 unionFind->partition[yRoot] = xRoot;
                 unionFind->level[yRoot] = -1;
-            }
-            else {
+                fusion_liste(unionFind->classes[yRoot], unionFind->classes[xRoot]);
+            } else {
                 unionFind->partition[yRoot] = xRoot;
+                fusion_liste(unionFind->classes[yRoot], unionFind->classes[xRoot]);
                 unionFind->level[yRoot] = -1;
                 unionFind->level[xRoot]++;
             }
         }
-    }
-    else{
-        printf("Impossible de fusionner les classes de %d et %d\n",x,y);
+    } else {
+        printf("Impossible de fusionner les classes de %d et %d\n", x, y);
     }
 }
 
-void printClassUnionFind(union_find_t * unionFind, int node){
+void printClassUnionFind(union_find_t *unionFind, int node) {
     int root;
-    root = rootNodeUnionFind(unionFind,node);
-    printf("{");
-    for(int i = 0; i < unionFind->size; i++) {
-        if(rootNodeUnionFind(unionFind,unionFind->partition[i]) == root)
-        {
-            printf("%d,",i);
-        }
-    }
-    printf("\b}");
+    root = rootNodeUnionFind(unionFind, node);
+    printf("Classe de %d\n{",node);
+    afficher_liste(unionFind->classes[root]);
+    printf("\b}\n\n");
 }
 
-void printAllClassesUnionFind(union_find_t * unionFind){
-    printf("\n{");
-    for(int i =0; i< unionFind->size; i++){
-        if(unionFind->level[i] != -1){
-            printClassUnionFind(unionFind,i);
-            printf(",");
+void printAllClassesUnionFind(union_find_t *unionFind) {
+    for (int i = 0; i < unionFind->size; i++) {
+        if(unionFind->classes[i]->tete != NULL){
+            printf("Classe de %d :\n{", i);
+            afficher_liste(unionFind->classes[i]);
+            printf("\b}\n\n");
+
         }
     }
-    printf("\b}\n");
 }
 
-void makeGraphvizGraph(union_find_t * union_find, char * fileName) {
+void makeGraphvizGraph(union_find_t *union_find, char *fileName) {
     char fullFileName[BUFSIZ];
     strcpy(fullFileName, fileName);
     strcat(fullFileName, ".dot");
-    FILE* dotFile = fopen(fullFileName, "w");
+    FILE *dotFile = fopen(fullFileName, "w");
     fputs("digraph G {\n", dotFile);
-    for(int i = 0; i < (union_find->size); i++) {
+    for (int i = 0; i < (union_find->size); i++) {
         fprintf(dotFile, "   \"%d\" -> \"%d\";\n", i, union_find->partition[i]);
     }
     fputs("}", dotFile);
