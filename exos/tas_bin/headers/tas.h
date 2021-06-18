@@ -12,11 +12,11 @@ typedef struct tas_s {
     int indexToInsert;
 } tas_t;
 
-tas_t* creerTas();
+tas_t* creerTas(int);
 void ajoutTas(tas_t * tas, int valeur);
 void reallocTas(tas_t *, float);
 int racineTas(tas_t * tas);
-int suppressionRacine(tas_t* tas);
+int suppressionRacine(tas_t* tas, int);
 void libererTas(tas_t * tas);
 void tri_tas(int * tab, int taille);
 void afficherTas(tas_t *);

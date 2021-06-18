@@ -30,7 +30,7 @@ void testFunctions(int lengthToTest) {
 }
 
 int main() {
-	tas_t * tas = creerTas();
+	tas_t * tas = creerTas(10);
 	for(int i = 31; i > 0; i--){
 		ajoutTas(tas, i);
 	}
@@ -40,7 +40,7 @@ int main() {
 	printf("------------------------\n");
 
 	for(int j = 1; j < 28; j++){
-		suppressionRacine(tas);
+		suppressionRacine(tas, 0);
 	}
 
 	afficherTas(tas);

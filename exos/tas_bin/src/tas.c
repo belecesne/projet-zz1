@@ -1,9 +1,9 @@
 #include "../headers/tas.h"
 
-tas_t * creerTas() {
+tas_t * creerTas(int size) {
     tas_t * tas = malloc(sizeof(tas_t));
-    tas->array = malloc(DEFAULT_LENGTH * sizeof(int));
-    tas->length = DEFAULT_LENGTH;
+    tas->array = malloc(size * sizeof(int));
+    tas->length = size;
     tas->indexToInsert = 0;
     return tas;
 }
@@ -37,7 +37,7 @@ int racineTas(tas_t * tas) {
     return tas->array[0];
 }
 
-int suppressionRacine(tas_t * tas) {
+int suppressionRacine(tas_t * tas, int sorted) {
     int i = 0;
     int r = tas->array[0];
     int e = tas->array[tas->indexToInsert-1];
@@ -53,7 +53,7 @@ int suppressionRacine(tas_t * tas) {
         }
     }
     tas->array[i] = e;
-    if(tas->indexToInsert <= 0.1 * tas->length){
+    if(tas->indexToInsert <= 0.1 * tas->length && !sorted){
 	    reallocTas(tas, 0.5);
     }
     return r;
@@ -66,13 +66,13 @@ void libererTas(tas_t * tas) {
 
 
 void tri_tas(int * tab, int taille) {
-    tas_t * tas = creerTas();
+    tas_t * tas = creerTas(taille);
     for(int i = 0; i < taille; i++) {
         ajoutTas(tas, tab[i]);
     }
     for(int i = 0; i < taille; i++) {
         tab[i] = racineTas(tas);
-        suppressionRacine(tas);
+        suppressionRacine(tas, 1);
     }
     libererTas(tas);
 }
