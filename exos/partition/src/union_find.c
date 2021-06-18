@@ -116,13 +116,17 @@ void printClassUnionFind(union_find_t *unionFind, int node) {
 }
 
 void printAllClassesUnionFind(union_find_t *unionFind) {
-    for (int i = 0; i < unionFind->size; i++) {
+    int sommeElements = 0;
+    int i = 0;
+    while(sommeElements < unionFind->size) {
         if(unionFind->classes[i]->tete != NULL){
+            sommeElements+= unionFind->classes[i]->nbElements;
             printf("Classe de %d :\n{", i);
             afficher_liste(unionFind->classes[i]);
             printf("\b}\n\n");
-
         }
+        printf("%d\n",sommeElements);
+        i++;
     }
 }
 

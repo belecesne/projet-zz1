@@ -5,6 +5,7 @@
 typedef struct liste_s {
     struct maillon_s * tete;
     struct maillon_s * queue;
+    int nbElements;
 }liste_t;
 
 liste_t * nouvelle_liste();
