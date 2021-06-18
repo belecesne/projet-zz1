@@ -125,7 +125,6 @@ void printAllClassesUnionFind(union_find_t *unionFind) {
             afficher_liste(unionFind->classes[i]);
             printf("\b}\n\n");
         }
-        printf("%d\n",sommeElements);
         i++;
     }
 }
