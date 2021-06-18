@@ -4,7 +4,7 @@
 /* Role: fichier contenant les fonctions pour gérer une liste           */
 /* -------------------------------------------------------------------- */
 
-#include "../headers/maillon.h"
+#include "../headers/maillon_graphe.h"
 
 /* --------------------------------------------------------------------------------------------------- */
 /* nouveau_maillon: crée un nouveau maillon                                                            */
@@ -15,12 +15,12 @@
 /*                                                                                                     */
 /* En sortie: retourne le nouveau maillon                   										   */
 /* --------------------------------------------------------------------------------------------------- */
-maillon_t * nouveau_maillon(int valeur) {
-    maillon_t* maillon = calloc(1, sizeof(maillon_t));
+maillon_graphe_t * nouveau_maillon(int noeud) {
+    maillon_graphe_t * maillon = calloc(1, sizeof(maillon_graphe_t));
     if (maillon == NULL){
         printf("Malloc raté\n");
     } else{
-        maillon->valeur = valeur;
+        maillon->noeud = noeud;
     }
     return maillon;
 }
@@ -35,7 +35,7 @@ maillon_t * nouveau_maillon(int valeur) {
 /*                                                                                                               */
 /* En sortie: rien                                             										             */
 /* ------------------------------------------------------------------------------------------------------------- */
-void adjonction(maillon_t ** cellule_precedente, maillon_t * nouveau_maillon) {
+void adjonction(maillon_graphe_t ** cellule_precedente, maillon_graphe_t * nouveau_maillon) {
     if(cellule_precedente != NULL) {
         if (nouveau_maillon == NULL){
             printf("Aucun nouveau maillon n'a été ajouté\n");
@@ -53,9 +53,9 @@ void adjonction(maillon_t ** cellule_precedente, maillon_t * nouveau_maillon) {
 /*                                                                                                       */
 /* En sortie: rien													                                     */
 /* ----------------------------------------------------------------------------------------------------- */
-void suppression(maillon_t ** cellule_precedente) {
+void suppression(maillon_graphe_t ** cellule_precedente) {
     if(cellule_precedente != NULL && (*cellule_precedente) != NULL) {
-        maillon_t* adresse_cellule_a_supprimer = (*cellule_precedente);
+        maillon_graphe_t* adresse_cellule_a_supprimer = (*cellule_precedente);
         (*cellule_precedente) = adresse_cellule_a_supprimer -> suivant;
         free(adresse_cellule_a_supprimer);
     }

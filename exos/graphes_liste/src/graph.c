@@ -1,31 +1,37 @@
 #include "../headers/graph.h"
 
 
-graph_t *nouveau_graphe() {
+graph_t *nouveau_graphe(int nbNoeuds) {
     graph_t * graph;
     graph = malloc(sizeof(graph_t));
     if (graph) {
-        graph->liste = NULL;
-        graph->nbNoeuds = 0;
+        graph->tabListes = calloc(nbNoeuds, sizeof(maillon_t *));
+        graph->nbNoeuds = nbNoeuds;
     }
     return graph;
 }
 
-void insertionArrete(graph_t * graphe, maillon_t *maillon) {
-    if((maillon != NULL) && (maillon->noeud1 < graphe->nbNoeuds) && (maillon->noeud2 < graphe->nbNoeuds)) {
-        maillon->suivant = graphe->liste;
-        graphe->liste = maillon;
+void insertionArrete(graph_t * graphe, int x, int y) {
+    int max = x > y ? x : y;
+    int min = x < y ? x : y;
+    maillon_t * maillon = nouveau_maillon(max);
+    if((maillon != NULL)) {
+        maillon->suivant = graphe->tabListes[min];
+        graphe->tabListes[min] = maillon;
     }
 }
 
 void liberer_graphe(graph_t * graphe) {
-    maillon_t *maillon_courant = graphe->liste;
-    maillon_t *sauvegarde_adresse_maillon;
-    while (maillon_courant != NULL) {
-        sauvegarde_adresse_maillon = maillon_courant;
-        maillon_courant = sauvegarde_adresse_maillon->suivant;
-        free(sauvegarde_adresse_maillon);
+    for(int i = 0; i < graphe->nbNoeuds; i++ ){
+        maillon_t *maillon_courant = graphe->tabListes[i];
+        maillon_t *sauvegarde_adresse_maillon;
+        while (maillon_courant != NULL) {
+            sauvegarde_adresse_maillon = maillon_courant;
+            maillon_courant = sauvegarde_adresse_maillon->suivant;
+            free(sauvegarde_adresse_maillon);
+        }
     }
+    free(graphe->tabListes);
     free(graphe);
     graphe = NULL;
 }
@@ -35,16 +41,56 @@ void generateGraphvizGraph(graph_t * graphe, char * filename) {
     sprintf(buffer, "%s.dot", filename);
     FILE * dotFile = fopen(buffer, "w");
     fputs("graph G {\n", dotFile);
-    for(int i = 0; i < graphe->nbNoeuds; i++) {
+    for(int i = 0; i < graphe->nbNoeuds; i++) { 
         fprintf(dotFile, "  \"%d\";\n", i);
-    }
-    maillon_t * cour = graphe->liste;
-    while(cour != NULL) {
-        fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->noeud1, cour->noeud2);
-        cour = cour->suivant;
+        maillon_t * cour = graphe->tabListes[i];
+        while(cour != NULL) {
+            fprintf(dotFile, "  \"%d\" -- \"%d\";\n", i, cour->noeud);
+            cour = cour->suivant;
+        }
     }
     fputs("}\n", dotFile);
     fclose(dotFile);
     sprintf(buffer, "dot -Tsvg %s.dot > %s.svg", filename, filename);
     system(buffer);
+}
+
+union_find_t * getUnionFindFromGraph(graph_t * graphe) {
+    int err;
+    union_find_t * part = createUnionFind(graphe->nbNoeuds, err);
+    for(int i = 0; i < graphe->nbNoeuds; i++) {
+        maillon_graphe_t * cour = graphe->tabListes[i];
+        while(cour != NULL) {
+            fusionUnionFind(i, cour->noeud);
+            cour = cour->suivant;
+        }
+    }
+    return part;
+}
+
+void generateConnectedComponents(graph_t * graphe, char * filename) {
+    union_find_t * part = getUnionFindFromGraph(graphe);
+    for(int i = 0; i < part->size; i++) {
+        if(part->level[i] != -1) {
+            char buffer[BUFSIZ];
+            sprintf(buffer, "%s.dot", filename);
+            FILE * dotFile = fopen(buffer, "w");
+            fputs("graph G {\n", dotFile);
+            maillon_t * cour = part->classes[i];
+            while(cour != NULL) {
+                int currNode = cour->valeur;
+                fprintf(dotFile, "  \"%d\";\n", currNode);
+                maillon_graphe_t * courG = graphe->tabListes[currNode];
+                while(courG != NULL) {
+                    fprintf(dotFile, "  \"%d\" -- \"%d\";\n", currNode, courG->noeud);
+                    courG = courG->suivant;
+                }
+                cour = cour -> suivant;
+            }
+            fputs("}\n", dotFile);
+            fclose(dotFile);
+            sprintf(buffer, "dot -Tsvg %s.dot > %s.svg", filename, filename);
+            system(buffer);
+        }
+    }
 }

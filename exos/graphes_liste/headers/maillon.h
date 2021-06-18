@@ -5,13 +5,12 @@
 #include <stdio.h>
 
 typedef struct maillon_s {
-	int				  noeud1;
-    int               noeud2;
+	int				  valeur;
     struct maillon_s    * suivant;
 } maillon_t;
 
 
-maillon_t * nouveau_maillon(int, int);
+maillon_t * nouveau_maillon(int);
 void adjonction(maillon_t **, maillon_t *);
 void suppression(maillon_t **);
 #endif  // LISTE_CHAINEE_H
