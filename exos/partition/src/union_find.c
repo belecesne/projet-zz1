@@ -107,25 +107,34 @@ void fusionUnionFind(union_find_t *unionFind, int x, int y) {
     }
 }
 
+liste_t *getClassNode(union_find_t *unionFind, int node) {
+    int root;
+    root = rootNodeUnionFind(unionFind, node);
+    return (unionFind->classes[root]);
+}
+
+liste_t **getAllClasses(union_find_t *unionFind) {
+    return unionFind->classes;
+}
+
 void printClassUnionFind(union_find_t *unionFind, int node) {
     int root;
     root = rootNodeUnionFind(unionFind, node);
-    printf("Classe de %d\n{",node);
-    afficher_liste(unionFind->classes[root]);
+    printf("Classe de %d\n{", node);
+    afficher_liste(unionFind->classes[root],",");
     printf("\b}\n\n");
 }
 
 void printAllClassesUnionFind(union_find_t *unionFind) {
     int sommeElements = 0;
     int i = 0;
-    while(sommeElements < unionFind->size) {
-        if(unionFind->classes[i]->tete != NULL){
-            sommeElements+= unionFind->classes[i]->nbElements;
+    while (sommeElements < unionFind->size) {
+        if (unionFind->classes[i]->tete != NULL) {
+            sommeElements += unionFind->classes[i]->nbElements;
             printf("Classe de %d :\n{", i);
-            afficher_liste(unionFind->classes[i]);
+            afficher_liste(unionFind->classes[i],",");
             printf("\b}\n\n");
         }
-        printf("%d\n",sommeElements);
         i++;
     }
 }
