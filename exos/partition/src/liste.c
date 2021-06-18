@@ -21,10 +21,10 @@ void insertionTete(liste_t *liste, maillon_t *maillon) {
     }
 }
 
-void afficher_liste(liste_t *liste) {
+void afficher_liste(liste_t *liste,const char * separator) {
     maillon_t *maillon_courant = liste->tete;
     while (maillon_courant != NULL) {
-        printf("%d,", maillon_courant->valeur);
+        printf("%d%s", maillon_courant->valeur,separator);
         maillon_courant = maillon_courant->suivant;
     }
 }
