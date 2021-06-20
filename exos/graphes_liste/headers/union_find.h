@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "liste.h"
+#include "../headers/liste.h"
 
 #define DEFAULT_UNION_FIND_SIZE 11
 

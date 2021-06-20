@@ -15,7 +15,7 @@
 /*                                                                                                     */
 /* En sortie: retourne le nouveau maillon                   										   */
 /* --------------------------------------------------------------------------------------------------- */
-maillon_graphe_t * nouveau_maillon(int noeud) {
+maillon_graphe_t * nouveau_maillon_graphe(int noeud) {
     maillon_graphe_t * maillon = calloc(1, sizeof(maillon_graphe_t));
     if (maillon == NULL){
         printf("Malloc raté\n");
@@ -35,7 +35,7 @@ maillon_graphe_t * nouveau_maillon(int noeud) {
 /*                                                                                                               */
 /* En sortie: rien                                             										             */
 /* ------------------------------------------------------------------------------------------------------------- */
-void adjonction(maillon_graphe_t ** cellule_precedente, maillon_graphe_t * nouveau_maillon) {
+void adjonction_graphe(maillon_graphe_t ** cellule_precedente, maillon_graphe_t * nouveau_maillon) {
     if(cellule_precedente != NULL) {
         if (nouveau_maillon == NULL){
             printf("Aucun nouveau maillon n'a été ajouté\n");
@@ -53,7 +53,7 @@ void adjonction(maillon_graphe_t ** cellule_precedente, maillon_graphe_t * nouve
 /*                                                                                                       */
 /* En sortie: rien													                                     */
 /* ----------------------------------------------------------------------------------------------------- */
-void suppression(maillon_graphe_t ** cellule_precedente) {
+void suppression_graphe(maillon_graphe_t ** cellule_precedente) {
     if(cellule_precedente != NULL && (*cellule_precedente) != NULL) {
         maillon_graphe_t* adresse_cellule_a_supprimer = (*cellule_precedente);
         (*cellule_precedente) = adresse_cellule_a_supprimer -> suivant;

@@ -1,12 +1,12 @@
 #ifndef UNIONFIND_ZZ1_LISTE_H
 #define UNIONFIND_ZZ1_LISTE_H
-#include "maillon.h"
+#include "../headers/maillon.h"
 
 typedef struct liste_s {
     struct maillon_s * tete;
     struct maillon_s * queue;
     int nbElements;
-}liste_t;
+} liste_t;
 
 liste_t * nouvelle_liste();
 void insertionTete(liste_t *, maillon_t *);
