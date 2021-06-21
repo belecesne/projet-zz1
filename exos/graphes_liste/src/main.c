@@ -1,10 +1,14 @@
 #include "../headers/graph.h"
 #include "../headers/maillon_arete.h"
+#include "../headers/labyrinthe.h"
 #include <time.h>
+#define LIGNE 50
+#define COLONNE 50
 
 int main() {
-    graph_t *graphe;
-    graphe = genererGrapheGrille(4, 4);
-	generateGraphvizGraphGrid(graphe, "graphe_grille", 4);
-	liberer_graphe(graphe);
+	srand(time(NULL));
+	labyrinthe_t * labyrinthe = creerLabyrintheArbo(LIGNE, COLONNE);
+	generateGraphvizGraph(labyrinthe->graphe, "graphe_FY");
+	liberer_graphe(labyrinthe->graphe);
+	free(labyrinthe);
 }

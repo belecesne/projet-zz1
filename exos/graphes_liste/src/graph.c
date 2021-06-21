@@ -146,3 +146,27 @@ graph_t * genererGrapheGrille(int lignes, int colonnes){
 	}
 	return graphe;
 }
+/*
+graph_t* kruskal(graph_t* graphe){
+	tas_t* tas = creerTas(graphe->nbNoeuds);
+	maillon_arete_t* courant = graphe->listeAretes;
+	arete_t* areteMin, * nouvelleArete;
+	while(courant != NULL){
+		ajoutTas(tas, courant->arete);
+		courant = courant->suivant;
+	}
+	int err;
+	partition_t* partArbre = createPartition(graphe->nbNoeuds, &err);
+	initPartition(partArbre);
+	graph_t* arbre = nouveauGraphe(graphe->nbNoeuds);
+	while(!tasVide(tas)){
+		areteMin = suppressionRacine(tas, 0);
+		if(fusionPartition(partArbre, areteMin->n1.valeur, areteMin->n2.valeur) == 0){
+			nouvelleArete = creerArete(areteMin->n1, areteMin->n2, areteMin->poids);
+			insertionTeteArete(&arbre->listeAretes, creerMaillonArete(nouvelleArete));
+		}
+	}
+	libererTas(tas);
+	freePartition(partArbre);
+	return arbre;
+}*/

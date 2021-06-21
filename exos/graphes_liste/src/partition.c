@@ -80,8 +80,8 @@ int rootNodePartition(partition_t *partition, int node) {
     return node;
 }
 
-void fusionPartition(partition_t *partition, int x, int y) {
-    int xRoot, yRoot;
+int fusionPartition(partition_t *partition, int x, int y) {
+    int xRoot, yRoot, retour = 1;
     if (x < partition->size && y < partition->size) {
         xRoot = rootNodePartition(partition, x);
         yRoot = rootNodePartition(partition, y);
@@ -101,8 +101,10 @@ void fusionPartition(partition_t *partition, int x, int y) {
                 partition->level[yRoot] = -1;
                 partition->level[xRoot]++;
             }
+            retour = 0;
         }
     }
+    return retour;
 }
 
 liste_t *getClassNode(partition_t *partition, int node) {
