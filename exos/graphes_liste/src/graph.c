@@ -30,7 +30,7 @@ void generateGraphvizGraph(graph_t *graphe, char *filename) {
     }
     maillon_arete_t *cour = graphe->listeAretes;
     while (cour != NULL) {
-        fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1->valeur, cour->arete->n2->valeur);
+        fprintf(dotFile, "  \"%d\" -- \"%d\" [weight=%d, label=\"%d\"];\n", cour->arete->n1->valeur, cour->arete->n2->valeur, cour->arete->poids, cour->arete->poids);
         cour = cour->suivant;
     }
 
@@ -75,7 +75,7 @@ void generateConnectedComponents(graph_t *graphe, char *filename) {
             areteCourante = graphe->listeAretes;
             while (areteCourante != NULL) {
                 if (currNode == areteCourante->arete->n1->valeur) {
-                    fprintf(dotFile, "  \"%d\" -- \"%d\";\n", currNode, areteCourante->arete->n2->valeur);
+                    fprintf(dotFile, "  \"%d\" -- \"%d\" [weight=%d, label=\"%d\"];\n", currNode, areteCourante->arete->n2->valeur, areteCourante->arete->poids, areteCourante->arete->poids);
                 }
                 areteCourante = areteCourante->suivant;
             }
@@ -92,4 +92,28 @@ void generateConnectedComponents(graph_t *graphe, char *filename) {
         free(tempClasse);
     }
     freePartition(part);
+}
+
+graph_t * kruskal(graph_t * graphe) {
+    tas_t * tas = creerTas();
+    maillon_arete_t * cour = graphe->listeAretes;
+    while(cour != NULL) {
+        elem_tas_t e = {cour->arete->n1->valeur, cour->arete->n2->valeur, cour->arete->poids};
+        ajoutTas(tas, e);
+        cour = cour->suivant;
+    }
+    int err;
+    partition_t * partArbre = createPartition(graphe->nbNoeuds, &err);
+    initPartition(partArbre);
+    graph_t * arbre = nouveau_graphe(graphe->nbNoeuds);
+    while(!tasVide(tas)) {
+        elem_tas_t e = suppressionRacine(tas);
+        if(rootNodePartition(partArbre, e.som1) != rootNodePartition(partArbre, e.som2)) {
+            insertionArrete(arbre, creerArete(creerNoeud(e.som1), creerNoeud(e.som2), e.poids));
+            fusionPartition(partArbre, e.som1, e.som2);
+        }
+    }
+    libererTas(tas);
+    freePartition(partArbre);
+    return arbre;
 }

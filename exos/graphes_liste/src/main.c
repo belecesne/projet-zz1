@@ -53,6 +53,8 @@ int main() {
 
     generateGraphvizGraph(graphe, "graph");
     generateConnectedComponents(graphe, "cc");
+    graph_t * arbre = kruskal(graphe);
+    generateGraphvizGraph(arbre, "arbre");
     for(int i = 0; i < 12; free(tabNode[i++]));
     liberer_graphe(graphe);
 }
