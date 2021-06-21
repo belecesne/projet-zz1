@@ -30,7 +30,7 @@ void generateGraphvizGraph(graph_t *graphe, char *filename) {
     }
     maillon_arete_t *cour = graphe->listeAretes;
     while (cour != NULL) {
-        fprintf(dotFile, "  \"%d\" -- \"%d\" [weight=%d, label=\"%d\"];\n", cour->arete->n1->valeur, cour->arete->n2->valeur, cour->arete->poids, cour->arete->poids);
+        fprintf(dotFile, "  \"%d\" -- \"%d\" [weight=%d, label=\"%d\"];\n", cour->arete->n1.valeur, cour->arete->n2.valeur, cour->arete->poids, cour->arete->poids);
         cour = cour->suivant;
     }
 
@@ -48,7 +48,7 @@ partition_t *getParitionFromGraph(graph_t *graphe) {
     maillon_arete_t *courant;
     courant = graphe->listeAretes;
     while (courant != NULL) {
-        fusionPartition(part, courant->arete->n1->valeur, courant->arete->n2->valeur);
+        fusionPartition(part, courant->arete->n1.valeur, courant->arete->n2.valeur);
         courant = courant->suivant;
     }
     return part;
@@ -74,8 +74,8 @@ void generateConnectedComponents(graph_t *graphe, char *filename) {
             fprintf(dotFile, "  \"%d\";\n", currNode);
             areteCourante = graphe->listeAretes;
             while (areteCourante != NULL) {
-                if (currNode == areteCourante->arete->n1->valeur) {
-                    fprintf(dotFile, "  \"%d\" -- \"%d\" [weight=%d, label=\"%d\"];\n", currNode, areteCourante->arete->n2->valeur, areteCourante->arete->poids, areteCourante->arete->poids);
+                if (currNode == areteCourante->arete->n1.valeur) {
+                    fprintf(dotFile, "  \"%d\" -- \"%d\" [weight=%d, label=\"%d\"];\n", currNode, areteCourante->arete->n2.valeur, areteCourante->arete->poids, areteCourante->arete->poids);
                 }
                 areteCourante = areteCourante->suivant;
             }
@@ -95,10 +95,14 @@ void generateConnectedComponents(graph_t *graphe, char *filename) {
 }
 
 graph_t * kruskal(graph_t * graphe) {
+    noeud_t n1, n2;
     tas_t * tas = creerTas();
     maillon_arete_t * cour = graphe->listeAretes;
+    elem_tas_t e;
     while(cour != NULL) {
-        elem_tas_t e = {cour->arete->n1->valeur, cour->arete->n2->valeur, cour->arete->poids};
+        e.som1 = cour->arete->n1.valeur;
+        e.som2 = cour->arete->n2.valeur;
+        e.poids = cour->arete->poids;
         ajoutTas(tas, e);
         cour = cour->suivant;
     }
@@ -107,9 +111,11 @@ graph_t * kruskal(graph_t * graphe) {
     initPartition(partArbre);
     graph_t * arbre = nouveau_graphe(graphe->nbNoeuds);
     while(!tasVide(tas)) {
-        elem_tas_t e = suppressionRacine(tas);
+        e = suppressionRacine(tas);
         if(rootNodePartition(partArbre, e.som1) != rootNodePartition(partArbre, e.som2)) {
-            insertionArrete(arbre, creerArete(creerNoeud(e.som1), creerNoeud(e.som2), e.poids));
+            n1.valeur = e.som1;
+            n2.valeur= e.som2;
+            insertionArrete(arbre, creerArete(n1, n2, e.poids));
             fusionPartition(partArbre, e.som1, e.som2);
         }
     }
