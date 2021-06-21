@@ -15,5 +15,6 @@ void liberer_graphe(graph_t *);
 void generateGraphvizGraph(graph_t *, char *);
 partition_t *getParitionFromGraph(graph_t *);
 void generateConnectedComponents(graph_t *, char *);
+void genererGrapheGrille(int, int);
 
 #endif //GRAPH_LIST

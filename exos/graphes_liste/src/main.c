@@ -55,4 +55,5 @@ int main() {
     generateConnectedComponents(graphe, "cc");
     for(int i = 0; i < 12; free(tabNode[i++]));
     liberer_graphe(graphe);
+	genererGrapheGrille(4, 4);
 }
