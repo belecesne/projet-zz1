@@ -27,7 +27,7 @@ void printPartition(partition_t *);
 
 int rootNodePartition(partition_t *, int);
 
-void fusionPartition(partition_t *, int, int);
+int fusionPartition(partition_t *, int, int);
 
 void printClassPartition(partition_t *, int);
 

@@ -10,9 +10,9 @@ typedef struct graph_s {
     int nbNoeuds;
 } graph_t;
 
-graph_t * nouveau_graphe(int);
+graph_t * nouveauGraphe(int);
 void insertionArrete(graph_t *,arete_t*);
-void liberer_graphe(graph_t *);
+void libererGraphe(graph_t *);
 void generateGraphvizGraph(graph_t *, char *);
 partition_t *getParitionFromGraph(graph_t *);
 void generateConnectedComponents(graph_t *, char *);
