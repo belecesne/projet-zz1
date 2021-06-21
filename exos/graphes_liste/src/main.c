@@ -2,13 +2,13 @@
 #include "../headers/maillon_arete.h"
 #include "../headers/labyrinthe.h"
 #include <time.h>
-#define LIGNE 50
-#define COLONNE 50
+#define LIGNE 4
+#define COLONNE 4
 
 int main() {
 	srand(time(NULL));
-	labyrinthe_t * labyrinthe = creerLabyrintheArbo(LIGNE, COLONNE);
-	generateGraphvizGraph(labyrinthe->graphe, "graphe_FY");
+	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE,0.5);
+	generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
 	liberer_graphe(labyrinthe->graphe);
 	free(labyrinthe);
 }
