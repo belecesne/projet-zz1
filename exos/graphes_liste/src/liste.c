@@ -7,7 +7,7 @@ liste_t *nouvelle_liste() {
     if (liste) {
         liste->tete = NULL;
         liste->queue = NULL;
-        liste->nbElements = 0;
+        liste->racine = -1;
     }
     return liste;
 }
@@ -15,9 +15,9 @@ liste_t *nouvelle_liste() {
 void insertionTete(liste_t *liste, maillon_t *maillon) {
     maillon->suivant = liste->tete;
     liste->tete = maillon;
-    liste->nbElements++;
     if (liste->queue == NULL) {
         liste->queue = maillon;
+        liste->racine = maillon->valeur;
     }
 }
 
@@ -47,7 +47,6 @@ void liberer_liste(liste_t *liste) {
 void fusion_liste(liste_t *petite, liste_t *grande) {
     petite->queue->suivant = grande->tete;
     grande->tete = petite->tete;
-    grande->nbElements += petite->nbElements;
-    petite->nbElements = 0;
     petite->tete = NULL;
 }
+

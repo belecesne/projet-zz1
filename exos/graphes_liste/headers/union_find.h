@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../headers/liste.h"
+#include "liste.h"
+#include "maillon_classe.h"
 
 #define DEFAULT_UNION_FIND_SIZE 11
 
@@ -36,6 +37,6 @@ void makeGraphvizGraph(union_find_t *, char *);
 
 liste_t *getClassNode(union_find_t *, int);
 
-liste_t **getAllClasses(union_find_t *);
+maillon_classe_t *getAllClasses(union_find_t *);
 
 #endif //UNION_FIND_ADRIEN_ZZ1_UNION_FIND_H

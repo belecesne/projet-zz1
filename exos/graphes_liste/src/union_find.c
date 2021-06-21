@@ -113,30 +113,30 @@ liste_t *getClassNode(union_find_t *unionFind, int node) {
     return (unionFind->classes[root]);
 }
 
-liste_t **getAllClasses(union_find_t *unionFind) {
-    return unionFind->classes;
+maillon_classe_t *getAllClasses(union_find_t *unionFind) {
+    return tableauVersListe(unionFind->classes, unionFind->size);
 }
 
 void printClassUnionFind(union_find_t *unionFind, int node) {
-    int root;
-    root = rootNodeUnionFind(unionFind, node);
     printf("Classe de %d\n{", node);
-    afficher_liste(unionFind->classes[root],",");
+    afficher_liste(getClassNode(unionFind,node), ",");
     printf("\b}\n\n");
 }
 
 void printAllClassesUnionFind(union_find_t *unionFind) {
-    int sommeElements = 0;
-    int i = 0;
-    while (sommeElements < unionFind->size) {
-        if (unionFind->classes[i]->tete != NULL) {
-            sommeElements += unionFind->classes[i]->nbElements;
-            printf("Classe de %d :\n{", i);
-            afficher_liste(unionFind->classes[i],",");
-            printf("\b}\n\n");
-        }
-        i++;
+    maillon_classe_t * classes;
+    maillon_classe_t * courant;
+    classes = getAllClasses(unionFind);
+    courant = classes;
+    printf("[");
+    while(courant){
+        printf("{");
+        afficher_liste(courant->classe,",");
+        printf("\b},");
+        courant = courant->suivant;
     }
+    printf("\b]\n");
+    libererListeClasses(classes);
 }
 
 void makeGraphvizGraph(union_find_t *union_find, char *fileName) {
