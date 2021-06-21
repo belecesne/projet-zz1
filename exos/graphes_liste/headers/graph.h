@@ -13,8 +13,9 @@ graph_t * nouveau_graphe(int);
 void insertionArrete(graph_t *,arete_t*);
 void liberer_graphe(graph_t *);
 void generateGraphvizGraph(graph_t *, char *);
+void generateGraphvizGraphGrid(graph_t*, char*, int);
 partition_t *getParitionFromGraph(graph_t *);
 void generateConnectedComponents(graph_t *, char *);
-void genererGrapheGrille(int, int);
+graph_t * genererGrapheGrille(int, int);
 
 #endif //GRAPH_LIST

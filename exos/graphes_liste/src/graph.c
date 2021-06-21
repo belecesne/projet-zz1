@@ -30,7 +30,31 @@ void generateGraphvizGraph(graph_t* graphe, char* filename){
 	}
 	maillon_arete_t* cour = graphe->listeAretes;
 	while(cour != NULL){
-		printf("%p %p %p\n", cour->arete, cour->arete->n1, cour->arete->n2);
+		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1->valeur, cour->arete->n2->valeur);
+		cour = cour->suivant;
+	}
+
+	fputs("}\n", dotFile);
+	fclose(dotFile);
+	sprintf(buffer,
+	        "dot -Tsvg %s.dot > %s.svg", filename, filename);
+	system(buffer);
+}
+
+void generateGraphvizGraphGrid(graph_t* graphe, char* filename, int colonnes){
+	char buffer[BUFSIZ];
+	int posX, posY;
+	sprintf(buffer, "%s.dot", filename);
+	FILE* dotFile = fopen(buffer, "w");
+	fputs("graph G {\n", dotFile);
+	for(int i = 0; i < graphe->nbNoeuds; i++){
+		posX = i / colonnes;
+		posY = i % colonnes;
+		printf("posx= %d, posy = %d\n", posX, posY);
+		fprintf(dotFile, "  \"%d\" [pos=\"%d,%d\"];\n", i, posY+1, posX+1);
+	}
+	maillon_arete_t* cour = graphe->listeAretes;
+	while(cour != NULL){
 		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1->valeur, cour->arete->n2->valeur);
 		cour = cour->suivant;
 	}
@@ -95,7 +119,7 @@ void generateConnectedComponents(graph_t* graphe, char* filename){
 	freePartition(part);
 }
 
-void genererGrapheGrille(int lignes, int colonnes){
+graph_t * genererGrapheGrille(int lignes, int colonnes){
 	graph_t* graphe = nouveau_graphe(lignes * colonnes);
 	noeud_t ** noeuds;
 	int i, j, noeud, n, s, w, e;
@@ -110,24 +134,19 @@ void genererGrapheGrille(int lignes, int colonnes){
 			s = (i + 1) * colonnes + j;
 			w = i * colonnes + j - 1;
 			e = i * colonnes + j + 1;
-			printf("i = %d, j = %d, noeud = %d, n = %d, s= %d, w = %d, e = %d\n", i,j,noeud, n,s,w,e);
 			if(n >= 0){
-				printf("n = %d\n", n);
 				insertionArrete(graphe, creerArete(noeuds[n], noeuds[noeud], 1));
 			}
 			if(s < graphe->nbNoeuds){
-				printf("s = %d\n", s);
 				insertionArrete(graphe, creerArete(noeuds[s], noeuds[noeud], 1));
 			}
 			if(w / colonnes == i && w >= 0){
-				printf("w = %d\n", w);
 				insertionArrete(graphe, creerArete(noeuds[w], noeuds[noeud], 1));
 			}
 			if(e / colonnes == i && e < graphe->nbNoeuds){
-				printf("e = %d\n", e);
 				insertionArrete(graphe, creerArete(noeuds[e], noeuds[noeud], 1));
 			}
 		}
 	}
-	generateGraphvizGraph(graphe, "graphe_grille");
+	return graphe;
 }
