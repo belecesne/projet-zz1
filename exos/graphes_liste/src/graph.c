@@ -30,7 +30,7 @@ void generateGraphvizGraph(graph_t* graphe, char* filename){
 	}
 	maillon_arete_t* cour = graphe->listeAretes;
 	while(cour != NULL){
-		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1->valeur, cour->arete->n2->valeur);
+		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1.valeur, cour->arete->n2.valeur);
 		cour = cour->suivant;
 	}
 
@@ -55,7 +55,7 @@ void generateGraphvizGraphGrid(graph_t* graphe, char* filename, int colonnes){
 	}
 	maillon_arete_t* cour = graphe->listeAretes;
 	while(cour != NULL){
-		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1->valeur, cour->arete->n2->valeur);
+		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1.valeur, cour->arete->n2.valeur);
 		cour = cour->suivant;
 	}
 
@@ -73,7 +73,7 @@ partition_t* getParitionFromGraph(graph_t* graphe){
 	maillon_arete_t* courant;
 	courant = graphe->listeAretes;
 	while(courant != NULL){
-		fusionPartition(part, courant->arete->n1->valeur, courant->arete->n2->valeur);
+		fusionPartition(part, courant->arete->n1.valeur, courant->arete->n2.valeur);
 		courant = courant->suivant;
 	}
 	return part;
@@ -99,8 +99,8 @@ void generateConnectedComponents(graph_t* graphe, char* filename){
 			fprintf(dotFile, "  \"%d\";\n", currNode);
 			areteCourante = graphe->listeAretes;
 			while(areteCourante != NULL){
-				if(currNode == areteCourante->arete->n1->valeur){
-					fprintf(dotFile, "  \"%d\" -- \"%d\";\n", currNode, areteCourante->arete->n2->valeur);
+				if(currNode == areteCourante->arete->n1.valeur){
+					fprintf(dotFile, "  \"%d\" -- \"%d\";\n", currNode, areteCourante->arete->n2.valeur);
 				}
 				areteCourante = areteCourante->suivant;
 			}
@@ -121,30 +121,26 @@ void generateConnectedComponents(graph_t* graphe, char* filename){
 
 graph_t * genererGrapheGrille(int lignes, int colonnes){
 	graph_t* graphe = nouveau_graphe(lignes * colonnes);
-	noeud_t ** noeuds;
-	int i, j, noeud, n, s, w, e;
-	noeuds = malloc(graphe->nbNoeuds * sizeof(noeud_t *));
-	for(i = 0; i < graphe->nbNoeuds; i++){
-		noeuds[i] = creerNoeud(i);
-	}
+	int i, j;
+	noeud_t noeud,nord,sud,est,ouest;
 	for(i = 0; i < lignes; i++){
 		for(j = (i % 2 == 0 ? 0 : 1); j < colonnes; j += 2){
-			noeud = i * colonnes + j;
-			n = (i - 1) * colonnes + j;
-			s = (i + 1) * colonnes + j;
-			w = i * colonnes + j - 1;
-			e = i * colonnes + j + 1;
-			if(n >= 0){
-				insertionArrete(graphe, creerArete(noeuds[n], noeuds[noeud], 1));
+			noeud.valeur = i * colonnes + j;
+			nord.valeur = (i - 1) * colonnes + j;
+			sud.valeur = (i + 1) * colonnes + j;
+            ouest.valeur = i * colonnes + j - 1;
+			est.valeur = i * colonnes + j + 1;
+			if(nord.valeur>= 0){
+				insertionArrete(graphe, creerArete(nord,noeud , 1));
 			}
-			if(s < graphe->nbNoeuds){
-				insertionArrete(graphe, creerArete(noeuds[s], noeuds[noeud], 1));
+			if(sud.valeur < graphe->nbNoeuds){
+				insertionArrete(graphe, creerArete(sud, noeud, 1));
 			}
-			if(w / colonnes == i && w >= 0){
-				insertionArrete(graphe, creerArete(noeuds[w], noeuds[noeud], 1));
+			if(ouest.valeur / colonnes == i && ouest.valeur >= 0){
+				insertionArrete(graphe, creerArete(ouest, noeud, 1));
 			}
-			if(e / colonnes == i && e < graphe->nbNoeuds){
-				insertionArrete(graphe, creerArete(noeuds[e], noeuds[noeud], 1));
+			if(est.valeur / colonnes == i && est.valeur < graphe->nbNoeuds){
+				insertionArrete(graphe, creerArete(est, noeud, 1));
 			}
 		}
 	}

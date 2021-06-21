@@ -7,7 +7,4 @@ typedef struct noeud_s {
     int valeur;
 } noeud_t;
 
-
-noeud_t *creerNoeud(int);
-
 #endif //PROJET_ZZ1_NOEUD_H
