@@ -13,7 +13,7 @@ dir:
 
 graphe: $(OBJECTS)
 	@$(CC) -o $@ $^ $(FLAGS)
-	@echo "Executer le programme avec ./partition"
+	@echo "Executer le programme avec ./graphe"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) -c -o $@ $< $(FLAGS)
