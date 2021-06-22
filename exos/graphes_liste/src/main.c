@@ -3,8 +3,8 @@
 #include "../headers/graphics.h"
 #include "../headers/cellule.h"
 #include <time.h>
-#define LIGNE 4
-#define COLONNE 4
+#define LIGNE 50
+#define COLONNE 50
 #define SEED 42
 
 int main() {
@@ -16,24 +16,21 @@ int main() {
 	tailleCellH = WINDOW_H/LIGNE;
 	tailleCellW = WINDOW_W/COLONNE;
     cellule_t * cell;
+    srand(SEED);
+	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH, 0.05);
+	//generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
-    window = createWindow(500, 10, WINDOW_W, WINDOW_H);
+    window = createWindow(10, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
-    srand(SEED);
-	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, 0, tailleCellW, tailleCellH);
-	generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
+
     SDL_bool program_on = SDL_TRUE;
     while (program_on) {
         SDL_Event event;
-        if(i < labyrinthe->graphe->listeAretes->tailleCourante){
-            cell = creerCelluleDepuisNoeud(labyrinthe->graphe->listeAretes->array[i]->n1,tailleCellW,tailleCellH,COLONNE);
+        SDL_RenderClear(renderer);
+        for(i = 0; i < labyrinthe->graphe->nbNoeuds; i++){
+            cell = labyrinthe->tableauCellules[i];
             drawCell(renderer,cell);
-            free(cell);
-            cell = creerCelluleDepuisNoeud(labyrinthe->graphe->listeAretes->array[i]->n2,tailleCellW,tailleCellH,COLONNE);
-            drawCell(renderer,cell);
-            free(cell);
-		i++;
         }
 
         while (program_on && SDL_PollEvent(&event)) {
@@ -46,7 +43,7 @@ int main() {
             }
         }
         SDL_RenderPresent(renderer);
-        SDL_Delay(100);
+        SDL_Delay(2);
     }
 	libererLabyrinthe(labyrinthe);
 }

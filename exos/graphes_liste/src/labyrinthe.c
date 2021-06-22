@@ -1,15 +1,20 @@
 #include "../headers/labyrinthe.h"
 
 void genererTableauCellule(labyrinthe_t* lab, int weight, int height){
-	int i;
-	for(i = 0; lab->graphe->listeAretes->tailleCourante;
+	int i, indiceN1, indiceN2;
+    for(i = 0; i < lab->lignes * lab->colonnes;i++){
+        lab->tableauCellules[i] = 0;
+    }
+	for(i = 0; i < lab->graphe->listeAretes->tailleCourante;
 	    i++){
-		if(lab->tableauCellules[lab->graphe->listeAretes->array[i]->n1.valeur]){
-			lab->tableauCellules[lab->graphe->listeAretes->array[i]->n1.valeur] = creerCelluleDepuisNoeud(
+            indiceN1 = lab->graphe->listeAretes->array[i]->n1.valeur;
+            indiceN2 = lab->graphe->listeAretes->array[i]->n2.valeur;
+		if(lab->tableauCellules[indiceN1] == 0){
+			lab->tableauCellules[indiceN1] = creerCelluleDepuisNoeud(
 					lab->graphe->listeAretes->array[i]->n1, weight, height, lab->colonnes);
 		}
-		if(lab->tableauCellules[lab->graphe->listeAretes->array[i]->n2.valeur]){
-			lab->tableauCellules[lab->graphe->listeAretes->array[i]->n2.valeur] = creerCelluleDepuisNoeud(
+		if(lab->tableauCellules[indiceN2] == 0){
+			lab->tableauCellules[indiceN2] = creerCelluleDepuisNoeud(
 					lab->graphe->listeAretes->array[i]->n2, weight, height, lab->colonnes);
 		}
 	}
@@ -24,8 +29,9 @@ labyrinthe_t* creerLabyrintheQqc(int lignes, int colonnes, int weight, int heigh
 	labyrinthe->colonnes = colonnes;
 	labyrinthe->lignes = lignes;
 	labyrinthe->graphe = nouveauGraphe(lignes * colonnes);
-	labyrinthe->tableauCellules = malloc(lignes * colonnes * sizeof(cellule_t*));
+	labyrinthe->tableauCellules = calloc(lignes * colonnes, sizeof(cellule_t*));
 	kruskalFisherYatesProba(graphe, labyrinthe, proba);
+
 	genererTableauCellule(labyrinthe, weight, height);
 	return labyrinthe;
 }
@@ -96,9 +102,25 @@ void libererLabyrinthe(labyrinthe_t* lab){
 }
 
 void creerMur(labyrinthe_t* labyrinthe){
-	int i;
-	for(i = 0; i < labyrinthe->graphe->listeAretes->tailleCourante; i++){
-		orientiation(&labyrinthe->tableauCellules[labyrinthe->graphe->listeAretes->array[i]->n1.valeur], &labyrinthe->tableauCellules[labyrinthe->graphe->listeAretes->array[i]->n2.valeur],
-		             labyrinthe->colonnes);
+	int k, colonnes;
+	int i,j,x,y, indiceN1, indiceN2;
+    colonnes = labyrinthe->colonnes;
+	for(k = 0; k < labyrinthe->graphe->listeAretes->tailleCourante; k++){
+        indiceN1 = labyrinthe->graphe->listeAretes->array[k]->n1.valeur;
+        indiceN2 = labyrinthe->graphe->listeAretes->array[k]->n2.valeur;
+
+	    i = (labyrinthe->tableauCellules[indiceN1]->noeud.valeur)/colonnes;
+	    j = (labyrinthe->tableauCellules[indiceN1]->noeud.valeur)%colonnes;
+	    x = (labyrinthe->tableauCellules[indiceN2]->noeud.valeur)/colonnes;
+	    y = (labyrinthe->tableauCellules[indiceN2]->noeud.valeur)%colonnes;
+
+        if (j == y) {
+            labyrinthe->tableauCellules[indiceN1]->wall+=2;
+            labyrinthe->tableauCellules[indiceN2]->wall+=1;
+        }
+        if(i == x){
+            labyrinthe->tableauCellules[indiceN1]->wall+=4;
+            labyrinthe->tableauCellules[indiceN2]->wall+=8;
+        }
 	}
 }

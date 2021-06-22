@@ -22,7 +22,7 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
     if (renderer == NULL) {
         endSdl(0, "Erreur dans la création du renderer", window, renderer);
     } else {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderPresent(renderer);
     }
     return renderer;

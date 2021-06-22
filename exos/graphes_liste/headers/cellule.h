@@ -15,5 +15,4 @@ cellule_t *creerCelluleDepuisNoeud(noeud_t, int, int, int);
 void drawCell(SDL_Renderer *,cellule_t*);
 void drawWall(SDL_Renderer * , SDL_Point , SDL_Point);
 
-void orientiation(cellule_t **, cellule_t **, int);
 #endif //PROJET_ZZ1_CELLULE_H
