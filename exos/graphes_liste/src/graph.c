@@ -119,10 +119,11 @@ void generateConnectedComponents(graph_t* graphe, char* filename){
 	freePartition(part);
 }
 
-graph_t * genererGrapheGrille(int lignes, int colonnes){
-	graph_t* graphe = nouveau_graphe(lignes * colonnes);
-	int i, j;
+arete_t ** genererGrapheGrille(int lignes, int colonnes){
+	arete_t ** tableauArete;
+	int i, j, k = 0, nbNoeud = lignes*colonnes;
 	noeud_t noeud,nord,sud,est,ouest;
+	tableauArete = malloc((2*lignes*colonnes - lignes - colonnes) * sizeof(arete_t *));
 	for(i = 0; i < lignes; i++){
 		for(j = (i % 2 == 0 ? 0 : 1); j < colonnes; j += 2){
 			noeud.valeur = i * colonnes + j;
@@ -131,20 +132,24 @@ graph_t * genererGrapheGrille(int lignes, int colonnes){
             ouest.valeur = i * colonnes + j - 1;
 			est.valeur = i * colonnes + j + 1;
 			if(nord.valeur>= 0){
-				insertionArrete(graphe, creerArete(nord,noeud , 1));
+				tableauArete[k] = creerArete(nord,noeud , 1);
+				k++;
 			}
-			if(sud.valeur < graphe->nbNoeuds){
-				insertionArrete(graphe, creerArete(sud, noeud, 1));
+			if(sud.valeur < nbNoeud){
+				tableauArete[k] = creerArete(sud,noeud , 1);
+				k++;
 			}
 			if(ouest.valeur / colonnes == i && ouest.valeur >= 0){
-				insertionArrete(graphe, creerArete(ouest, noeud, 1));
+				tableauArete[k] = creerArete(ouest,noeud , 1);
+				k++;
 			}
-			if(est.valeur / colonnes == i && est.valeur < graphe->nbNoeuds){
-				insertionArrete(graphe, creerArete(est, noeud, 1));
+			if(est.valeur / colonnes == i && est.valeur < nbNoeud){
+				tableauArete[k] = creerArete(est,noeud , 1);
+				k++;
 			}
 		}
 	}
-	return graphe;
+	return tableauArete;
 }
 /*
 graph_t* kruskal(graph_t* graphe){
