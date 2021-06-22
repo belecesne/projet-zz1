@@ -76,3 +76,10 @@ void libererLabyrinthe(labyrinthe_t *lab) {
     libererGraphe(lab->graphe);
     free(lab);
 }
+
+void creerMur(labyrinthe_t * labyrinthe){
+    int i;
+    for(i = 0; i < labyrinthe->graphe->listeAretes->tailleCourante; i++){
+        orientiation(&labyrinthe->graphe->listeAretes->array[i]->n1,&labyrinthe->graphe->listeAretes->array[i]->n2,labyrinthe->colonnes);
+    }
+}

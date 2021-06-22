@@ -1,5 +1,4 @@
 #include "../headers/graph.h"
-#include "../headers/maillon_arete.h"
 #include "../headers/labyrinthe.h"
 #include <time.h>
 #define LIGNE 4
