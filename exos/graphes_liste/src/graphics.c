@@ -8,7 +8,7 @@ void initGraphics() {
 }
 
 SDL_Window *createWindow(int xPos, int yPos, int width, int height) {
-    SDL_Window *window = SDL_CreateWindow("DVD", xPos, yPos, width, height, 0);
+    SDL_Window *window = SDL_CreateWindow("Labyrinthe", xPos, yPos, width, height, 0);
     if (window == NULL) {
         endSdl(0, "Erreur dans la creation de la fenetre", window, NULL);
     }
@@ -23,7 +23,6 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
         endSdl(0, "Erreur dans la création du renderer", window, renderer);
     } else {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
     }
     return renderer;
