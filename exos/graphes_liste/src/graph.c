@@ -29,8 +29,8 @@ void generateGraphvizGraph(graph_t* graphe, char* filename){
 	for(i = 0; i < graphe->nbNoeuds; i++){
 		fprintf(dotFile, "  \"%d\";\n", i);
 	}
-	for( i = 0; i < graphe->listeAretes->tailleCourante; i++){
-		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1.valeur, cour->arete->n2.valeur);
+	for(i = 0; i < graphe->listeAretes->tailleCourante; i++){
+		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", graphe->listeAretes->array[], cour->arete->n2.valeur);
 		cour = cour->suivant;
 	}
 
