@@ -7,8 +7,7 @@
 
 int main() {
 	srand(time(NULL));
-	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE,0.5);
+	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE,0);
 	generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
-	liberer_graphe(labyrinthe->graphe);
-	free(labyrinthe);
+    libererLabyrinthe(labyrinthe);
 }
