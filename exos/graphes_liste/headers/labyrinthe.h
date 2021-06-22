@@ -14,4 +14,5 @@ void fisherYates(graph_t *);
 void kruskalFisherYatesProba(graph_t *, labyrinthe_t*, double);
 void kruskalFisherYates(graph_t *, labyrinthe_t *);
 void libererLabyrinthe(labyrinthe_t *);
+void creerMur(labyrinthe_t *);
 #endif //PROJET_ZZ1_LABYRINTHE_H
