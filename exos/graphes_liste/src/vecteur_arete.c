@@ -13,7 +13,7 @@ vecteur_arete_t * creerVecteurArete(int taille){
 
 void reallouerVecteurArete(vecteur_arete_t * liste){
     int nouvelleTaille = liste->tailleCourante * 2;
-    vecteur_arete_t * nouveauTab = malloc(nouvelleTaille * sizeof(vec_arete_type));
+    vec_arete_type * nouveauTab = malloc(nouvelleTaille * sizeof(vec_arete_type));
     memcpy(nouveauTab, liste->array, (liste->tailleCourante) * sizeof(vec_arete_type));
     free(liste->array);
     liste->array = nouveauTab;

@@ -52,6 +52,7 @@ void kruskalFisherYatesProba(graph_t *graphe, labyrinthe_t *labyrinthe, double p
         }
         i++;
     }
+    printAllClassesPartition(partArbre);
     freePartition(partArbre);
     libererGraphe(graphe);
 }

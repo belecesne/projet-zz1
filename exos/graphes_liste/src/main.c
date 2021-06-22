@@ -3,9 +3,9 @@
 #include "../headers/graphics.h"
 #include "../headers/cellule.h"
 #include <time.h>
-#define LIGNE 10
-#define COLONNE 10
-#define SEED 42
+#define LIGNE 4
+#define COLONNE 4
+#define SEED time(NULL)
 
 int main() {
     int tailleCellW,tailleCellH;
@@ -19,10 +19,10 @@ int main() {
     window = createWindow(500, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
     srand(SEED);
-	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, 0.5);
+	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, 0);
 	generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
-	tailleCellH = WINDOW_H/COLONNE;
-	tailleCellW = WINDOW_W/LIGNE;
+	tailleCellH = WINDOW_H/LIGNE;
+	tailleCellW = WINDOW_W/COLONNE;
     SDL_bool program_on = SDL_TRUE;
     while (program_on) {
         SDL_Event event;
