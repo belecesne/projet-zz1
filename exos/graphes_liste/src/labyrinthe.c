@@ -12,10 +12,29 @@ labyrinthe_t *creerLabyrintheQqc(int lignes, int colonnes, double proba) {
     return labyrinthe;
 }
 
+void kruskalFisherYates(graph_t *graphe, labyrinthe_t *labyrinthe) {
+    int lignes = labyrinthe->lignes, colonnes = labyrinthe->colonnes, err, i = 0;
+    fisherYates(graphe);
+    partition_t *partArbre = createPartition(lignes * colonnes, &err);
+    initPartition(partArbre);
+    while (i < graphe->listeAretes->tailleCourante) {
+        if (fusionPartition(partArbre, graphe->listeAretes->array[i]->n1.valeur,
+                            graphe->listeAretes->array[i]->n2.valeur) == 0) {
+            insererQueueVecteurArete(labyrinthe->graphe->listeAretes, graphe->listeAretes->array[i]);
+        } else {
+            supprimerVecteurArete(&graphe->listeAretes, i);
+            i--;
+        }
+        i++;
+    }
+    freePartition(partArbre);
+    libererGraphe(graphe);
+}
+
 void kruskalFisherYatesProba(graph_t *graphe, labyrinthe_t *labyrinthe, double proba) {
     int lignes = labyrinthe->lignes, colonnes = labyrinthe->colonnes, err, i = 0;
     double alpha;
-    fisherYates(graphe, lignes, colonnes);
+    fisherYates(graphe);
 
     partition_t *partArbre = createPartition(lignes * colonnes, &err);
     initPartition(partArbre);
@@ -38,7 +57,7 @@ void kruskalFisherYatesProba(graph_t *graphe, labyrinthe_t *labyrinthe, double p
 }
 
 
-void fisherYates(graph_t *graphe, int lignes, int colonnes) {
+void fisherYates(graph_t *graphe) {
     arete_t *temp;
     int i, j, m = graphe->listeAretes->tailleCourante;
     for (i = m - 1; i > 0; i--) {
