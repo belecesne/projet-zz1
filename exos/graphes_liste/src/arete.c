@@ -4,8 +4,6 @@ arete_t *creerArete(noeud_t n1, noeud_t n2, int poids) {
     arete_t *arete;
     arete = malloc(sizeof(arete_t));
     if (arete) {
-        arete->n1.wall = 0;
-        arete->n2.wall = 0;
         if (n1.valeur < n2.valeur) {
             arete->n1 = n1;
             arete->n2 = n2;

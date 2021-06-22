@@ -13,16 +13,16 @@ int main() {
     SDL_Window *window;
     SDL_Renderer *renderer;
     int i = 0;
+	tailleCellH = WINDOW_H/LIGNE;
+	tailleCellW = WINDOW_W/COLONNE;
     cellule_t * cell;
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(500, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
     srand(SEED);
-	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, 0);
+	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, 0, tailleCellW, tailleCellH);
 	generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
-	tailleCellH = WINDOW_H/LIGNE;
-	tailleCellW = WINDOW_W/COLONNE;
     SDL_bool program_on = SDL_TRUE;
     while (program_on) {
         SDL_Event event;
