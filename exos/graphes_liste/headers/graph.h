@@ -16,6 +16,6 @@ void generateGraphvizGraph(graph_t *, char *);
 void generateGraphvizGraphGrid(graph_t*, char*, int);
 partition_t *getParitionFromGraph(graph_t *);
 void generateConnectedComponents(graph_t *, char *);
-graph_t * genererGrapheGrille(int, int);
+arete_t ** genererGrapheGrille(int, int);
 
 #endif //GRAPH_LIST

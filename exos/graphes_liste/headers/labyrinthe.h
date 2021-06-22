@@ -10,7 +10,7 @@ typedef struct labyrinthe_s{
 } labyrinthe_t;
 
 labyrinthe_t * creerLabyrintheQqc(int, int, double);
-void fisherYates(graph_t*, int, int);
-void kruskalFisherYatesProba(graph_t*, labyrinthe_t*, double);
+maillon_arete_t * fisherYates(arete_t **, int, int);
+void kruskalFisherYatesProba(arete_t **, labyrinthe_t*, double);
 
 #endif //PROJET_ZZ1_LABYRINTHE_H
