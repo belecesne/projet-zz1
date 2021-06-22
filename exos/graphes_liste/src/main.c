@@ -1,5 +1,4 @@
 #include "../headers/graph.h"
-#include "../headers/maillon_arete.h"
 #include "../headers/labyrinthe.h"
 #include "../headers/graphics.h"
 #include "../headers/cellule.h"
@@ -13,32 +12,29 @@ int main() {
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    arete_t * arete;
-    maillon_arete_t * areteCourante;
+    int i = 0;
     cellule_t * cell;
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(500, 10, WINDOW_W, WINDOW_H);
     renderer = createRenderer(window);
     srand(SEED);
-	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE,0.5);
+	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, 0.5);
 	generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
 	tailleCellH = WINDOW_H/COLONNE;
 	tailleCellW = WINDOW_W/LIGNE;
     SDL_bool program_on = SDL_TRUE;
-    areteCourante = labyrinthe->graphe->listeAretes;
     while (program_on) {
         SDL_Event event;
-        if(areteCourante){
-            cell = creerCelluleDepuisNoeud(areteCourante->arete->n1,tailleCellW,tailleCellH,COLONNE);
+        if(i < labyrinthe->graphe->listeAretes->tailleCourante){
+            cell = creerCelluleDepuisNoeud(labyrinthe->graphe->listeAretes->array[i]->n1,tailleCellW,tailleCellH,COLONNE);
             drawCell(renderer,cell);
             free(cell);
-            cell = creerCelluleDepuisNoeud(areteCourante->arete->n2,tailleCellW,tailleCellH,COLONNE);
+            cell = creerCelluleDepuisNoeud(labyrinthe->graphe->listeAretes->array[i]->n2,tailleCellW,tailleCellH,COLONNE);
             drawCell(renderer,cell);
             free(cell);
-            areteCourante = areteCourante->suivant;
+		i++;
         }
-        SDL_RenderPresent(renderer);
 
         while (program_on && SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -49,8 +45,8 @@ int main() {
                     break;
             }
         }
+        SDL_RenderPresent(renderer);
         SDL_Delay(100);
     }
-	liberer_graphe(labyrinthe->graphe);
-	free(labyrinthe);
+	libererLabyrinthe(labyrinthe);
 }

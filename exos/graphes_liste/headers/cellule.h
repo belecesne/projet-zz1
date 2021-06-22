@@ -11,4 +11,5 @@ typedef struct cellule_s {
 
 cellule_t *creerCelluleDepuisNoeud(noeud_t, int, int, int);
 void drawCell(SDL_Renderer *,cellule_t*);
+void drawWall(SDL_Renderer *, int, int, int, int);
 #endif //PROJET_ZZ1_CELLULE_H
