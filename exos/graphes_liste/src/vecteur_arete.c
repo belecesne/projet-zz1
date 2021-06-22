@@ -1,4 +1,4 @@
-#include "../headers/vecteur.h"
+#include "../headers/vecteur_arete.h"
 
 
 vecteur_t * creerVecteur(int taille){
