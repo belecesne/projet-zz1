@@ -4,6 +4,7 @@
 #include "graph.h"
 #include "cellule.h"
 
+
 typedef struct labyrinthe_s{
 	graph_t* graphe;
 	cellule_t ** tableauCellules;
