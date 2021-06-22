@@ -3,9 +3,10 @@
 #include "maillon_graphe.h"
 #include "maillon_arete.h"
 #include "partition.h"
+#include "vecteur_arete.h"
 
 typedef struct graph_s {
-    maillon_arete_t * listeAretes;
+    vecteur_t * listeAretes;
     int nbNoeuds;
 } graph_t;
 

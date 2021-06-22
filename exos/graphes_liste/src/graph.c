@@ -6,17 +6,17 @@ graph_t* nouveau_graphe(int nbNoeuds){
 	graph = malloc(sizeof(graph_t));
 	if(graph){
 		graph->nbNoeuds = nbNoeuds;
-		graph->listeAretes = NULL;
+		graph->listeAretes = creerVecteurArete(DEFAULT_VECTOR_SIZE);
 	}
 	return graph;
 }
 
 void insertionArrete(graph_t* graphe, arete_t* arete){
-	insertionTeteArete(&(graphe->listeAretes), creerMaillonArete(arete));
+	insererQueueVecteurArete(graphe->listeAretes, arete);
 }
 
-void liberer_graphe(graph_t* graphe){
-	libererListeArretes(graphe->listeAretes);
+void libererGraphe(graph_t* graphe){
+    libererVecteurArete(graphe->listeAretes);
 	free(graphe);
 }
 
@@ -25,11 +25,11 @@ void generateGraphvizGraph(graph_t* graphe, char* filename){
 	sprintf(buffer, "%s.dot", filename);
 	FILE* dotFile = fopen(buffer, "w");
 	fputs("graph G {\n", dotFile);
-	for(int i = 0; i < graphe->nbNoeuds; i++){
+    int i;
+	for(i = 0; i < graphe->nbNoeuds; i++){
 		fprintf(dotFile, "  \"%d\";\n", i);
 	}
-	maillon_arete_t* cour = graphe->listeAretes;
-	while(cour != NULL){
+	for( i = 0; i < graphe->listeAretes->tailleCourante; i++){
 		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1.valeur, cour->arete->n2.valeur);
 		cour = cour->suivant;
 	}

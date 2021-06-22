@@ -1,7 +1,7 @@
 #include "../headers/vecteur_arete.h"
 
 
-vecteur_t * creerVecteur(int taille){
+vecteur_t * creerVecteurArete(int taille){
     vecteur_t * liste = malloc(sizeof(vecteur_t));
     if(liste){
         liste->array = malloc(taille*sizeof(vec_type));
@@ -11,7 +11,7 @@ vecteur_t * creerVecteur(int taille){
     return liste;
 }
 
-vecteur_t * reallouerVecteur(vecteur_t * liste){
+void reallouerVecteurArete(vecteur_t * liste){
     int nouvelleTaille = liste->tailleCourante * 2;
     vec_type * nouveauTab = malloc(nouvelleTaille * sizeof(vec_type));
     memcpy(nouveauTab, liste->array, (liste->tailleCourante) * sizeof(vec_type));
@@ -20,12 +20,20 @@ vecteur_t * reallouerVecteur(vecteur_t * liste){
     liste->taille *= 2;
 }
 
-void insererQueueVecteur(vecteur_t * liste, vec_type inser){
+void insererQueueVecteurArete(vecteur_t * liste, vec_type inser){
+        if(liste->tailleCourante == liste->taille){
+            reallouerVecteurArete(liste);
+        }
         liste->array[liste->tailleCourante] = inser;
         liste->tailleCourante++;
 }
 
-void supprimerVecteur(vecteur_t * liste, int index){
+void supprimerVecteurArete(vecteur_t * liste, int index){
     liste->array[index] = liste->array[liste->tailleCourante];
     liste->tailleCourante--;
+}
+
+void libererVecteurArete(vecteur_t * liste){
+    free(liste->array);
+    free(liste);
 }
