@@ -25,9 +25,7 @@ void drawCell(SDL_Renderer * renderer, cellule_t * cell){
     points[2].y = cell->i * cell->h + cell->h;
     points[3].x = cell->j * cell->w + cell->w;
     points[3].y = cell->i * cell->h + cell->h;
-    for(int k = 0; k<4;k++){
-        printf("k= %d x = %d, y = %d\n", k, points[k].x, points[k].y);
-    }
+    printf("%d = %d\n", cell->noeud.valeur, cell->noeud.wall);
     if(!(cell->noeud.wall & 0b00000001)){
         drawWall(renderer, points[0], points[1]);
     }

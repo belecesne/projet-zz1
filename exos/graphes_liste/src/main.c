@@ -5,7 +5,7 @@
 #include <time.h>
 #define LIGNE 4
 #define COLONNE 4
-#define SEED time(NULL)
+#define SEED 42
 
 int main() {
     int tailleCellW,tailleCellH;
