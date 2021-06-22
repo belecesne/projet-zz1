@@ -124,11 +124,6 @@ graph_t *genererGrapheGrille(int lignes, int colonnes) {
             sud.valeur = (i + 1) * colonnes + j;
             ouest.valeur = i * colonnes + j - 1;
             est.valeur = i * colonnes + j + 1;
-            noeud.wall = 0;
-            nord.wall = 0;
-            est.wall = 0;
-            ouest.wall = 0;
-            sud.wall = 0;
             if (nord.valeur >= 0) {
                 insererQueueVecteurArete(graphe->listeAretes, creerArete(nord, noeud, 1));
             }
