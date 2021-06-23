@@ -30,9 +30,18 @@ labyrinthe_t *creerLabyrintheQqc(int lignes, int colonnes, int weight, int heigh
     labyrinthe->lignes = lignes;
     labyrinthe->graphe = nouveauGraphe(lignes * colonnes);
     labyrinthe->tableauCellules = calloc(lignes * colonnes, sizeof(cellule_t *));
+
+
     kruskalFisherYatesProba(graphe, labyrinthe, proba);
 
     genererTableauCellule(labyrinthe, weight, height);
+
+    labyrinthe->entree = choisirNoeud(labyrinthe->graphe->nbNoeuds);
+    labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
+    while (labyrinthe->sortie == labyrinthe->entree) {
+        labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
+    }
+
     return labyrinthe;
 }
 
@@ -121,6 +130,24 @@ void creerMur(labyrinthe_t *labyrinthe) {
         if (i == x) {
             labyrinthe->tableauCellules[indiceN1]->wall += 4;
             labyrinthe->tableauCellules[indiceN2]->wall += 8;
+        }
+    }
+}
+
+void drawLabyrinthe(SDL_Renderer *renderer, labyrinthe_t * labyrinthe,int window_w, int window_h, SDL_Texture *textureMur,
+                    SDL_Texture *textureSol, SDL_Texture *textureEntree, SDL_Texture *textureSortie) {
+    int tailleCellW,tailleCellH,i;
+    cellule_t * cell;
+    tailleCellH = labyrinthe->tableauCellules[0]->h;
+    tailleCellW = labyrinthe->tableauCellules[0]->w;
+    drawBack(renderer, window_w, window_h, tailleCellW, tailleCellH, textureMur, textureSol);
+    for (i = 0; i < labyrinthe->graphe->nbNoeuds; i++) {
+        cell = labyrinthe->tableauCellules[i];
+        drawCellText(renderer, cell, textureMur, textureSol);
+        if (i == labyrinthe->entree) {
+            drawEntree(renderer, cell, textureEntree);
+        } else if (i == labyrinthe->sortie) {
+            drawEntree(renderer, cell, textureSortie);
         }
     }
 }

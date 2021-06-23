@@ -54,47 +54,48 @@ void drawCellText(SDL_Renderer *renderer, cellule_t *cell, SDL_Texture *textureM
     if (!(cell->wall & 0b00000001)) {
         pointMur.x = points[0].x;
         pointMur.y = points[0].y - cell->h;
-        drawText(renderer, pointMur, cell->h, cell->w, textureMur);
+        drawText(renderer, pointMur, cell->w, cell->h, textureMur);
     }
     if (!(cell->wall & 0b00000010)) {
         pointMur.x = points[0].x;
         pointMur.y = points[0].y + cell->h;
-        drawText(renderer, pointMur, cell->h, cell->w, textureMur);
+        drawText(renderer, pointMur, cell->w, cell->h, textureMur);
 
     }
     if (!(cell->wall & 0b00000100)) {
         pointMur.x = points[0].x + cell->w;
         pointMur.y = points[0].y;
-        drawText(renderer, pointMur, cell->h, cell->w, textureMur);
+        drawText(renderer, pointMur, cell->w, cell->h, textureMur);
 
     }
     if (!(cell->wall & 0b00001000)) {
         pointMur.x = points[0].x - cell->w;
         pointMur.y = points[0].y;
-        drawText(renderer, pointMur, cell->h, cell->w, textureMur);
+        drawText(renderer, pointMur, cell->w, cell->h, textureMur);
     }
-    drawText(renderer,points[0], cell->h, cell->w, textureSol);
+    drawText(renderer, points[0], cell->w, cell->h, textureSol);
 }
 
-void drawBack(SDL_Renderer *renderer, int window_w, int window_h, int wCell, int hCell, SDL_Texture *textureMur,SDL_Texture *textureSol) {
+void drawBack(SDL_Renderer *renderer, int window_w, int window_h, int wCell, int hCell, SDL_Texture *textureMur,
+              SDL_Texture *textureSol) {
     SDL_Point p;
     for (int i = 0; i * hCell < window_h; i += 1) {
         for (int j = 0; j * wCell < window_w; j += 1) {
             p.x = j * wCell;
             p.y = i * hCell;
-            drawText(renderer, p, hCell, wCell, textureSol);
+            drawText(renderer, p, wCell, hCell, textureSol);
         }
     }
     for (int i = 0; i * hCell < window_h; i += 2) {
         for (int j = 0; j * wCell < window_w; j += 2) {
             p.x = j * wCell;
             p.y = i * hCell;
-            drawText(renderer, p, hCell, wCell, textureMur);
+            drawText(renderer, p, wCell, hCell, textureMur);
         }
     }
 }
 
-void drawText(SDL_Renderer *renderer, SDL_Point p1, int h, int w, SDL_Texture *texture) {
+void drawText(SDL_Renderer *renderer, SDL_Point p1, int w, int h, SDL_Texture *texture) {
 
     SDL_Rect source = {0};
     SDL_Rect destination = {p1.x, p1.y, w, h};
@@ -102,3 +103,11 @@ void drawText(SDL_Renderer *renderer, SDL_Point p1, int h, int w, SDL_Texture *t
     SDL_QueryTexture(texture, NULL, NULL, &source.w, &source.h);
     SDL_RenderCopy(renderer, texture, &source, &destination);
 }
+
+void drawEntree(SDL_Renderer *renderer, cellule_t *cell, SDL_Texture *texture) {
+    SDL_Point p;
+    p.x = (cell->j * cell->w) * 2 + cell->w;
+    p.y = (cell->i * cell->h) * 2 + cell->h;
+    drawText(renderer, p, cell->w, cell->h, texture);
+}
+

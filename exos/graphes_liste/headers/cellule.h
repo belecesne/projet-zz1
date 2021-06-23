@@ -27,4 +27,6 @@ void drawText(SDL_Renderer * , SDL_Point , int , int, SDL_Texture *);
 
 void drawBack(SDL_Renderer *, int, int, int, int,SDL_Texture *,SDL_Texture *);
 
+void drawEntree(SDL_Renderer *, cellule_t * , SDL_Texture *);
+
 #endif //PROJET_ZZ1_CELLULE_H
