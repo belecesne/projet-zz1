@@ -156,9 +156,10 @@ drawLabyrinthe(SDL_Renderer *renderer, labyrinthe_t *labyrinthe, int window_w, i
 noeud_t *obtenirVoisins(labyrinthe_t *lab, noeud_t noeud) {
     int n, x, y, i, j, colonnes;
     noeud_t * voisins = malloc(sizeof(noeud_t) * 4);
-    for(i = 0; i <4; voisins[i++] = -1);
+    for(i = 0; i < 4; i++){
+        voisins[i] = -1;
+    }
     cellule_t *cell;
-
     colonnes = lab->colonnes;
     cell = lab->tableauCellules[noeud];
     i = cell->i;

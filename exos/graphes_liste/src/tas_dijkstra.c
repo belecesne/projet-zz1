@@ -32,9 +32,6 @@ void ajoutTasDijkstra(tas_dijkstra_t * tas, noeud_t noeud, int dist) {
     }
     tas->array[i] = e;
     tas->indexToInsert++;
-    for(int j = 0; j < tas->indexToInsert; j++){
-        printf("j : %d Indice : %d - Valeur : %d,\n",j,tas->array[j].som,tas->array[j].dist);
-    }
 }
 
 elem_tas_dijkstra_t racineTasDijktra(tas_dijkstra_t * tas) {

@@ -1,53 +1,53 @@
 #include "../headers/a_etoile.h"
 
 float distEuclidienne(int x1, int x2, int y1, int y2) {
-    return sqrt((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1));
+    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
 float distTchebytchev(int x1, int x2, int y1, int y2) {
-    return abs(x2-x1) > abs(y2-y1) ? abs(x2-x1) : abs(y2-y1);
+    return abs(x2 - x1) > abs(y2 - y1) ? abs(x2 - x1) : abs(y2 - y1);
 }
 
 float distManhattan(int x1, int x2, int y1, int y2) {
-    return abs(x2-x1) + abs(y2-y1);
+    return abs(x2 - x1) + abs(y2 - y1);
 }
 
-file_t * a_etoile(graph_t * graphe, int rac, float (*dist)(int, int, int, int), int noeudDest, int dimLab) {
-  /*  file_t * file = creer_file();
-    int * d = calloc(graphe->nbNoeuds, sizeof(int));
-    int * parent = calloc(graphe->nbNoeuds, sizeof(int));
-    tas_dijkstra_t * tas = creerTasDijktra();
-    for(int i = 0; i < graphe->nbNoeuds; i++) {
-        if(i == rac) {
+file_t *
+a_etoile(labyrinthe_t *labyrinthe, noeud_t rac, float (*dist)(int, int, int, int), noeud_t dest, int dimLab) {
+
+    file_t *file = creer_file();
+    int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
+    int *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
+    tas_dijkstra_t *tas = creerTasDijktra();
+    noeud_t *voisins, voisinAct, noeudCourant;
+    int i;
+    for (i = 0; i < labyrinthe->graphe->nbNoeuds; i++) {
+        if (i == rac) {
             d[i] = 0;
-        }
-        else {
+        } else {
             d[i] = INT_MAX;
         }
         parent[i] = -1;
-        elem_tas_dijkstra_t e = {i, d[i]};
-        ajoutTasDijkstra(tas, e);
     }
-    elem_tas_dijkstra_t e = suppressionRacineDijkstra(tas);
-    while(!tasVideDijkstra(tas) && (e.som != noeudDest)) {
-        enfiler(file, e.som);
-        for(int i = 0; i < graphe->listeAretes->tailleCourante; i++) {
-            if((graphe->listeAretes->array[i]->n1 == e.som) && (d[graphe->listeAretes->array[i]->n2] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
-                d[graphe->listeAretes->array[i]->n2] = d[e.som] + graphe->listeAretes->array[i]->poids;
-                parent[graphe->listeAretes->array[i]->n2] = e.som;
-                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n2, d[e.som] + graphe->listeAretes->array[i]->poids + dist((graphe->listeAretes->array[i]->n2)/dimLab, noeudDest/dimLab, (graphe->listeAretes->array[i]->n2)%dimLab, noeudDest%dimLab));
-            }
-            else if((graphe->listeAretes->array[i]->n2 == e.som) && (d[graphe->listeAretes->array[i]->n1] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
-                d[graphe->listeAretes->array[i]->n1] = d[e.som] + graphe->listeAretes->array[i]->poids;
-                parent[graphe->listeAretes->array[i]->n1] = e.som;
-                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n1, d[e.som] + graphe->listeAretes->array[i]->poids + dist((graphe->listeAretes->array[i]->n1)/dimLab, noeudDest/dimLab, (graphe->listeAretes->array[i]->n1)%dimLab, noeudDest%dimLab));
+    noeudCourant = rac;
+    while (noeudCourant != dest) {
+        enfiler(file, noeudCourant);
+        voisins = obtenirVoisins(labyrinthe, noeudCourant);
+        for (i = 0; i < 4; i++) {
+            voisinAct = voisins[i];
+            if (voisinAct != -1 && d[voisinAct] == INT_MAX) {
+                d[voisinAct] = d[noeudCourant] + 1 +
+                               dist(voisinAct / dimLab, dest / dimLab, voisinAct % dimLab, dest % dimLab);
+                parent[voisinAct] = noeudCourant;
+                ajoutTasDijkstra(tas, voisinAct, d[voisinAct]);
             }
         }
-        e = suppressionRacineDijkstra(tas);
+        noeudCourant = suppressionRacineDijkstra(tas).som;
+        free(voisins);
     }
-    enfiler(file, noeudDest);
+    enfiler(file, dest);
     libererTasDijkstra(tas);
     free(d);
-    free(parent);*/
-    return NULL;//file;
+    free(parent);
+    return file;
 }

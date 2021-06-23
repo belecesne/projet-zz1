@@ -19,7 +19,6 @@ cellule_t *creerCelluleDepuisNoeud(noeud_t n, int weight, int height, int colonn
 
 void drawCell(SDL_Renderer *renderer, cellule_t *cell) {
     SDL_Point points[4];
-    int i, j;
     points[0].x = (cell->j * cell->w) * 2;
     points[0].y = (cell->i * cell->h) * 2;
     points[1].x = (cell->j * cell->w) * 2 + cell->w;
@@ -133,7 +132,6 @@ void drawEntree(SDL_Renderer *renderer, cellule_t *cell, SDL_Texture *texture) {
 }
 
 void colorierVoisins(SDL_Renderer *renderer, cellule_t *cell, cellule_t **tabCellules, int colonnes) {
-    SDL_Point points[4];
     int i, j, x, y;
     noeud_t n;
     SDL_Rect rect;

@@ -5,7 +5,7 @@
 #include "file.h"
 #include "move.h"
 
-int drawParcours(SDL_Renderer * , file_t *, cellule_t *, cellule_t **, int );
+int drawParcours(SDL_Renderer *, cellule_t *, cellule_t **, int );
 
 void reinitEtat(cellule_t **, int );
 #endif //DRAW_PARCOURS

@@ -16,6 +16,18 @@ void deplacement(SDL_Point * pointDepart, SDL_Point * pointArrivee, int pasW, in
     }
 }
 
+void drawMoveProfondeur(SDL_Renderer * renderer, SDL_Point point, int cellW, int cellH) {
+    SDL_Rect rect;
+    rect.w = cellW/2;
+    rect.h = cellH/2;
+    rect.x = point.x+(rect.w)/2;
+    rect.y = point.y+(rect.h)/2;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+}
+
 void drawMove(SDL_Renderer * renderer, SDL_Point point, int cellW, int cellH) {
     SDL_Rect rect;
     rect.w = cellW/2;

@@ -1,6 +1,6 @@
 #include "../headers/draw_parcours.h"
 
-int drawParcours(SDL_Renderer * renderer, file_t * file, cellule_t * cellCourante, cellule_t ** tabCellules, int colonnes){
+int drawParcours(SDL_Renderer * renderer, cellule_t * cellCourante, cellule_t ** tabCellules, int colonnes){
     colorierVoisins(renderer, cellCourante, tabCellules, colonnes);
     cellCourante->etat = 2;
     return 0;

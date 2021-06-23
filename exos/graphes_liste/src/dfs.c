@@ -40,6 +40,7 @@ file_t * dfs(graph_t * graphe, int rac) {
             noeudCourant = parent[noeudCourant];
         }
     }
+    enfiler(file, rac);
     free(d);
     free(parent);
     return file;

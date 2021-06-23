@@ -66,7 +66,7 @@ void vider_file(file_t * file){
 /* En sortie: retourne vrai si la file est vide, faux sinon    										   */
 /* --------------------------------------------------------------------------------------------------- */
 int file_est_vide(file_t * file){
-    return (file->tete == file->queue);
+    return (file && file->tete == file->queue);
 }
 
 /* --------------------------------------------------------------------------------------------------- */
