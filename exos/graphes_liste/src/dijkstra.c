@@ -20,15 +20,15 @@ file_t * dijkstra(graph_t * graphe, int rac, int dest) {
     while(!tasVideDijkstra(tas) && (e.som != dest)) {
         enfiler(file, e.som);
         for(int i = 0; i < graphe->listeAretes->tailleCourante; i++) {
-            if((graphe->listeAretes->array[i]->n1.valeur == e.som) && (d[graphe->listeAretes->array[i]->n2.valeur] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
-                d[graphe->listeAretes->array[i]->n2.valeur] = d[e.som] + graphe->listeAretes->array[i]->poids;
-                parent[graphe->listeAretes->array[i]->n2.valeur] = e.som;
-                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n2.valeur, d[e.som] + graphe->listeAretes->array[i]->poids);
+            if((graphe->listeAretes->array[i]->n1 == e.som) && (d[graphe->listeAretes->array[i]->n2] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
+                d[graphe->listeAretes->array[i]->n2] = d[e.som] + graphe->listeAretes->array[i]->poids;
+                parent[graphe->listeAretes->array[i]->n2] = e.som;
+                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n2, d[e.som] + graphe->listeAretes->array[i]->poids);
             }
-            else if((graphe->listeAretes->array[i]->n2.valeur == e.som) && (d[graphe->listeAretes->array[i]->n1.valeur] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
-                d[graphe->listeAretes->array[i]->n1.valeur] = d[e.som] + graphe->listeAretes->array[i]->poids;
-                parent[graphe->listeAretes->array[i]->n1.valeur] = e.som;
-                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n1.valeur, d[e.som] + graphe->listeAretes->array[i]->poids);
+            else if((graphe->listeAretes->array[i]->n2 == e.som) && (d[graphe->listeAretes->array[i]->n1] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
+                d[graphe->listeAretes->array[i]->n1] = d[e.som] + graphe->listeAretes->array[i]->poids;
+                parent[graphe->listeAretes->array[i]->n1] = e.som;
+                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n1, d[e.som] + graphe->listeAretes->array[i]->poids);
             }
         }
         e = suppressionRacineDijkstra(tas);

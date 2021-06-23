@@ -32,15 +32,15 @@ file_t * a_etoile(graph_t * graphe, int rac, float (*dist)(int, int, int, int), 
     while(!tasVideDijkstra(tas) && (e.som != noeudDest)) {
         enfiler(file, e.som);
         for(int i = 0; i < graphe->listeAretes->tailleCourante; i++) {
-            if((graphe->listeAretes->array[i]->n1.valeur == e.som) && (d[graphe->listeAretes->array[i]->n2.valeur] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
-                d[graphe->listeAretes->array[i]->n2.valeur] = d[e.som] + graphe->listeAretes->array[i]->poids;
-                parent[graphe->listeAretes->array[i]->n2.valeur] = e.som;
-                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n2.valeur, d[e.som] + graphe->listeAretes->array[i]->poids + dist((graphe->listeAretes->array[i]->n2.valeur)/dimLab, noeudDest/dimLab, (graphe->listeAretes->array[i]->n2.valeur)%dimLab, noeudDest%dimLab));
+            if((graphe->listeAretes->array[i]->n1 == e.som) && (d[graphe->listeAretes->array[i]->n2] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
+                d[graphe->listeAretes->array[i]->n2] = d[e.som] + graphe->listeAretes->array[i]->poids;
+                parent[graphe->listeAretes->array[i]->n2] = e.som;
+                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n2, d[e.som] + graphe->listeAretes->array[i]->poids + dist((graphe->listeAretes->array[i]->n2)/dimLab, noeudDest/dimLab, (graphe->listeAretes->array[i]->n2)%dimLab, noeudDest%dimLab));
             }
-            else if((graphe->listeAretes->array[i]->n2.valeur == e.som) && (d[graphe->listeAretes->array[i]->n1.valeur] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
-                d[graphe->listeAretes->array[i]->n1.valeur] = d[e.som] + graphe->listeAretes->array[i]->poids;
-                parent[graphe->listeAretes->array[i]->n1.valeur] = e.som;
-                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n1.valeur, d[e.som] + graphe->listeAretes->array[i]->poids + dist((graphe->listeAretes->array[i]->n1.valeur)/dimLab, noeudDest/dimLab, (graphe->listeAretes->array[i]->n1.valeur)%dimLab, noeudDest%dimLab));
+            else if((graphe->listeAretes->array[i]->n2 == e.som) && (d[graphe->listeAretes->array[i]->n1] > d[e.som] + graphe->listeAretes->array[i]->poids)) {
+                d[graphe->listeAretes->array[i]->n1] = d[e.som] + graphe->listeAretes->array[i]->poids;
+                parent[graphe->listeAretes->array[i]->n1] = e.som;
+                modifValeurTasDijkstra(tas, graphe->listeAretes->array[i]->n1, d[e.som] + graphe->listeAretes->array[i]->poids + dist((graphe->listeAretes->array[i]->n1)/dimLab, noeudDest/dimLab, (graphe->listeAretes->array[i]->n1)%dimLab, noeudDest%dimLab));
             }
         }
         e = suppressionRacineDijkstra(tas);

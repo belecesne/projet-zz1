@@ -20,12 +20,12 @@ file_t * DFS(graph_t * graphe, int rac) {
         int distAAjouter;
         int i = 0;
         while ((i < graphe->listeAretes->tailleCourante) && (noeudTrouve == -1)) {
-            if((graphe->listeAretes->array[i]->n1.valeur == noeudCourant) && (parent[graphe->listeAretes->array[i]->n2.valeur] == -1) && (graphe->listeAretes->array[i]->n2.valeur != rac)) {
-                noeudTrouve = graphe->listeAretes->array[i]->n2.valeur;
+            if((graphe->listeAretes->array[i]->n1 == noeudCourant) && (parent[graphe->listeAretes->array[i]->n2] == -1) && (graphe->listeAretes->array[i]->n2 != rac)) {
+                noeudTrouve = graphe->listeAretes->array[i]->n2;
                 distAAjouter = graphe->listeAretes->array[i]->poids;
             }
-            else if((graphe->listeAretes->array[i]->n2.valeur == noeudCourant) && (parent[graphe->listeAretes->array[i]->n1.valeur] == -1) && (graphe->listeAretes->array[i]->n1.valeur != rac)) {
-                noeudTrouve = graphe->listeAretes->array[i]->n1.valeur;
+            else if((graphe->listeAretes->array[i]->n2 == noeudCourant) && (parent[graphe->listeAretes->array[i]->n1] == -1) && (graphe->listeAretes->array[i]->n1 != rac)) {
+                noeudTrouve = graphe->listeAretes->array[i]->n1;
                 distAAjouter = graphe->listeAretes->array[i]->poids;
             }
             i++;
