@@ -25,6 +25,7 @@ SDL_Renderer *createRenderer(SDL_Window *window) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderPresent(renderer);
     }
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     return renderer;
 }
 

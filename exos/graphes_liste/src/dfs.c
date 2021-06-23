@@ -1,6 +1,6 @@
 #include "../headers/dfs.h"
 
-file_t * DFS(graph_t * graphe, int rac) {
+file_t * dfs(graph_t * graphe, int rac) {
     file_t * file = creer_file();
     int * d = calloc(graphe->nbNoeuds, sizeof(int));
     int * parent = calloc(graphe->nbNoeuds, sizeof(int));

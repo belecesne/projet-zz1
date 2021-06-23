@@ -13,6 +13,7 @@ typedef struct cellule_s {
     int w;
     int h;
     char wall;
+    char etat;
 } cellule_t;
 
 cellule_t *creerCelluleDepuisNoeud(noeud_t, int, int, int);
@@ -29,4 +30,5 @@ void drawBack(SDL_Renderer *, int, int, int, int,SDL_Texture *,SDL_Texture *);
 
 void drawEntree(SDL_Renderer *, cellule_t * , SDL_Texture *);
 
+void colorierVoisins(SDL_Renderer *, cellule_t *, cellule_t **, int);
 #endif //PROJET_ZZ1_CELLULE_H

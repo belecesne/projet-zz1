@@ -2,18 +2,22 @@
 #include "../headers/labyrinthe.h"
 #include "../headers/graphics.h"
 #include "../headers/cellule.h"
-#include "../headers/dikstra.h"
+#include "../headers/dijkstra.h"
+#include "../headers/a_etoile.h"
+#include "../headers/dfs.h"
 #include "../headers/draw_parcours.h"
 #include "../headers/file.h"
 #include <time.h>
 
 #define LIGNE 10
 #define COLONNE 10
-#define SEED 42
+#define SEED 1624441433
 
 int main() {
     int tailleCellW, tailleCellH, enParcours = 0;
-    file_t * fileParcours;
+
+    cellule_t *cellCourante;
+    file_t *fileParcours;
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -34,7 +38,7 @@ int main() {
     textureSol = IMG_LoadTexture(renderer, "data/ground.png");
     textureEntree = IMG_LoadTexture(renderer, "data/entree.png");
     textureSortie = IMG_LoadTexture(renderer, "data/sortie.png");
-    printf("Entree : %d - Sortie : %d", labyrinthe->entree, labyrinthe->sortie);
+    printf("GRAINE DE GENERATION DE LA FONCTION ALEATOIRE : %ld\n",SEED);
     SDL_bool program_on = SDL_TRUE;
 
     while (program_on) {
@@ -42,17 +46,28 @@ int main() {
         SDL_RenderClear(renderer);
         drawLabyrinthe(renderer, labyrinthe, window_w, window_h, textureMur,
                        textureSol, textureEntree, textureSortie);
-        if(enParcours){
-            if(file_est_vide(file){
+        if (enParcours) {
+            if (file_est_vide(fileParcours)) {
                 enParcours = 0;
             } else {
-                switch(enParcours){
+                switch (enParcours) {
                     case 1:
-                        drawDijkstra(file);
+                        drawParcours(renderer, fileParcours, cellCourante, labyrinthe->tableauCellules,
+                                     labyrinthe->colonnes);
+                        cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                        defiler(fileParcours);
                         break;
                     case 2:
+                        drawParcours(renderer, fileParcours, cellCourante, labyrinthe->tableauCellules,
+                                     labyrinthe->colonnes);
+                        cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                        defiler(fileParcours);
                         break;
                     case 3:
+                        drawParcours(renderer, fileParcours, cellCourante, labyrinthe->tableauCellules,
+                                     labyrinthe->colonnes);
+                        cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                        defiler(fileParcours);
                         break;
                     default:
                         break;
@@ -64,30 +79,71 @@ int main() {
                 case SDL_QUIT :
                     program_on = SDL_FALSE;
                     break;
-                case SDLK_d:
-                    if(!enParcours){
-                        enParcours = 1;
-                        file = dikstra(labyrinthe->graphe, labyrinthe->entree, labyrinthe->sortie);
-                    }
-                    break;
-                case SDLK_a:
-                    if(!enParcours){
-                        enParcours = 2;
-                        
-                    }
-                    break;
-                case SDLK_p:
-                    if(!enParcours){
-                        enParcours = 3;
-                        
+                case SDL_KEYDOWN:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_d:
+
+                            if (!enParcours) {
+                                enParcours = 1;
+                                printf("Dijkstra\n");
+                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
+                                fileParcours = dijkstra(labyrinthe->graphe, labyrinthe->entree, labyrinthe->sortie);
+                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                                defiler(fileParcours);
+                            }
+                            break;
+                        case SDLK_a:
+                            if (!enParcours) {
+                                enParcours = 2;
+                                printf("A* Euclidienne\n");
+                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
+                                fileParcours = a_etoile(labyrinthe->graphe, labyrinthe->entree,distEuclidienne,labyrinthe->sortie,labyrinthe->colonnes);
+                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                                defiler(fileParcours);
+
+                            }
+                            break;
+                        case SDLK_z:
+                            if (!enParcours) {
+                                enParcours = 2;
+                                printf("A* Manhattan\n");
+                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
+                                fileParcours = a_etoile(labyrinthe->graphe, labyrinthe->entree,distManhattan,labyrinthe->sortie,labyrinthe->colonnes);
+                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                                defiler(fileParcours);
+                            }
+                            break;
+                        case SDLK_e:
+                            if (!enParcours) {
+                                enParcours = 2;
+                                printf("A* Tcheby\n");
+                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
+                                fileParcours = a_etoile(labyrinthe->graphe, labyrinthe->entree,distTchebytchev,labyrinthe->sortie,labyrinthe->colonnes);
+                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                                defiler(fileParcours);
+                            }
+                            break;
+                        case SDLK_p:
+                            if (!enParcours) {
+                                enParcours = 3;
+                                printf("Des fesses\n");
+                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
+                                fileParcours = dfs(labyrinthe->graphe, labyrinthe->entree);
+                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
+                                defiler(fileParcours);
+                            }
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 default:
                     break;
+
             }
         }
         SDL_RenderPresent(renderer);
-        SDL_Delay(10);
+        SDL_Delay(100);
     }
     SDL_DestroyTexture(textureSol);
     SDL_DestroyTexture(textureMur);

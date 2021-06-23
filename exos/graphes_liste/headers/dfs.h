@@ -5,6 +5,6 @@
 #include "file.h"
 #include <limits.h>
 
-file_t * DFS(graph_t *, int);
+file_t * dfs(graph_t *, int);
 
 #endif
