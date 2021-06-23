@@ -5,5 +5,6 @@
 
 typedef int noeud_t;
 
+noeud_t choisirNoeud(int );
 
 #endif //PROJET_ZZ1_NOEUD_H
