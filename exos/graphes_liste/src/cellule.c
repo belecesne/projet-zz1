@@ -4,9 +4,9 @@ cellule_t *creerCelluleDepuisNoeud(noeud_t n, int weight, int height, int colonn
     int valeur;
     cellule_t *cell;
     cell = malloc(sizeof(cellule_t));
-    valeur = n.valeur;
+    valeur = n;
     if (cell) {
-        cell->noeud.valeur = n.valeur;
+        cell->noeud = n;
         cell->w = weight;
         cell->h = height;
         cell->i = valeur / colonnes;

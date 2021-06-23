@@ -30,8 +30,8 @@ void generateGraphvizGraph(graph_t *graphe, char *filename) {
         fprintf(dotFile, "  \"%d\";\n", i);
     }
     for (i = 0; i < graphe->listeAretes->tailleCourante; i++) {
-        fprintf(dotFile, "  \"%d\" -- \"%d\";\n", graphe->listeAretes->array[i]->n1.valeur,
-                graphe->listeAretes->array[i]->n2.valeur);
+        fprintf(dotFile, "  \"%d\" -- \"%d\";\n", graphe->listeAretes->array[i]->n1,
+                graphe->listeAretes->array[i]->n2);
     }
 
     fputs("}\n", dotFile);
@@ -54,7 +54,7 @@ void generateGraphvizGraphGrid(graph_t *graphe, char *filename, int colonnes) {
         fprintf(dotFile, "  \"%d\" [pos=\"%d,%d\"];\n", i, posY + 1, posX + 1);
     }
     for (i = 0; i < graphe->listeAretes->tailleCourante; i++) {
-        fprintf(dotFile, "  \"%d\" -- \"%d\";\n", graphe->listeAretes->array[i]->n1.valeur, graphe->listeAretes->array[i]->n2.valeur);
+        fprintf(dotFile, "  \"%d\" -- \"%d\";\n", graphe->listeAretes->array[i]->n1, graphe->listeAretes->array[i]->n2);
     }
 
     fputs("}\n", dotFile);
@@ -70,7 +70,7 @@ partition_t *getParitionFromGraph(graph_t *graphe) {
     partition_t *part = createPartition(graphe->nbNoeuds, &err);
     initPartition(part);
     for (i = 0; i < graphe->listeAretes->tailleCourante; i++) {
-        fusionPartition(part, graphe->listeAretes->array[i]->n1.valeur, graphe->listeAretes->array[i]->n2.valeur);
+        fusionPartition(part, graphe->listeAretes->array[i]->n1, graphe->listeAretes->array[i]->n2);
     }
     return part;
 }
@@ -93,8 +93,8 @@ void generateConnectedComponents(graph_t *graphe, char *filename) {
             currNode = elementCourant->valeur;
             fprintf(dotFile, "  \"%d\";\n", currNode);
             for (i = 0; i < graphe->listeAretes->tailleCourante; i++) {
-                if (currNode == graphe->listeAretes->array[i]->n1.valeur) {
-                    fprintf(dotFile, "  \"%d\" -- \"%d\";\n", currNode, graphe->listeAretes->array[i]->n2.valeur);
+                if (currNode == graphe->listeAretes->array[i]->n1) {
+                    fprintf(dotFile, "  \"%d\" -- \"%d\";\n", currNode, graphe->listeAretes->array[i]->n2);
                 }
             }
             elementCourant = elementCourant->suivant;
@@ -119,21 +119,21 @@ graph_t *genererGrapheGrille(int lignes, int colonnes) {
     graphe = nouveauGraphe(lignes * colonnes);
     for (i = 0; i < lignes; i++) {
         for (j = (i % 2 == 0 ? 0 : 1); j < colonnes; j += 2) {
-            noeud.valeur = i * colonnes + j;
-            nord.valeur = (i - 1) * colonnes + j;
-            sud.valeur = (i + 1) * colonnes + j;
-            ouest.valeur = i * colonnes + j - 1;
-            est.valeur = i * colonnes + j + 1;
-            if (nord.valeur >= 0) {
+            noeud = i * colonnes + j;
+            nord = (i - 1) * colonnes + j;
+            sud = (i + 1) * colonnes + j;
+            ouest = i * colonnes + j - 1;
+            est = i * colonnes + j + 1;
+            if (nord >= 0) {
                 insererQueueVecteurArete(graphe->listeAretes, creerArete(nord, noeud, 1));
             }
-            if (sud.valeur < nbNoeud) {
+            if (sud < nbNoeud) {
                 insererQueueVecteurArete(graphe->listeAretes, creerArete(sud, noeud, 1));
             }
-            if (ouest.valeur / colonnes == i && ouest.valeur >= 0) {
+            if (ouest / colonnes == i && ouest >= 0) {
                 insererQueueVecteurArete(graphe->listeAretes, creerArete(ouest, noeud, 1));
             }
-            if (est.valeur / colonnes == i && est.valeur < nbNoeud) {
+            if (est / colonnes == i && est < nbNoeud) {
                 insererQueueVecteurArete(graphe->listeAretes, creerArete(est, noeud, 1));
             }
         }
@@ -155,7 +155,7 @@ graph_t* kruskal(graph_t* graphe){
 	graph_t* arbre = nouveauGraphe(graphe->nbNoeuds);
 	while(!tasVide(tas)){
 		areteMin = suppressionRacine(tas, 0);
-		if(fusionPartition(partArbre, areteMin->n1.valeur, areteMin->n2.valeur) == 0){
+		if(fusionPartition(partArbre, areteMin->n1, areteMin->n2) == 0){
 			nouvelleArete = creerArete(areteMin->n1, areteMin->n2, areteMin->poids);
 			insertionTeteArete(&arbre->listeAretes, creerMaillonArete(nouvelleArete));
 		}

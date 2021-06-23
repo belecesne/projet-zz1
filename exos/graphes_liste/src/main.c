@@ -3,8 +3,8 @@
 #include "../headers/graphics.h"
 #include "../headers/cellule.h"
 #include <time.h>
-#define LIGNE 8
-#define COLONNE 12
+#define LIGNE 10
+#define COLONNE 10
 #define SEED 42
 
 int main() {

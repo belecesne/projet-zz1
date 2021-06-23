@@ -7,8 +7,8 @@ void genererTableauCellule(labyrinthe_t *lab, int weight, int height) {
     }
     for (i = 0; i < lab->graphe->listeAretes->tailleCourante;
          i++) {
-        indiceN1 = lab->graphe->listeAretes->array[i]->n1.valeur;
-        indiceN2 = lab->graphe->listeAretes->array[i]->n2.valeur;
+        indiceN1 = lab->graphe->listeAretes->array[i]->n1;
+        indiceN2 = lab->graphe->listeAretes->array[i]->n2;
         if (lab->tableauCellules[indiceN1] == 0) {
             lab->tableauCellules[indiceN1] = creerCelluleDepuisNoeud(
                     lab->graphe->listeAretes->array[i]->n1, weight, height, lab->colonnes);
@@ -42,8 +42,8 @@ void kruskalFisherYates(graph_t *graphe, labyrinthe_t *labyrinthe) {
     partition_t *partArbre = createPartition(lignes * colonnes, &err);
     initPartition(partArbre);
     while (i < graphe->listeAretes->tailleCourante) {
-        if (fusionPartition(partArbre, graphe->listeAretes->array[i]->n1.valeur,
-                            graphe->listeAretes->array[i]->n2.valeur) == 0) {
+        if (fusionPartition(partArbre, graphe->listeAretes->array[i]->n1,
+                            graphe->listeAretes->array[i]->n2) == 0) {
             insererQueueVecteurArete(labyrinthe->graphe->listeAretes, graphe->listeAretes->array[i]);
         } else {
             supprimerVecteurArete(&graphe->listeAretes, i);
@@ -65,8 +65,8 @@ void kruskalFisherYatesProba(graph_t *graphe, labyrinthe_t *labyrinthe, double p
     while (i < graphe->listeAretes->tailleCourante) {
         alpha = rand() % 891975; // ;)
         alpha /= 891975.0;
-        if (fusionPartition(partArbre, graphe->listeAretes->array[i]->n1.valeur,
-                            graphe->listeAretes->array[i]->n2.valeur) == 0) {
+        if (fusionPartition(partArbre, graphe->listeAretes->array[i]->n1,
+                            graphe->listeAretes->array[i]->n2) == 0) {
             insererQueueVecteurArete(labyrinthe->graphe->listeAretes, graphe->listeAretes->array[i]);
         } else if (alpha <= proba) {
             insererQueueVecteurArete(labyrinthe->graphe->listeAretes, graphe->listeAretes->array[i]);
@@ -106,13 +106,13 @@ void creerMur(labyrinthe_t *labyrinthe) {
     int i, j, x, y, indiceN1, indiceN2;
     colonnes = labyrinthe->colonnes;
     for (k = 0; k < labyrinthe->graphe->listeAretes->tailleCourante; k++) {
-        indiceN1 = labyrinthe->graphe->listeAretes->array[k]->n1.valeur;
-        indiceN2 = labyrinthe->graphe->listeAretes->array[k]->n2.valeur;
+        indiceN1 = labyrinthe->graphe->listeAretes->array[k]->n1;
+        indiceN2 = labyrinthe->graphe->listeAretes->array[k]->n2;
 
-        i = (labyrinthe->tableauCellules[indiceN1]->noeud.valeur) / colonnes;
-        j = (labyrinthe->tableauCellules[indiceN1]->noeud.valeur) % colonnes;
-        x = (labyrinthe->tableauCellules[indiceN2]->noeud.valeur) / colonnes;
-        y = (labyrinthe->tableauCellules[indiceN2]->noeud.valeur) % colonnes;
+        i = (labyrinthe->tableauCellules[indiceN1]->noeud) / colonnes;
+        j = (labyrinthe->tableauCellules[indiceN1]->noeud) % colonnes;
+        x = (labyrinthe->tableauCellules[indiceN2]->noeud) / colonnes;
+        y = (labyrinthe->tableauCellules[indiceN2]->noeud) % colonnes;
 
         if (j == y) {
             labyrinthe->tableauCellules[indiceN1]->wall += 2;
