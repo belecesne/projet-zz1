@@ -1,10 +1,10 @@
 #include "../headers/dijkstra.h"
 
 
-file_t *dijkstra(labyrinthe_t *labyrinthe, noeud_t rac, noeud_t dest) {
+file_t *dijkstra(labyrinthe_t *labyrinthe, noeud_t rac, noeud_t dest, noeud_t * parentDest, int *pos) {
     file_t *file = creer_file();
     int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
-    int *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
+    noeud_t * parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
     tas_dijkstra_t *tas = creerTasDijktra();
     noeud_t *voisins, voisinAct, noeudCourant;
     int i;
@@ -31,6 +31,14 @@ file_t *dijkstra(labyrinthe_t *labyrinthe, noeud_t rac, noeud_t dest) {
         noeudCourant = suppressionRacineDijkstra(tas).som;
         free(voisins);
     }
+    noeudCourant = dest;
+    *pos = 0;
+    while(noeudCourant != -1 ){
+        parentDest[*pos] = noeudCourant;
+        noeudCourant = parent[noeudCourant];
+        (*pos)++;
+    }
+    (*pos)--;
     enfiler(file, dest);
     libererTasDijkstra(tas);
     free(d);

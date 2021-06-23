@@ -10,20 +10,21 @@
 #include "../headers/move.h"
 #include <time.h>
 
-#define LIGNE 25
-#define COLONNE 25
-//#define SEED 1624441433
-#define SEED time(NULL)
+#define LIGNE 10
+#define COLONNE 10
+#define SEED 1624441433
+//#define SEED time(NULL)
 
 int main() {
-    int tailleCellW, tailleCellH, enParcours = 0, delay, pasW, pasH, max_delay = 10;
+    int tailleCellW, tailleCellH, enParcours = 0, delay, pasW, pasH, max_delay = 5, posPile;
     cellule_t *cellCourante;
+    noeud_t *parentDest;
     file_t *fileParcours;
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *textureMur, *textureSol, *textureSortie, *textureEntree;
-    SDL_Point ptDep, ptArr;
+    SDL_Point ptDep, ptArr, save;
     int window_w, window_h;
     tailleCellH = (WINDOW_H / (LIGNE * 2 + 1));
     tailleCellW = (WINDOW_W / (COLONNE * 2 + 1));
@@ -32,6 +33,7 @@ int main() {
     printf("%d - %d\n", window_w, window_h);
     srand(SEED);
     labyrinthe_t *labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH, 0.05);
+    parentDest = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, window_w, window_h);
@@ -49,42 +51,41 @@ int main() {
         SDL_RenderClear(renderer);
         drawLabyrinthe(renderer, labyrinthe, window_w, window_h, textureMur,
                        textureSol, textureEntree, textureSortie);
-        if (enParcours) {
+        if (enParcours && enParcours != 5) {
             if (file_est_vide(fileParcours)) {
-                enParcours = 4;
+                if (enParcours != 3 && (enParcours != 4)) {
+                    enParcours = 5;
+                    printf("Pile Position : %d\n", posPile);
+                    cellCourante = labyrinthe->tableauCellules[parentDest[posPile]];
+                    posPile--;
+                    ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
+                    ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
+                    ptArr = ptDep;
+
+                } else {
+                    enParcours = 4;
+                }
             } else {
                 switch (enParcours) {
                     case 1:
-                        if (delay == max_delay * 1.5 + 1) {
-                            ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                            ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
+                        if (delay == max_delay * 2) {
                             drawParcours(renderer, cellCourante, labyrinthe->tableauCellules,
                                          labyrinthe->colonnes);
                             cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
                             defiler(fileParcours);
-                            ptArr.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                            ptArr.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
 
                             delay = 0;
                         }
-
-                        drawMove(renderer, ptArr, tailleCellW, tailleCellH);
                         delay++;
                         break;
                     case 2:
-                        if (delay == max_delay *1.5 + 1) {
-                            ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                            ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
+                        if (delay == max_delay * 2) {
                             drawParcours(renderer, cellCourante, labyrinthe->tableauCellules,
                                          labyrinthe->colonnes);
                             cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
                             defiler(fileParcours);
-                            ptArr.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                            ptArr.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
                             delay = 0;
                         }
-
-                        drawMove(renderer, ptArr, tailleCellW, tailleCellH);
                         delay++;
                         break;
                     case 3:
@@ -97,7 +98,6 @@ int main() {
                             defiler(fileParcours);
                             ptArr.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
                             ptArr.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-
                             delay = 0;
                         }
                         delay++;
@@ -109,8 +109,28 @@ int main() {
                 }
             }
         }
-        if(enParcours == 4){
+        if (enParcours == 4) {
             drawMove(renderer, ptArr, tailleCellW, tailleCellH);
+        } else if (enParcours == 5) {
+
+            if (delay == max_delay + 1 && posPile > -1) {
+                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
+                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
+                drawParcours(renderer, cellCourante, labyrinthe->tableauCellules,
+                             labyrinthe->colonnes);
+                cellCourante = labyrinthe->tableauCellules[parentDest[posPile]];
+                posPile--;
+                ptArr.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
+                ptArr.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
+                delay = 0;
+            }
+            delay++;
+            drawMove(renderer, ptDep, tailleCellW, tailleCellH);
+            deplacement(&ptDep, &ptArr, pasW, pasH);
+            if (posPile == -1) {
+                enParcours = 4;
+            }
+
         }
         while (program_on && SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -125,15 +145,11 @@ int main() {
                                 delay = 0;
                                 printf("Dijkstra\n");
                                 reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
-                                fileParcours = dijkstra(labyrinthe, labyrinthe->entree, labyrinthe->sortie);
+                                fileParcours = dijkstra(labyrinthe, labyrinthe->entree, labyrinthe->sortie, parentDest,
+                                                        &posPile);
                                 cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
                                 defiler(fileParcours);
 
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                                ptArr = ptDep;
-
-                                drawMove(renderer, ptDep, tailleCellW, tailleCellH);
                             }
                             break;
                         case SDLK_a:
@@ -143,15 +159,10 @@ int main() {
                                 printf("A* Euclidienne\n");
                                 reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
                                 fileParcours = a_etoile(labyrinthe, labyrinthe->entree, distEuclidienne,
-                                                        labyrinthe->sortie, labyrinthe->colonnes);
+                                                        labyrinthe->sortie, labyrinthe->colonnes, parentDest, &posPile);
                                 cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
                                 defiler(fileParcours);
 
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-
-                                ptArr = ptDep;
-                                drawMove(renderer, ptDep, tailleCellW, tailleCellH);
 
                             }
                             break;
@@ -162,15 +173,10 @@ int main() {
                                 printf("A* Manhattan\n");
                                 reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
                                 fileParcours = a_etoile(labyrinthe, labyrinthe->entree, distManhattan,
-                                                        labyrinthe->sortie, labyrinthe->colonnes);
+                                                        labyrinthe->sortie, labyrinthe->colonnes, parentDest, &posPile);
                                 cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
                                 defiler(fileParcours);
 
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-
-                                ptArr = ptDep;
-                                drawMove(renderer, ptDep, tailleCellW, tailleCellH);
                             }
                             break;
                         case SDLK_e:
@@ -180,15 +186,10 @@ int main() {
                                 printf("A* Tcheby\n");
                                 reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
                                 fileParcours = a_etoile(labyrinthe, labyrinthe->entree, distTchebytchev,
-                                                        labyrinthe->sortie, labyrinthe->colonnes);
+                                                        labyrinthe->sortie, labyrinthe->colonnes, parentDest, &posPile);
                                 cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
                                 defiler(fileParcours);
 
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-
-                                ptArr = ptDep;
-                                drawMove(renderer, ptDep, tailleCellW, tailleCellH);
                             }
                             break;
                         case SDLK_p:
@@ -221,5 +222,6 @@ int main() {
     SDL_DestroyTexture(textureEntree);
     SDL_DestroyTexture(textureSortie);
     endSdl(1, "Fermeture Normale", window, renderer);
+    free(parentDest);
     libererLabyrinthe(labyrinthe);
 }

@@ -13,11 +13,13 @@ float distManhattan(int x1, int x2, int y1, int y2) {
 }
 
 file_t *
-a_etoile(labyrinthe_t *labyrinthe, noeud_t rac, float (*dist)(int, int, int, int), noeud_t dest, int dimLab) {
+a_etoile(labyrinthe_t *labyrinthe, noeud_t rac, float (*dist)(int, int, int, int), noeud_t dest, int dimLab,
+         noeud_t *parentDest, int *pos) {
 
     file_t *file = creer_file();
     int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
-    int *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
+    noeud_t *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
+
     tas_dijkstra_t *tas = creerTasDijktra();
     noeud_t *voisins, voisinAct, noeudCourant;
     int i;
@@ -37,7 +39,7 @@ a_etoile(labyrinthe_t *labyrinthe, noeud_t rac, float (*dist)(int, int, int, int
             voisinAct = voisins[i];
             if (voisinAct != -1 && d[voisinAct] == INT_MAX) {
                 d[voisinAct] = d[noeudCourant] + 1 +
-                               dist(voisinAct / dimLab, dest / dimLab, voisinAct % dimLab, dest % dimLab);
+                               dist(voisinAct % dimLab,dest % dimLab,-voisinAct / dimLab, -dest / dimLab);
                 parent[voisinAct] = noeudCourant;
                 ajoutTasDijkstra(tas, voisinAct, d[voisinAct]);
             }
@@ -46,6 +48,14 @@ a_etoile(labyrinthe_t *labyrinthe, noeud_t rac, float (*dist)(int, int, int, int
         free(voisins);
     }
     enfiler(file, dest);
+    *pos = 0;
+    noeudCourant = dest;
+    while (noeudCourant != -1) {
+        parentDest[*pos] = noeudCourant;
+        noeudCourant = parent[noeudCourant];
+        (*pos)++;
+    }
+    (*pos)--;
     libererTasDijkstra(tas);
     free(d);
     free(parent);

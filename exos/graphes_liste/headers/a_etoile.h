@@ -11,6 +11,6 @@
 float distEuclidienne(int, int, int, int);
 float distTchebytchev(int, int, int, int);
 float distManhattan(int, int, int, int);
-file_t * a_etoile(labyrinthe_t *, noeud_t , float (*)(int, int, int, int), noeud_t , int);
+file_t * a_etoile(labyrinthe_t *, noeud_t , float (*)(int, int, int, int), noeud_t , int, noeud_t *, int *);
 
 #endif

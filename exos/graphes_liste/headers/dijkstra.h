@@ -7,6 +7,6 @@
 #include "file.h"
 #include <limits.h>
 
-file_t * dijkstra(labyrinthe_t *, noeud_t , noeud_t);
+file_t * dijkstra(labyrinthe_t *, noeud_t , noeud_t, noeud_t *, int *);
 
 #endif
