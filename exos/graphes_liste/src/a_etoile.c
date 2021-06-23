@@ -13,7 +13,7 @@ float distManhattan(int x1, int x2, int y1, int y2) {
 }
 
 file_t * a_etoile(graph_t * graphe, int rac, float (*dist)(int, int, int, int), int noeudDest, int dimLab) {
-    file_t * file = creer_file();
+  /*  file_t * file = creer_file();
     int * d = calloc(graphe->nbNoeuds, sizeof(int));
     int * parent = calloc(graphe->nbNoeuds, sizeof(int));
     tas_dijkstra_t * tas = creerTasDijktra();
@@ -48,6 +48,6 @@ file_t * a_etoile(graph_t * graphe, int rac, float (*dist)(int, int, int, int), 
     enfiler(file, noeudDest);
     libererTasDijkstra(tas);
     free(d);
-    free(parent);
-    return file;
+    free(parent);*/
+    return NULL;//file;
 }

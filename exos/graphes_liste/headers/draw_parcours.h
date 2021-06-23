@@ -3,6 +3,7 @@
 
 #include "cellule.h"
 #include "file.h"
+#include "move.h"
 
 int drawParcours(SDL_Renderer * , file_t *, cellule_t *, cellule_t **, int );
 

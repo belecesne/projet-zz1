@@ -3,6 +3,8 @@
 int drawParcours(SDL_Renderer * renderer, file_t * file, cellule_t * cellCourante, cellule_t ** tabCellules, int colonnes){
     colorierVoisins(renderer, cellCourante, tabCellules, colonnes);
     cellCourante->etat = 2;
+    return 0;
+
 }
 
 void reinitEtat(cellule_t ** tabCellules, int taille){

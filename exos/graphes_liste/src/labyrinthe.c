@@ -134,10 +134,11 @@ void creerMur(labyrinthe_t *labyrinthe) {
     }
 }
 
-void drawLabyrinthe(SDL_Renderer *renderer, labyrinthe_t * labyrinthe,int window_w, int window_h, SDL_Texture *textureMur,
-                    SDL_Texture *textureSol, SDL_Texture *textureEntree, SDL_Texture *textureSortie) {
-    int tailleCellW,tailleCellH,i;
-    cellule_t * cell;
+void
+drawLabyrinthe(SDL_Renderer *renderer, labyrinthe_t *labyrinthe, int window_w, int window_h, SDL_Texture *textureMur,
+               SDL_Texture *textureSol, SDL_Texture *textureEntree, SDL_Texture *textureSortie) {
+    int tailleCellW, tailleCellH, i;
+    cellule_t *cell;
     tailleCellH = labyrinthe->tableauCellules[0]->h;
     tailleCellW = labyrinthe->tableauCellules[0]->w;
     drawBack(renderer, window_w, window_h, tailleCellW, tailleCellH, textureMur, textureSol);
@@ -150,4 +151,41 @@ void drawLabyrinthe(SDL_Renderer *renderer, labyrinthe_t * labyrinthe,int window
             drawEntree(renderer, cell, textureSortie);
         }
     }
+}
+
+noeud_t *obtenirVoisins(labyrinthe_t *lab, noeud_t noeud) {
+    int n, x, y, i, j, colonnes;
+    noeud_t * voisins = malloc(sizeof(noeud_t) * 4);
+    for(i = 0; i <4; voisins[i++] = -1);
+    cellule_t *cell;
+
+    colonnes = lab->colonnes;
+    cell = lab->tableauCellules[noeud];
+    i = cell->i;
+    j = cell->j;
+    if ((cell->wall & 0b00000001)) {
+        x = i - 1;
+        y = j;
+        n = x * colonnes + y;
+        voisins[0] = n;
+    }
+    if ((cell->wall & 0b00000010)) {
+        x = i + 1;
+        y = j;
+        n = x * colonnes + y;
+        voisins[2] = n;
+    }
+    if ((cell->wall & 0b00000100)) {
+        x = i;
+        y = j + 1;
+        n = x * colonnes + y;
+        voisins[1] = n;
+    }
+    if ((cell->wall & 0b00001000)) {
+        x = i;
+        y = j - 1;
+        n = x * colonnes + y;
+        voisins[3] = n;
+    }
+    return voisins;
 }

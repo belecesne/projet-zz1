@@ -20,17 +20,21 @@ void reallocTasDijkstra(tas_dijkstra_t * tas, float coeff) {
     tas->length = nouvelle_taille;
 }
 
-void ajoutTasDijkstra(tas_dijkstra_t * tas, elem_tas_dijkstra_t valeur) {
+void ajoutTasDijkstra(tas_dijkstra_t * tas, noeud_t noeud, int dist) {
 	if(tas->indexToInsert >= tas->length) {
 		reallocTasDijkstra(tas, 2);
 	}
+	elem_tas_dijkstra_t e = {noeud,dist};
     int i = tas->indexToInsert;
-    while((i > 0) && (valeur.dist < tas->array[(i-1)/2].dist)) {
+    while((i > 0) && (dist < tas->array[(i-1)/2].dist)) {
         tas->array[i] = tas->array[(i-1)/2];
         i = (i-1)/2;
     }
-    tas->array[i] = valeur;
+    tas->array[i] = e;
     tas->indexToInsert++;
+    for(int j = 0; j < tas->indexToInsert; j++){
+        printf("j : %d Indice : %d - Valeur : %d,\n",j,tas->array[j].som,tas->array[j].dist);
+    }
 }
 
 elem_tas_dijkstra_t racineTasDijktra(tas_dijkstra_t * tas) {
@@ -68,7 +72,7 @@ void libererTasDijkstra(tas_dijkstra_t * tas) {
     free(tas);
 }
 
-void modifValeurTasDijkstra(tas_dijkstra_t * tas, int noeud, int nouvelle_distance) {
+void modifValeurTasDijkstra(tas_dijkstra_t * tas, noeud_t noeud, int nouvelle_distance) {
     int i = 0;
     while((i < tas->indexToInsert) && (tas->array[i].som != noeud)) {
         i++;
