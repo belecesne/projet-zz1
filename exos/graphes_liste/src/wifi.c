@@ -1,7 +1,7 @@
 #include "../headers/wifi.h"
 
-int trouverCentre(labyrinthe * labyrinthe, int alreadyCovered) {
-    int * explored = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
+int trouverCentre(labyrinthe_t * labyrinthe, int alreadyCovered) {
+    /*int * explored = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
     int stop = 0;
     int rac = 0;
     do {
@@ -58,51 +58,58 @@ int trouverCentre(labyrinthe * labyrinthe, int alreadyCovered) {
         rac = ind;
         free(d);
         free(parent);
-    } while(!stop);
-    return rac;
+    } while(!stop);*/
+    return 0;
 }
 
-file_t * limited_DFS(graph_t * graphe, int rac, int limit) {
-    file_t * file = creer_file();
-    int * d = calloc(graphe->nbNoeuds, sizeof(int));
-    int * parent = calloc(graphe->nbNoeuds, sizeof(int));
-    for(int i = 0; i < graphe->nbNoeuds; i++) {
-        if(i == rac) {
+file_t * limitedDFS(labyrinthe_t * labyrinthe, int rac, int limit) {
+    file_t *file = creer_file();
+    int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
+    noeud_t *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
+    for (int i = 0; i < labyrinthe->graphe->nbNoeuds; i++) {
+        if (i == rac) {
             d[i] = 0;
-        }
-        else {
+            parent[i] = -2;
+        } else {
             d[i] = INT_MAX;
+            parent[i] = -1;
         }
-        parent[i] = -1;
     }
-    int noeudCourant = rac;
-    enfiler(file, rac);
-    while (noeudCourant != -1) {
-        int noeudTrouve = -1;
-        int distAAjouter;
-        int i = 0;
-        while ((i < graphe->listeAretes->tailleCourante) && (noeudTrouve == -1) && (d[noeudCourant] < limit)) {
-            if((graphe->listeAretes->array[i]->n1.valeur == noeudCourant) && (parent[graphe->listeAretes->array[i]->n2.valeur] == -1) && (graphe->listeAretes->array[i]->n2.valeur != rac)) {
-                noeudTrouve = graphe->listeAretes->array[i]->n2.valeur;
-                distAAjouter = graphe->listeAretes->array[i]->poids;
-            }
-            else if((graphe->listeAretes->array[i]->n2.valeur == noeudCourant) && (parent[graphe->listeAretes->array[i]->n1.valeur] == -1) && (graphe->listeAretes->array[i]->n1.valeur != rac)) {
-                noeudTrouve = graphe->listeAretes->array[i]->n1.valeur;
-                distAAjouter = graphe->listeAretes->array[i]->poids;
-            }
-            i++;
-        }
-        if(noeudTrouve != -1) {
-            parent[noeudTrouve] = noeudCourant;
-            d[noeudTrouve] = d[noeudCourant] + distAAjouter;
-            noeudCourant = noeudTrouve;
-            enfiler(file, noeudCourant);
+    noeud_t noeudCourant = rac;
+    noeud_t *voisins;
+    while (noeudCourant != -2) {
+        enfiler(file, noeudCourant);
+        voisins = obtenirVoisins(labyrinthe, noeudCourant);
+        if (voisins[0] != -1 && parent[voisins[0]] == -1 && d[parent[voisins[0]] < limit]) {
+            parent[voisins[0]] = noeudCourant;
+            d[voisins[0]] = d[noeudCourant] + 1;
+            noeudCourant = voisins[0];
 
-        }
-        else {
+        } else if (voisins[1] != -1 && parent[voisins[1]] == -1 && d[parent[voisins[1]] < limit]) {
+            parent[voisins[1]] = noeudCourant;
+            d[voisins[1]] = d[noeudCourant] + 1;
+            noeudCourant = voisins[1];
+
+        } else if (voisins[2] != -1 && parent[voisins[2]] == -1 && d[parent[voisins[2]] < limit]) {
+            parent[voisins[2]] = noeudCourant;
+            d[voisins[2]] = d[noeudCourant] + 1;
+            noeudCourant = voisins[2];
+
+        } else if (voisins[3] != -1 && parent[voisins[3]] == -1 && d[parent[voisins[3]] < limit]) {
+            parent[voisins[3]] = noeudCourant;
+            d[voisins[3]] = d[noeudCourant] + 1;
+            noeudCourant = voisins[3];
+        } else {
             noeudCourant = parent[noeudCourant];
         }
+
     }
+    enfiler(file, rac);
+    for(int i = 0; i < labyrinthe->graphe->nbNoeuds; i++){
+        if(d[i]<= limit)
+            printf("%d - %d\n",i,d[i]);
+    }
+    afficher_file(file);
     free(d);
     free(parent);
     return file;

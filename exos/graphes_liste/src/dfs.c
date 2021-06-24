@@ -15,7 +15,7 @@ file_t *dfs(labyrinthe_t *labyrinthe, noeud_t rac) {
         }
     }
     noeud_t noeudCourant = rac;
-    noeud_t *voisins, voisinAct;
+    noeud_t *voisins;
     while (noeudCourant != -2) {
         enfiler(file, noeudCourant);
         voisins = obtenirVoisins(labyrinthe, noeudCourant);
@@ -43,7 +43,6 @@ file_t *dfs(labyrinthe_t *labyrinthe, noeud_t rac) {
         }
 
     }
-
     enfiler(file, rac);
     free(d);
     free(parent);
