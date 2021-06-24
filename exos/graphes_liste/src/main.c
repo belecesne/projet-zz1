@@ -8,10 +8,11 @@
 #include "../headers/draw_parcours.h"
 #include "../headers/file.h"
 #include "../headers/move.h"
+#include "../headers/wifi.h"
 #include <time.h>
 
-#define LIGNE 10
-#define COLONNE 10
+#define LIGNE 20
+#define COLONNE 20
 #define SEED 1624441433
 //#define SEED time(NULL)
 
@@ -33,6 +34,7 @@ int main() {
     printf("%d - %d\n", window_w, window_h);
     srand(SEED);
     labyrinthe_t *labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH, 0.05);
+	printf("%d\n", trouverCentre(labyrinthe->graphe));
     parentDest = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
