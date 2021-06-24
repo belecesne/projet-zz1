@@ -21,7 +21,7 @@ void genererTableauCellule(labyrinthe_t* lab, int weight, int height){
 	creerMur(lab);
 }
 
-labyrinthe_t* creerLabyrintheQqc(int lignes, int colonnes, int weight, int height, double proba){
+labyrinthe_t* creerLabyrintheQqc(int lignes, int colonnes, int weight, int height){
 	graph_t* graphe;
 	graphe = genererGrapheGrille(lignes, colonnes);
 	labyrinthe_t* labyrinthe;
@@ -30,7 +30,7 @@ labyrinthe_t* creerLabyrintheQqc(int lignes, int colonnes, int weight, int heigh
 	labyrinthe->lignes = lignes;
 	labyrinthe->graphe = nouveauGraphe(lignes * colonnes);
 	labyrinthe->tableauCellules = calloc(lignes * colonnes, sizeof(cellule_t*));
-	kruskalFisherYatesProba(graphe, labyrinthe, proba);
+	kruskalFisherYates(graphe, labyrinthe);
 
 	genererTableauCellule(labyrinthe, weight, height);
 	return labyrinthe;

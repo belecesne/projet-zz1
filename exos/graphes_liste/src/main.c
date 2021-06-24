@@ -3,25 +3,27 @@
 #include "../headers/graphics.h"
 #include "../headers/cellule.h"
 #include <time.h>
-#define LIGNE 50
-#define COLONNE 50
+#define LIGNE 10
+#define COLONNE 10
 #define SEED 42
 
 int main() {
-    int tailleCellW,tailleCellH;
+    int tailleCellW,tailleCellH, window_h, window_w;
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
     int i = 0;
-	tailleCellH = WINDOW_H/LIGNE;
-	tailleCellW = WINDOW_W/COLONNE;
-    cellule_t * cell;
+	tailleCellH = (WINDOW_H / (LIGNE + 1));
+	tailleCellW = (WINDOW_W / (COLONNE + 1));
+	window_w = (tailleCellW) * (COLONNE+ 1);
+	window_h = (tailleCellH) * (LIGNE+ 1);
+
+	cellule_t * cell;
     srand(SEED);
-	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH, 0.05);
-	//generateGraphvizGraph(labyrinthe->graphe, "graphe_FYP");
+	labyrinthe_t * labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH);
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
-    window = createWindow(10, 10, WINDOW_W, WINDOW_H);
+    window = createWindow(10, 10, window_w, window_h);
     renderer = createRenderer(window);
 
     SDL_bool program_on = SDL_TRUE;
