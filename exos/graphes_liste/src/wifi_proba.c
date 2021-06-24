@@ -168,7 +168,9 @@ double calculProba(int D1, int D2, double T) {
     return proba > x;
 }
 
-void recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, double erreur) {
+file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, double erreur) {
+    file_t file;
+    file = creer_file();
     int i = 0, compteur = 0;
     int max = -1, min;
     double T;
@@ -210,6 +212,9 @@ void recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, doubl
             }
             if(bool){
                 bornes[borneChoisie] = cell->noeud;
+
+                enfiler(file,borneChoisie);
+                enfiler(file,cell->noeud);
             }
             //printf("Calcul des probas : Accepete ? : %d!\n",x);
             //printf("Emplacement de la nouvelle borne : %d\n",bornes[borneChoisie]);
@@ -238,4 +243,5 @@ void recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, doubl
     }
     free(noeudsLoins);
     free(distance_loin);
+    return file;
 }

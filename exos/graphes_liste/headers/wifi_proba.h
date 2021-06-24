@@ -10,5 +10,5 @@
 int longueurPlusCourtChemin(labyrinthe_t *, noeud_t, noeud_t);
 int distancePlusLoin(labyrinthe_t *, noeud_t, noeud_t *);
 noeud_t dfs_max(labyrinthe_t *, noeud_t );
-void recuitSimule(labyrinthe_t *, noeud_t *, int, double);
+file_t * recuitSimule(labyrinthe_t *, noeud_t *, int, double);
 #endif //PROJET_ZZ1_WIFI_PROBA_H
