@@ -10,8 +10,8 @@
 #include "../headers/move.h"
 #include <time.h>
 
-#define LIGNE 10
-#define COLONNE 10
+#define LIGNE 4
+#define COLONNE 4
 #define SEED 1624441433
 //#define SEED time(NULL)
 
@@ -198,7 +198,7 @@ int main() {
                                 enParcours = 3;
                                 printf("Dfs\n");
                                 reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
-                                fileParcours = dfs(labyrinthe->graphe, labyrinthe->entree);
+                                fileParcours = dfs(labyrinthe, labyrinthe->entree);
                                 cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
                                 defiler(fileParcours);
                                 ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
@@ -222,6 +222,7 @@ int main() {
     SDL_DestroyTexture(textureEntree);
     SDL_DestroyTexture(textureSortie);
     endSdl(1, "Fermeture Normale", window, renderer);
+    generateGraphvizGraph(labyrinthe->graphe, "DEBUG");
     free(parentDest);
     libererLabyrinthe(labyrinthe);
 }
