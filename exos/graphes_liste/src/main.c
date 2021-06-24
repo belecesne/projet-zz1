@@ -12,23 +12,23 @@
 #include "../headers/wifi.h"
 #include <time.h>
 
-#define LIGNE 9
-#define COLONNE 9
+#define LIGNE 15
+#define COLONNE 15
 #define SEED time(NULL)//1624555474//time(NULL)//1624554986//1624441433
 #define PROBA 1.0
 #define N_BORNES 5
 //#define SEED time(NULL)
 
 int main() {
-    int tailleCellW, tailleCellH, enParcours = 0, delay, pasW, pasH, max_delay = 5, posPile;
-    cellule_t *cellCourante;
+    int tailleCellW, tailleCellH, enParcours = 0, delay, pasW, pasH, max_delay = 5, posPile, affichageAntenne;
+    cellule_t *cellCourante, *cell;
     noeud_t *parentDest;
-    file_t *fileParcours;
+    file_t *fileParcours, *fileAntenne;
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_Texture *textureMur, *textureSol, *textureSortie, *textureEntree;
-    SDL_Point ptDep, ptArr, save;
+    SDL_Texture *textureMur, *textureSol, *textureSortie, *textureEntree, *textureAntenne;
+    SDL_Point ptDep, ptArr, point;
     long int seed = SEED;
     int window_w, window_h;
     tailleCellH = (WINDOW_H / (LIGNE * 2 + 1));
@@ -37,28 +37,27 @@ int main() {
     window_h = (tailleCellH) * (LIGNE * 2 + 1);
     printf("%d - %d\n", window_w, window_h);
     srand(seed);
-    labyrinthe_t *labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH,PROBA);
-	//printf("Centre trouvé en %d\n", trouverCentre(labyrinthe));
-	//limitedDFS(labyrinthe,labyrinthe->entree,3);
+    labyrinthe_t *labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH, PROBA);
+    //printf("Centre trouvé en %d\n", trouverCentre(labyrinthe));
+    //limitedDFS(labyrinthe,labyrinthe->entree,3);
     //posBornesWifi(labyrinthe,2);
     noeud_t bornes[N_BORNES];
-    for(int i = 0; i < N_BORNES; i++){
-        bornes[i] = rand()%labyrinthe->graphe->nbNoeuds;
-        printf("Borne n°%d en %d\n",i,bornes[i]);
+    for (int i = 0; i < N_BORNES; i++) {
+        bornes[i] = rand() % labyrinthe->graphe->nbNoeuds;
+        printf("Borne n°%d en %d\n", i, bornes[i]);
     }
-   /* bornes[0] = 0;
-    bornes[1] = 8;
-    bornes[2] = 72;
-    bornes[3] = 80;*/
-    recuitSimule(labyrinthe,bornes,N_BORNES,0.001);
-    for(int i = 0; i < LIGNE; i++){
-        for(int j = 0; j < COLONNE; j++){
-            printf("%d ",i*COLONNE + j);
+    /* bornes[0] = 0;
+     bornes[1] = 8;
+     bornes[2] = 72;
+     bornes[3] = 80;*/
+    recuitSimule(labyrinthe, bornes, N_BORNES, 0.001);
+    for (int i = 0; i < LIGNE; i++) {
+        for (int j = 0; j < COLONNE; j++) {
+            printf("%d ", i * COLONNE + j);
         }
         printf("\n");
     }
     printf("GRAINE DE GENERATION DE LA FONCTION ALEATOIRE : %ld\n", seed);
-    /*
     parentDest = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
@@ -68,6 +67,7 @@ int main() {
     textureSol = IMG_LoadTexture(renderer, "data/ground.png");
     textureEntree = IMG_LoadTexture(renderer, "data/entree.png");
     textureSortie = IMG_LoadTexture(renderer, "data/sortie.png");
+    textureAntenne = IMG_LoadTexture(renderer, "data/antenne.png");
     SDL_bool program_on = SDL_TRUE;
     pasW = tailleCellW / max_delay * 2;
     pasH = tailleCellH / max_delay * 2;
@@ -75,7 +75,16 @@ int main() {
         SDL_Event event;
         SDL_RenderClear(renderer);
         drawLabyrinthe(renderer, labyrinthe, window_w, window_h, textureMur,
-                       textureSol, textureEntree, textureSortie);
+                       textureSol, textureEntree, textureSortie,!affichageAntenne);
+        if (affichageAntenne) {
+            for (int i = 0; i < N_BORNES; i++) {
+                cell = labyrinthe->tableauCellules[bornes[i]];
+                point.x = (cell->j * cell->w) * 2 + cell->w;
+                point.y = (cell->i * cell->h) * 2 + cell->h;
+                drawText(renderer, point, tailleCellW, tailleCellH, textureAntenne);
+            }
+
+        }
         if (enParcours && enParcours != 5) {
             if (file_est_vide(fileParcours)) {
                 if (enParcours != 3 && (enParcours != 4)) {
@@ -165,6 +174,7 @@ int main() {
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
                         case SDLK_d:
+                            affichageAntenne = 0;
                             if (enParcours == 0 || enParcours == 4) {
                                 enParcours = 1;
                                 delay = 0;
@@ -178,6 +188,7 @@ int main() {
                             }
                             break;
                         case SDLK_a:
+                            affichageAntenne = 0;
                             if (enParcours == 0 || enParcours == 4) {
                                 enParcours = 2;
                                 delay = 0;
@@ -192,6 +203,7 @@ int main() {
                             }
                             break;
                         case SDLK_z:
+                            affichageAntenne = 0;
                             if (enParcours == 0 || enParcours == 4) {
                                 enParcours = 2;
                                 delay = 0;
@@ -205,6 +217,7 @@ int main() {
                             }
                             break;
                         case SDLK_e:
+                            affichageAntenne = 0;
                             if (enParcours == 0 || enParcours == 4) {
                                 enParcours = 2;
                                 delay = 0;
@@ -218,6 +231,7 @@ int main() {
                             }
                             break;
                         case SDLK_p:
+                            affichageAntenne = 0;
                             if (enParcours == 0 || enParcours == 4) {
                                 delay = 0;
                                 enParcours = 3;
@@ -229,6 +243,15 @@ int main() {
                                 ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
                                 ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
                             }
+                            break;
+                        case SDLK_r:
+                            for (int i = 0; i < N_BORNES; i++) {
+                                bornes[i] = rand() % labyrinthe->graphe->nbNoeuds;
+                                printf("Borne n°%d en %d\n", i, bornes[i]);
+                            }
+                            recuitSimule(labyrinthe, bornes, N_BORNES, 0.001);
+                            affichageAntenne = 1;
+
                             break;
                         default:
                             break;
@@ -242,12 +265,15 @@ int main() {
         SDL_RenderPresent(renderer);
         SDL_Delay(100);
     }
+
     SDL_DestroyTexture(textureSol);
     SDL_DestroyTexture(textureMur);
     SDL_DestroyTexture(textureEntree);
     SDL_DestroyTexture(textureSortie);
+    SDL_DestroyTexture(textureAntenne);
     endSdl(1, "Fermeture Normale", window, renderer);
-    generateGraphvizGraph(labyrinthe->graphe, "DEBUG");
-    free(parentDest);*/
+    generateGraphvizGraph(labyrinthe
+                                  ->graphe, "DEBUG");
+    free(parentDest);
     libererLabyrinthe(labyrinthe);
 }

@@ -136,7 +136,7 @@ void creerMur(labyrinthe_t *labyrinthe) {
 
 void
 drawLabyrinthe(SDL_Renderer *renderer, labyrinthe_t *labyrinthe, int window_w, int window_h, SDL_Texture *textureMur,
-               SDL_Texture *textureSol, SDL_Texture *textureEntree, SDL_Texture *textureSortie) {
+               SDL_Texture *textureSol, SDL_Texture *textureEntree, SDL_Texture *textureSortie, int parcours) {
     int tailleCellW, tailleCellH, i;
     cellule_t *cell;
     tailleCellH = labyrinthe->tableauCellules[0]->h;
@@ -145,9 +145,9 @@ drawLabyrinthe(SDL_Renderer *renderer, labyrinthe_t *labyrinthe, int window_w, i
     for (i = 0; i < labyrinthe->graphe->nbNoeuds; i++) {
         cell = labyrinthe->tableauCellules[i];
         drawCellText(renderer, cell, textureMur, textureSol);
-        if (i == labyrinthe->entree) {
+        if (i == labyrinthe->entree && parcours) {
             drawEntree(renderer, cell, textureEntree);
-        } else if (i == labyrinthe->sortie) {
+        } else if (i == labyrinthe->sortie && parcours) {
             drawEntree(renderer, cell, textureSortie);
         }
     }

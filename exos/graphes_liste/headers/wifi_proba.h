@@ -6,6 +6,8 @@
 #include "math.h"
 #include <limits.h>
 #define MAX(a,b) (((a)>(b))?(a):(b))
+#define COMPTEUR 28
+#define COEFF 0.99
 
 int longueurPlusCourtChemin(labyrinthe_t *, noeud_t, noeud_t);
 int distancePlusLoin(labyrinthe_t *, noeud_t, noeud_t *);

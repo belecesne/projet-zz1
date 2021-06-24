@@ -169,7 +169,7 @@ double calculProba(int D1, int D2, double T) {
 }
 
 file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, double erreur) {
-    file_t file;
+    file_t * file;
     file = creer_file();
     int i = 0, compteur = 0;
     int max = -1, min;
@@ -221,9 +221,9 @@ file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, d
 
         }
 
-        if (compteur == 20) {
+        if (compteur == COMPTEUR) {
             // printf("La valeur de la température est : %lf\n",T);
-            T = T * 0.99;
+            T = T * COEFF;
             compteur = 0;
         }
         compteur++;

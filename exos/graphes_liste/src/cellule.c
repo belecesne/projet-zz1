@@ -116,10 +116,8 @@ void drawBack(SDL_Renderer *renderer, int window_w, int window_h, int wCell, int
 }
 
 void drawText(SDL_Renderer *renderer, SDL_Point p1, int w, int h, SDL_Texture *texture) {
-
     SDL_Rect source = {0};
     SDL_Rect destination = {p1.x, p1.y, w, h};
-
     SDL_QueryTexture(texture, NULL, NULL, &source.w, &source.h);
     SDL_RenderCopy(renderer, texture, &source, &destination);
 }
