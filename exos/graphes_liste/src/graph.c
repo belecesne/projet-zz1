@@ -30,8 +30,8 @@ void generateGraphvizGraph(graph_t* graphe, char* filename){
 	}
 	maillon_arete_t* cour = graphe->listeAretes;
 	while(cour != NULL){
-		fprintf(dotFile, "  \"%d\" -- \"%d\" [weight=%d, label=\"%d\"];\n", cour->arete->n1.valeur,
-		        cour->arete->n2.valeur, cour->arete->poids, cour->arete->poids);
+		fprintf(dotFile, "  \"%d\" -- \"%d\";\n", cour->arete->n1.valeur,
+		        cour->arete->n2.valeur);
 		cour = cour->suivant;
 	}
 
