@@ -6,6 +6,6 @@
 #include <limits.h>
 
 int trouverCentre(labyrinthe_t *, int);
-file_t * limitedDFS(labyrinthe_t *, int, int);
-
+int limitedDFS(labyrinthe_t *, int, int, int *);
+file_t * posBornesWifi(labyrinthe_t *, int);
 #endif

@@ -8,12 +8,15 @@
 #include "../headers/draw_parcours.h"
 #include "../headers/file.h"
 #include "../headers/move.h"
+#include "../headers/wifi_proba.h"
 #include "../headers/wifi.h"
 #include <time.h>
 
-#define LIGNE 4
-#define COLONNE 4
-#define SEED 1624441433
+#define LIGNE 9
+#define COLONNE 9
+#define SEED time(NULL)//1624555474//time(NULL)//1624554986//1624441433
+#define PROBA 1.0
+#define N_BORNES 5
 //#define SEED time(NULL)
 
 int main() {
@@ -26,16 +29,36 @@ int main() {
     SDL_Renderer *renderer;
     SDL_Texture *textureMur, *textureSol, *textureSortie, *textureEntree;
     SDL_Point ptDep, ptArr, save;
+    long int seed = SEED;
     int window_w, window_h;
     tailleCellH = (WINDOW_H / (LIGNE * 2 + 1));
     tailleCellW = (WINDOW_W / (COLONNE * 2 + 1));
     window_w = (tailleCellW) * (COLONNE * 2 + 1);
     window_h = (tailleCellH) * (LIGNE * 2 + 1);
     printf("%d - %d\n", window_w, window_h);
-    srand(SEED);
-    labyrinthe_t *labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH, 0.05);
-	//printf("%d\n", trouverCentre(labyrinthe->graphe));
-	limitedDFS(labyrinthe,labyrinthe->entree,3);
+    srand(seed);
+    labyrinthe_t *labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH,PROBA);
+	//printf("Centre trouvé en %d\n", trouverCentre(labyrinthe));
+	//limitedDFS(labyrinthe,labyrinthe->entree,3);
+    //posBornesWifi(labyrinthe,2);
+    noeud_t bornes[N_BORNES];
+    for(int i = 0; i < N_BORNES; i++){
+        bornes[i] = rand()%labyrinthe->graphe->nbNoeuds;
+        printf("Borne n°%d en %d\n",i,bornes[i]);
+    }
+   /* bornes[0] = 0;
+    bornes[1] = 8;
+    bornes[2] = 72;
+    bornes[3] = 80;*/
+    recuitSimule(labyrinthe,bornes,N_BORNES,0.001);
+    for(int i = 0; i < LIGNE; i++){
+        for(int j = 0; j < COLONNE; j++){
+            printf("%d ",i*COLONNE + j);
+        }
+        printf("\n");
+    }
+    printf("GRAINE DE GENERATION DE LA FONCTION ALEATOIRE : %ld\n", seed);
+    /*
     parentDest = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
     initGraphics();
     SDL_GetCurrentDisplayMode(0, &disp);
@@ -45,7 +68,6 @@ int main() {
     textureSol = IMG_LoadTexture(renderer, "data/ground.png");
     textureEntree = IMG_LoadTexture(renderer, "data/entree.png");
     textureSortie = IMG_LoadTexture(renderer, "data/sortie.png");
-    printf("GRAINE DE GENERATION DE LA FONCTION ALEATOIRE : %ld\n", SEED);
     SDL_bool program_on = SDL_TRUE;
     pasW = tailleCellW / max_delay * 2;
     pasH = tailleCellH / max_delay * 2;
@@ -218,7 +240,7 @@ int main() {
             }
         }
         SDL_RenderPresent(renderer);
-        SDL_Delay(2);
+        SDL_Delay(100);
     }
     SDL_DestroyTexture(textureSol);
     SDL_DestroyTexture(textureMur);
@@ -226,6 +248,6 @@ int main() {
     SDL_DestroyTexture(textureSortie);
     endSdl(1, "Fermeture Normale", window, renderer);
     generateGraphvizGraph(labyrinthe->graphe, "DEBUG");
-    free(parentDest);
+    free(parentDest);*/
     libererLabyrinthe(labyrinthe);
 }
