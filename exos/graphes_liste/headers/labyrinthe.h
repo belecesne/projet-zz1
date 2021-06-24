@@ -27,7 +27,7 @@ void libererLabyrinthe(labyrinthe_t *);
 void creerMur(labyrinthe_t *);
 
 void drawLabyrinthe(SDL_Renderer *, labyrinthe_t *, int, int, SDL_Texture *,
-                    SDL_Texture *, SDL_Texture *, SDL_Texture *);
+                    SDL_Texture *, SDL_Texture *, SDL_Texture *, SDL_Texture *);
 
 noeud_t * obtenirVoisins(labyrinthe_t *, noeud_t );
 

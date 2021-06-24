@@ -15,7 +15,7 @@ file_t *dfs(labyrinthe_t *labyrinthe, noeud_t rac) {
         }
     }
     noeud_t noeudCourant = rac;
-    noeud_t *voisins, voisinAct;
+    noeud_t *voisins;
     while (noeudCourant != -2) {
         enfiler(file, noeudCourant);
         voisins = obtenirVoisins(labyrinthe, noeudCourant);
@@ -49,49 +49,3 @@ file_t *dfs(labyrinthe_t *labyrinthe, noeud_t rac) {
     free(parent);
     return file;
 }
-/*
-file_t *dfs(labyrinthe_t *labyrinthe, noeud_t rac) {
-    file_t *file = creer_file();
-    int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
-    noeud_t *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
-    for (int i = 0; i < labyrinthe->graphe->nbNoeuds; i++) {
-        if (i == rac) {
-            d[i] = 0;
-        } else {
-            d[i] = INT_MAX;
-        }
-        parent[i] = -1;
-    }
-    noeud_t noeudTrouve = -1;
-    noeud_t *voisins, voisinAct;
-    int distAAjouter, i, enfile = 0;
-    noeud_t noeudCourant = rac;
-    enfiler(file, noeudCourant);
-    i = 0;
-    while (noeudCourant != -1) {
-        voisins = obtenirVoisins(labyrinthe, noeudCourant);
-        while (i < 4 && voisins[i] == -1) {
-            i++;
-        }
-        voisinAct = voisins[i];
-        if (voisinAct != -1 && d[voisinAct] == INT_MAX) {
-            enfile = 1;
-            d[voisinAct] = d[noeudCourant] + 1;
-            parent[voisinAct] = noeudCourant;
-        } else {
-            noeudCourant = parent[noeudCourant];
-        }
-        if (i == 4) {
-            i = 0;
-        }
-        if (enfile) {
-            enfiler(file, voisinAct);
-            enfile = 0;
-        }
-    }
-    enfiler(file, rac);
-    afficher_file(file);
-    free(d);
-    free(parent);
-    return file;
-}*/

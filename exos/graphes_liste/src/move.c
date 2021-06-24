@@ -1,41 +1,53 @@
 #include "../headers/move.h"
 
 
-void deplacement(SDL_Point * pointDepart, SDL_Point * pointArrivee, int pasW, int pasH){
-    if(pointDepart->y == pointArrivee->y && pointDepart->x < pointArrivee->x){
-        pointDepart->x += pasW;
-    }
-    else if(pointDepart->y == pointArrivee->y && pointDepart->x > pointArrivee->x){
-        pointDepart->x -= pasW;
-    }
-    else if(pointDepart->x == pointArrivee->x && pointDepart->y < pointArrivee->y){
-        pointDepart->y += pasH;
-    }
-    else if(pointDepart->x == pointArrivee->x && pointDepart->y > pointArrivee->y){
-        pointDepart->y -= pasH;
-    }
+int deplacement(SDL_Point * pointDepart, SDL_Point * pointArrivee, int cellW, int cellH){
+	int retour = 5, pas;
+	if(pointDepart->y == pointArrivee->y && pointDepart->x < pointArrivee->x){
+		pas = cellW / 12 * 2;
+		pointDepart->x += pas;
+		retour = 1;
+	}
+	else if(pointDepart->y == pointArrivee->y && pointDepart->x > pointArrivee->x){
+		pas = cellW / 12 * 2;
+		pointDepart->x -= pas;
+		retour = 2;
+	}
+	else if(pointDepart->x == pointArrivee->x && pointDepart->y < pointArrivee->y){
+		pas = cellH / 12 * 2;
+		pointDepart->y += pas;
+		retour = 3;
+	}
+	else if(pointDepart->x == pointArrivee->x && pointDepart->y > pointArrivee->y){
+		pas = cellH / 12 * 2;
+		pointDepart->y -= pas;
+		retour = 4;
+	}
+	return retour;
 }
 
-void drawMoveProfondeur(SDL_Renderer * renderer, SDL_Point point, int cellW, int cellH) {
-    SDL_Rect rect;
-    rect.w = cellW/2;
-    rect.h = cellH/2;
-    rect.x = point.x+(rect.w)/2;
-    rect.y = point.y+(rect.h)/2;
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &rect);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-}
-
-void drawMove(SDL_Renderer * renderer, SDL_Point point, int cellW, int cellH) {
-    SDL_Rect rect;
-    rect.w = cellW/2;
-    rect.h = cellH/2;
-    rect.x = point.x+(rect.w)/2;
-    rect.y = point.y+(rect.h)/2;
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &rect);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
+void drawMove(SDL_Renderer * renderer, SDL_Point point, int cellW, int cellH, int direction, SDL_Texture * textureCarre, SDL_Rect ** frames, int * currentFrame) {
+	switch (direction) {
+		case 1:
+			drawOneFrame(frames[0], textureCarre, renderer, *currentFrame, point, cellW, cellH, 0);
+			(*currentFrame) = ((*currentFrame) + 1) % 6;
+			break;
+		case 2:
+			drawOneFrame(frames[0], textureCarre, renderer, *currentFrame, point, cellW, cellH, 1);
+			(*currentFrame) = ((*currentFrame) + 1) % 6;
+			break;
+		case 3:
+			drawOneFrame(frames[1], textureCarre, renderer, *currentFrame, point, cellW, cellH, 0);
+			(*currentFrame)++;
+			break;
+		case 4:
+			drawOneFrame(frames[1], textureCarre, renderer, 11 - *currentFrame, point, cellW, cellH, 0);
+			(*currentFrame)++;
+			break;
+		case 5:
+			drawOneFrame(frames[2], textureCarre, renderer, *currentFrame, point, cellW, cellH, 0);
+			break;
+		default:
+			break;
+	}
 }
