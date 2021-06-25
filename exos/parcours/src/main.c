@@ -41,7 +41,7 @@ int main(){
 	                        "A* Euclidienne . . .", "A* Tchebychev .", "A* Tchebychev . .", "A* Tchebychev . . .",
 	                        "A* Manhattan .", "A* Manhattan . .", "A* Manhattan . . .", "DFS .", "DFS . .", "DFS . . .",
 	                        "Labyrinthe", "Labyrinthe", "Labyrinthe"};
-	offset = 15;
+	offset = 15, t = 0;
 	SDL_GetCurrentDisplayMode(0, &disp);
 	window = createWindow(10, 10, window_w, window_h);
 	renderer = createRenderer(window);
