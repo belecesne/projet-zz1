@@ -159,9 +159,6 @@ void defiler(file_t * file) {
     if(!file_est_vide(file)) {
         file->tete = (file->tete + 1) % file->taille;
         file->nb_elements --;
-        if(file->nb_elements <= 0.25 * file->taille){
-            reallouer_file(file, 0.5);
-        }
     }
 }
 
