@@ -15,15 +15,19 @@
 #define LIGNE 15
 #define COLONNE 15
 #define SEED time(NULL)//1624555474//time(NULL)//1624554986//1624441433
-#define PROBA 1.0
+#define PROBA 0.7
 #define N_BORNES 5
 //#define SEED time(NULL)
 
 int main() {
-    int tailleCellW, tailleCellH, enParcours = 0, delay, max_delay = 5, posPile, affichageAntenne = 0, dejaDeplace,borneChoisie;
+    int tailleCellW, tailleCellH, enParcours = 0, delay, max_delay = 5, posPile, affichageAntenne = 0, dejaDeplace, borneChoisie, parcouru = 0, casesRecouvertes = 0;
     cellule_t *cellCourante, *cell;
     noeud_t *parentDest;
-    file_t *fileParcours, *fileAntenne;
+    file_t *fileParcours, *fileAntenne, *fileCourante, *fileFuture, *fileTemp;
+    fileCourante = creer_file();
+    fileFuture = creer_file();
+    fileParcours = NULL;
+    fileAntenne = NULL;
     SDL_DisplayMode disp;
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -41,10 +45,9 @@ int main() {
     //printf("Centre trouvé en %d\n", trouverCentre(labyrinthe));
     //limitedDFS(labyrinthe,labyrinthe->entree,3);
     //posBornesWifi(labyrinthe,2);
-    noeud_t bornes[N_BORNES];
+    noeud_t bornes[N_BORNES], *voisins;
     for (int i = 0; i < N_BORNES; i++) {
-        bornes[i] = rand() % labyrinthe->graphe->nbNoeuds;
-        printf("Borne n°%d en %d\n", i, bornes[i]);
+        bornes[i] = -1;
     }
     printf("GRAINE DE GENERATION DE LA FONCTION ALEATOIRE : %ld\n", seed);
     parentDest = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
@@ -75,6 +78,7 @@ int main() {
                        textureSol, textureEntree, textureSortie, textureSolGris, !affichageAntenne);
         if (affichageAntenne && !file_est_vide(fileAntenne)) {
             dejaDeplace = 0;
+            parcouru = 1;
             for (int i = 0; i < N_BORNES; i++) {
                 borneChoisie = tete_file(fileAntenne);
                 if (borneChoisie == i && !dejaDeplace) {
@@ -95,13 +99,39 @@ int main() {
                     drawText(renderer, pointAntenne, tailleCellW, tailleCellH, textureAntenne);
                 }
             }
-        } else {
+            for(int i = 0; i < N_BORNES; i++){
+                if (file_est_vide(fileAntenne)) {
+                    enfiler(fileCourante, bornes[i]);
+                }
+            }
+        } else if (bornes[0] != -1) {
             for (int i = 0; i < N_BORNES; i++) {
                 cell = labyrinthe->tableauCellules[bornes[i]];
                 pointAntenne.x = (cell->j * cell->w) * 2 + cell->w;
                 pointAntenne.y = (cell->i * cell->h) * 2 + cell->h;
                 drawText(renderer, pointAntenne, tailleCellW, tailleCellH, textureAntenne);
             }
+            if (parcouru && casesRecouvertes < labyrinthe->graphe->nbNoeuds && delay == max_delay*2) {
+                delay = 0;
+                while (!file_est_vide(fileCourante)) {
+                    borneChoisie = tete_file(fileCourante);
+                    defiler(fileCourante);
+                    cell = labyrinthe->tableauCellules[borneChoisie];
+                    voisins = obtenirVoisins(labyrinthe, borneChoisie);
+                    labyrinthe->tableauCellules[borneChoisie]->etat = 2;
+                    for (int i = 0; i < 4; i++) {
+                        if (voisins[i] != -1 && labyrinthe->tableauCellules[voisins[i]]->etat == 0) {
+                            casesRecouvertes++;
+                            labyrinthe->tableauCellules[voisins[i]]->etat = 2;
+                            enfiler(fileFuture, voisins[i]);
+                        }
+                    }
+                }
+                fileTemp = fileCourante;
+                fileCourante = fileFuture;
+                fileFuture = fileTemp;
+            }
+            delay++;
         }
         if (enParcours && enParcours != 5) {
             if (file_est_vide(fileParcours)) {
@@ -309,12 +339,16 @@ int main() {
                             }
                             break;
                         case SDLK_r:
+                            liberer_file(fileAntenne);
+                            reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
                             for (int i = 0; i < N_BORNES; i++) {
                                 bornes[i] = rand() % labyrinthe->graphe->nbNoeuds;
                             }
                             fileAntenne = recuitSimule(labyrinthe, bornes, N_BORNES, 0.000001);
                             printf("Longueur de la file : %d \n", fileAntenne->nb_elements / 2);
                             affichageAntenne = 1;
+                            delay = 0;
+                            casesRecouvertes = 0;
 
                             break;
                         default:
@@ -338,5 +372,9 @@ int main() {
     SDL_DestroyTexture(textureSolGris);
     endSdl(1, "Fermeture Normale", window, renderer);
     free(parentDest);
+    liberer_file(fileAntenne);
+    liberer_file(fileParcours);
+    liberer_file(fileCourante);
+    liberer_file(fileFuture);
     libererLabyrinthe(labyrinthe);
 }

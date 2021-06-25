@@ -205,3 +205,6 @@ void colorierVoisins(SDL_Renderer *renderer, cellule_t *cell, cellule_t **tabCel
     }
 
 }
+
+
+

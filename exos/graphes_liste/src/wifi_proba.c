@@ -171,7 +171,7 @@ double calculProba(int D1, int D2, double T) {
 file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, double erreur) {
     file_t * file;
     file = creer_file();
-    int i = 0, compteur = 0;
+    int i = 0, compteur = 0, comptFixe = 0;
     int max = -1, min;
     double T;
     noeud_t *noeudsLoins, noeudLoin, borneChoisie;
@@ -181,7 +181,8 @@ file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, d
     distance_loin = malloc(sizeof(int) * nbBornes);
 
     T = MAX(labyrinthe->lignes, labyrinthe->colonnes);
-    while (T > erreur) {
+    while (comptFixe < 200) {
+        comptFixe++;
         max = -1;
         //printf("------------------------------\n");
         //printf("DEBUT\n");
