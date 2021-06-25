@@ -9,19 +9,18 @@
 #include "../headers/file.h"
 #include "../headers/move.h"
 #include "../headers/wifi_proba.h"
-#include "../headers/wifi.h"
 #include <time.h>
 
-#define LIGNE 15
-#define COLONNE 15
+#define LIGNE 10
+#define COLONNE 10
 #define SEED time(NULL)//1624555474//time(NULL)//1624554986//1624441433
 #define PROBA 0.7
-#define N_BORNES 5
+#define N_BORNES 4
 //#define SEED time(NULL)
 
 int main() {
-    int tailleCellW, tailleCellH, enParcours = 0, delay, max_delay = 5, posPile, affichageAntenne = 0, dejaDeplace, borneChoisie, parcouru = 0, casesRecouvertes = 0;
-    cellule_t *cellCourante, *cell;
+    int tailleCellW, tailleCellH, delay, max_delay = 5, affichageAntenne = 0, dejaDeplace, borneChoisie, parcouru = 0, casesRecouvertes = 0, portee = 0;
+    cellule_t *cell;
     noeud_t *parentDest;
     file_t *fileParcours, *fileAntenne, *fileCourante, *fileFuture, *fileTemp;
     fileCourante = creer_file();
@@ -32,13 +31,14 @@ int main() {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *textureMur, *textureSol, *textureSortie, *textureEntree, *textureAntenne, *textureSolGris;
-    SDL_Point ptDep, ptArr, pointAntenne;
+    SDL_Point pointAntenne;
     long int seed = SEED;
     int window_w, window_h, offset, t;
     tailleCellH = (WINDOW_H / (LIGNE * 2 + 1));
     tailleCellW = (WINDOW_W / (COLONNE * 2 + 1));
     window_w = (tailleCellW) * (COLONNE * 2 + 1);
     window_h = (tailleCellH) * (LIGNE * 2 + 1);
+    SDL_Rect posScore = {window_w - 200, 0, window_w - 10, tailleCellH};
     printf("%d - %d\n", window_w, window_h);
     srand(seed);
     labyrinthe_t *labyrinthe = creerLabyrintheQqc(LIGNE, COLONNE, tailleCellW, tailleCellH, PROBA);
@@ -55,8 +55,12 @@ int main() {
     const char *titles[] = {"Dijkstra .", "Dijkstra . .", "Dijkstra . . .", "A* Euclidienne .", "A* Euclidienne . .",
                             "A* Euclidienne . . .", "A* Tchebychev .", "A* Tchebychev . .", "A* Tchebychev . . .",
                             "A* Manhattan .", "A* Manhattan . .", "A* Manhattan . . .", "DFS .", "DFS . .", "DFS . . .",
-                            "Labyrinthe", "Labyrinthe", "Labyrinthe"
+                            "WIFI", "WIFI", "WIFI", "Extension du WIFI en cours .",
+                            "Extension du WIFI en cours . .", "Extension du WIFI en cours . . ."
     };
+    char porteeStr[50];
+
+
     offset = 15;
     SDL_GetCurrentDisplayMode(0, &disp);
     window = createWindow(10, 10, window_w, window_h);
@@ -67,10 +71,24 @@ int main() {
     textureEntree = IMG_LoadTexture(renderer, "data/entree.png");
     textureSortie = IMG_LoadTexture(renderer, "data/sortie.png");
     textureAntenne = IMG_LoadTexture(renderer, "data/antenne.png");
+
+    if (TTF_Init() < 0) {
+        endSdl(0, "Erreur dans l'init de TTF", window, renderer);
+    }
+    TTF_Font *font = NULL;
+    font = TTF_OpenFont("./data/Simvoni.ttf", 25);
+    if (font == NULL) {
+        endSdl(0, "Erreur dans l'ouverture de la police", window, renderer);
+    }
+    SDL_Color color = {0, 0, 0, 255};
+    SDL_Surface *textSurface = NULL;
+    SDL_Texture *textTexture = NULL;
     SDL_bool program_on = SDL_TRUE;
+
     while (program_on) {
         SDL_Event event;
         SDL_RenderClear(renderer);
+
         if (delay == max_delay) {
             SDL_SetWindowTitle(window, titles[offset + (++t % 3)]);
         }
@@ -99,7 +117,7 @@ int main() {
                     drawText(renderer, pointAntenne, tailleCellW, tailleCellH, textureAntenne);
                 }
             }
-            for(int i = 0; i < N_BORNES; i++){
+            for (int i = 0; i < N_BORNES; i++) {
                 if (file_est_vide(fileAntenne)) {
                     enfiler(fileCourante, bornes[i]);
                 }
@@ -111,12 +129,16 @@ int main() {
                 pointAntenne.y = (cell->i * cell->h) * 2 + cell->h;
                 drawText(renderer, pointAntenne, tailleCellW, tailleCellH, textureAntenne);
             }
-            if (parcouru && casesRecouvertes < labyrinthe->graphe->nbNoeuds && delay == max_delay*2) {
+            if (parcouru && casesRecouvertes < labyrinthe->graphe->nbNoeuds && delay == max_delay * 2) {
                 delay = 0;
                 while (!file_est_vide(fileCourante)) {
                     borneChoisie = tete_file(fileCourante);
                     defiler(fileCourante);
                     cell = labyrinthe->tableauCellules[borneChoisie];
+                    if (cell->etat == 0) {
+                        casesRecouvertes++;
+                        cell->etat = 2;
+                    }
                     voisins = obtenirVoisins(labyrinthe, borneChoisie);
                     labyrinthe->tableauCellules[borneChoisie]->etat = 2;
                     for (int i = 0; i < 4; i++) {
@@ -127,98 +149,26 @@ int main() {
                         }
                     }
                 }
+                portee++;
+                printf("La portée actuelle du wifi est : %d\n", portee);
                 fileTemp = fileCourante;
                 fileCourante = fileFuture;
                 fileFuture = fileTemp;
             }
             delay++;
         }
-        if (enParcours && enParcours != 5) {
-            if (file_est_vide(fileParcours)) {
-                if (enParcours != 3 && (enParcours != 4)) {
-                    enParcours = 5;
-                    cellCourante = labyrinthe->tableauCellules[parentDest[posPile]];
-                    posPile--;
-                    ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                    ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                    ptArr = ptDep;
-                    delay = 0;
-
-                } else {
-                    enParcours = 4;
-                }
-            } else {
-                switch (enParcours) {
-                    case 1:
-                        if (delay == max_delay * 2) {
-                            drawParcours(renderer, cellCourante, labyrinthe->tableauCellules,
-                                         labyrinthe->colonnes);
-                            cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                            defiler(fileParcours);
-
-                            delay = 0;
-                        }
-                        delay++;
-                        drawMove(renderer, ptDep, tailleCellW, tailleCellH);
-                        break;
-                    case 2:
-                        if (delay == max_delay * 2) {
-                            drawParcours(renderer, cellCourante, labyrinthe->tableauCellules,
-                                         labyrinthe->colonnes);
-                            cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                            defiler(fileParcours);
-                            delay = 0;
-                        }
-                        delay++;
-                        drawMove(renderer, ptDep, tailleCellW, tailleCellH);
-                        break;
-                    case 3:
-                        if (delay == max_delay + 1) {
-                            ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                            ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                            drawParcours(renderer, cellCourante, labyrinthe->tableauCellules,
-                                         labyrinthe->colonnes);
-                            cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                            defiler(fileParcours);
-                            ptArr.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                            ptArr.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                            delay = 0;
-                        }
-                        delay++;
-                        drawMove(renderer, ptDep, tailleCellW, tailleCellH);
-                        deplacement(&ptDep, &ptArr, tailleCellW, tailleCellH);
-
-                        break;
-                    default:
-                        break;
-                }
+        if (portee != 0) {
+            sprintf(porteeStr, "Portee actuelle : %d", portee);
+            textSurface = TTF_RenderText_Blended(font, porteeStr, color);
+            textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+            if (textTexture == NULL) {
+                endSdl(0, "Impossible de créer la surface", window, renderer);
             }
+            SDL_QueryTexture(textTexture, NULL, NULL, &posScore.w, &posScore.h);
+            SDL_RenderCopy(renderer, textTexture, NULL, &posScore);
         }
-        if (enParcours == 4) {
+        if(casesRecouvertes >= labyrinthe->graphe->nbNoeuds){
             offset = 15;
-            delay = max_delay;
-            drawMove(renderer, ptArr, tailleCellW, tailleCellH);
-        } else if (enParcours == 5) {
-
-            if (delay >= 12 && posPile > -1) {
-                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                drawParcours(renderer, cellCourante, labyrinthe->tableauCellules,
-                             labyrinthe->colonnes);
-                cellCourante = labyrinthe->tableauCellules[parentDest[posPile]];
-                posPile--;
-                ptArr.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                ptArr.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                delay = 0;
-            }
-            drawMove(renderer, ptDep, tailleCellW, tailleCellH);
-
-            deplacement(&ptDep, &ptArr, tailleCellW, tailleCellH);
-            if (delay >= 12 && posPile == -1) {
-                enParcours = 4;
-            }
-            delay++;
-
         }
         while (program_on && SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -227,128 +177,19 @@ int main() {
                     break;
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
-                        case SDLK_d:
-                            if (enParcours == 0 || enParcours == 4) {
-                                affichageAntenne = 0;
-                                offset = 0;
-                                enParcours = 1;
-                                delay = 0;
-                                printf("Dijkstra\n");
-                                labyrinthe->entree = labyrinthe->sortie;
-                                labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                while (labyrinthe->sortie == labyrinthe->entree) {
-                                    labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                }
-                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
-                                fileParcours = dijkstra(labyrinthe, labyrinthe->entree, labyrinthe->sortie, parentDest,
-                                                        &posPile);
-                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                                defiler(fileParcours);
-
-                            }
-                            break;
-                        case SDLK_a:
-                            if (enParcours == 0 || enParcours == 4) {
-                                affichageAntenne = 0;
-                                offset = 3;
-                                enParcours = 2;
-                                delay = 0;
-                                printf("A* Euclidienne\n");
-                                labyrinthe->entree = labyrinthe->sortie;
-                                labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                while (labyrinthe->sortie == labyrinthe->entree) {
-                                    labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                }
-                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
-                                fileParcours = a_etoile(labyrinthe, labyrinthe->entree, distEuclidienne,
-                                                        labyrinthe->sortie, labyrinthe->colonnes, parentDest, &posPile);
-                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                                defiler(fileParcours);
-
-
-                            }
-                            break;
-                        case SDLK_z:
-                            if (enParcours == 0 || enParcours == 4) {
-                                affichageAntenne = 0;
-                                offset = 9;
-                                enParcours = 2;
-                                delay = 0;
-                                printf("A* Manhattan\n");
-                                labyrinthe->entree = labyrinthe->sortie;
-                                labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                while (labyrinthe->sortie == labyrinthe->entree) {
-                                    labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                }
-                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
-                                fileParcours = a_etoile(labyrinthe, labyrinthe->entree, distManhattan,
-                                                        labyrinthe->sortie, labyrinthe->colonnes, parentDest, &posPile);
-                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                                defiler(fileParcours);
-
-
-                            }
-                            break;
-                        case SDLK_e:
-                            if (enParcours == 0 || enParcours == 4) {
-                                affichageAntenne = 0;
-                                offset = 6;
-                                enParcours = 2;
-                                delay = 0;
-                                printf("A* Tcheby\n");
-                                labyrinthe->entree = labyrinthe->sortie;
-                                labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                while (labyrinthe->sortie == labyrinthe->entree) {
-                                    labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                }
-                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
-                                fileParcours = a_etoile(labyrinthe, labyrinthe->entree, distTchebytchev,
-                                                        labyrinthe->sortie, labyrinthe->colonnes, parentDest, &posPile);
-                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                                defiler(fileParcours);
-
-
-                            }
-                            break;
-                        case SDLK_p:
-                            if (enParcours == 0 || enParcours == 4) {
-                                offset = 12;
-                                delay = 0;
-                                affichageAntenne = 0;
-                                enParcours = 3;
-                                printf("Dfs\n");
-                                labyrinthe->entree = labyrinthe->sortie;
-                                labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                while (labyrinthe->sortie == labyrinthe->entree) {
-                                    labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
-                                }
-                                reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
-                                fileParcours = dfs(labyrinthe, labyrinthe->entree);
-                                cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
-                                defiler(fileParcours);
-                                ptDep.x = (cellCourante->j * cellCourante->w) * 2 + cellCourante->w;
-                                ptDep.y = (cellCourante->i * cellCourante->h) * 2 + cellCourante->h;
-                            }
-                            break;
                         case SDLK_r:
+                            offset = 18;
                             liberer_file(fileAntenne);
                             reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
                             for (int i = 0; i < N_BORNES; i++) {
                                 bornes[i] = rand() % labyrinthe->graphe->nbNoeuds;
                             }
-                            fileAntenne = recuitSimule(labyrinthe, bornes, N_BORNES, 0.000001);
+                            fileAntenne = recuitSimule(labyrinthe, bornes, N_BORNES, 4.9);
                             printf("Longueur de la file : %d \n", fileAntenne->nb_elements / 2);
                             affichageAntenne = 1;
                             delay = 0;
                             casesRecouvertes = 0;
+                            portee = 0;
 
                             break;
                         default:
@@ -370,6 +211,9 @@ int main() {
     SDL_DestroyTexture(textureSortie);
     SDL_DestroyTexture(textureAntenne);
     SDL_DestroyTexture(textureSolGris);
+    SDL_FreeSurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+
     endSdl(1, "Fermeture Normale", window, renderer);
     free(parentDest);
     liberer_file(fileAntenne);

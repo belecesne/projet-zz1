@@ -1,57 +1,7 @@
 #include "../headers/wifi_proba.h"
 
-noeud_t dfs_max(labyrinthe_t *labyrinthe, noeud_t rac) {
-    int max;
-    noeud_t ind;
-    int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
-    noeud_t *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
-    for (int i = 0; i < labyrinthe->graphe->nbNoeuds; i++) {
-        if (i == rac) {
-            d[i] = 0;
-            parent[i] = -2;
-        } else {
-            d[i] = INT_MAX;
-            parent[i] = -1;
-        }
-    }
-    noeud_t noeudCourant = rac;
-    noeud_t *voisins;
-    while (noeudCourant != -2) {
-        voisins = obtenirVoisins(labyrinthe, noeudCourant);
-        /*if (voisins[0] != -1 && parent[voisins[0]] == -1) {
-            parent[voisins[0]] = noeudCourant;
-            d[voisins[0]] = d[noeudCourant] + 1;
-            noeudCourant = voisins[0];
-
-        } else */if (voisins[1] != -1 && parent[voisins[1]] == -1) {
-            parent[voisins[1]] = noeudCourant;
-            d[voisins[1]] = d[noeudCourant] + 1;
-            noeudCourant = voisins[1];
-
-        } else if (voisins[2] != -1 && parent[voisins[2]] == -1) {
-            parent[voisins[2]] = noeudCourant;
-            d[voisins[2]] = d[noeudCourant] + 1;
-            noeudCourant = voisins[2];
-
-        } /*else if (voisins[3] != -1 && parent[voisins[3]] == -1) {
-            parent[voisins[3]] = noeudCourant;
-            d[voisins[3]] = d[noeudCourant] + 1;
-            noeudCourant = voisins[3];
-        }*/ else {
-            noeudCourant = parent[noeudCourant];
-        }
-
-    }
-
-    free(d);
-    free(parent);
-    return ind;
-}
-
 int longueurPlusCourtChemin(labyrinthe_t *labyrinthe, noeud_t rac, noeud_t dest) {
-    int pos = 0;
     int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
-    noeud_t *parentDest = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
     noeud_t *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
     tas_dijkstra_t *tas = creerTasDijktra();
     noeud_t *voisins, voisinAct, noeudCourant;
@@ -79,13 +29,11 @@ int longueurPlusCourtChemin(labyrinthe_t *labyrinthe, noeud_t rac, noeud_t dest)
         free(voisins);
     }
     noeudCourant = dest;
-    int max, ind;
+    int max;
     max = -1;
-    ind = -1;
     for (int i = 0; i < labyrinthe->graphe->nbNoeuds; i++) {
         if (d[i] > max && d[i] != INT_MAX) {
             max = d[i];
-            ind = i;
         }
     }
     libererTasDijkstra(tas);
@@ -95,9 +43,7 @@ int longueurPlusCourtChemin(labyrinthe_t *labyrinthe, noeud_t rac, noeud_t dest)
 }
 
 int distancePlusLoin(labyrinthe_t *labyrinthe, noeud_t rac, noeud_t *dest) {
-    int pos = 0;
     int *d = calloc(labyrinthe->graphe->nbNoeuds, sizeof(int));
-    noeud_t *parentDest = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
     noeud_t *parent = calloc(labyrinthe->graphe->nbNoeuds, sizeof(noeud_t));
     tas_dijkstra_t *tas = creerTasDijktra();
     noeud_t *voisins, voisinAct, noeudCourant;
@@ -147,7 +93,6 @@ cellule_t *proposition(labyrinthe_t *labyrinthe, noeud_t borne) {
     int rand_dep;
     rand_dep = rand() % 4;
     noeud_t *voisins, voisin;
-    cellule_t *retour;
     voisins = obtenirVoisins(labyrinthe, borne);
     while (voisins[rand_dep] == -1 || labyrinthe->tableauCellules[voisins[rand_dep]]->noeud == -1) {
         rand_dep = rand() % 4;
@@ -172,7 +117,7 @@ file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, d
     file_t * file;
     file = creer_file();
     int i = 0, compteur = 0, comptFixe = 0;
-    int max = -1, min;
+    int max = -1;
     double T;
     noeud_t *noeudsLoins, noeudLoin, borneChoisie;
     cellule_t *cell;
@@ -181,7 +126,7 @@ file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, d
     distance_loin = malloc(sizeof(int) * nbBornes);
 
     T = MAX(labyrinthe->lignes, labyrinthe->colonnes);
-    while (comptFixe < 200) {
+    while (T > erreur) {
         comptFixe++;
         max = -1;
         //printf("------------------------------\n");

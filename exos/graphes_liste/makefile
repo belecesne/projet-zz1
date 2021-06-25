@@ -1,5 +1,5 @@
 FLAGS=-Wall -Wextra -Werror=vla -g -lm
-SDL_FLAGS=-lSDL2 -lSDL2_image
+SDL_FLAGS=-lSDL2 -lSDL2_image -lSDL2_ttf
 CC = gcc
 BUILD_DIR=build
 SRC_DIR=src
