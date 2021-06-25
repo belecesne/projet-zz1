@@ -74,7 +74,6 @@ int main(){
 		               textureSol, textureEntree, textureSortie, textureSolGris, !affichageAntenne);
 		if(affichageAntenne){
 			for(int i = 0; i < N_BORNES; i++){
-				printf("%d - %d\n", i, bornes[i]);
 				cell = labyrinthe->tableauCellules[bornes[i]];
 				pointAntenne.x = (cell->j * cell->w) * 2 + cell->w;
 				pointAntenne.y = (cell->i * cell->h) * 2 + cell->h;
