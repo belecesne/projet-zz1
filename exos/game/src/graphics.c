@@ -8,7 +8,7 @@ void initGraphics() {
 }
 
 SDL_Window *createWindow(int xPos, int yPos, int width, int height) {
-    SDL_Window *window = SDL_CreateWindow("Booble Jump", xPos, yPos, width, height, SDL_WINDOW_RESIZABLE);
+    SDL_Window *window = SDL_CreateWindow("NinJump", xPos, yPos, width, height, SDL_WINDOW_RESIZABLE);
     if (window == NULL) {
         endSdl(0, "Erreur dans la creation de la fenetre", window, NULL);
     }
