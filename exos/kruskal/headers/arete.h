@@ -10,6 +10,6 @@ typedef struct arete_s {
     int poids;
 }arete_t;
 
-arete_t * creerArete(noeud_t , noeud_t , int);
+arete_t * creerArete(noeud_t, noeud_t, int);
 
 #endif //PROJET_ZZ1_ARETE_H

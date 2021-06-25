@@ -3,11 +3,8 @@
 
 #include <stdlib.h>
 
-typedef struct noeud_s {
-    int valeur;
-} noeud_t;
+typedef int noeud_t;
 
-
-noeud_t *creerNoeud(int);
+noeud_t choisirNoeud(int );
 
 #endif //PROJET_ZZ1_NOEUD_H
