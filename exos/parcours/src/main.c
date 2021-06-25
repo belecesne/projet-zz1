@@ -64,7 +64,7 @@ int main(){
 		SDL_Event event;
 		SDL_RenderClear(renderer);
 		drawLabyrinthe(renderer, labyrinthe, window_w, window_h, textureMur,
-		               textureSol, textureEntree, textureSortie, textureSolGris);
+		               textureSol, textureEntree, textureSortie, textureSolGris, 1);
 		if(enParcours && enParcours != 5){
 			if(file_est_vide(fileParcours)){
 				if(enParcours != 3 && enParcours != 4){
