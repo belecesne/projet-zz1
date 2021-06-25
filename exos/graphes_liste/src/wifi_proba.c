@@ -245,3 +245,29 @@ file_t * recuitSimule(labyrinthe_t *labyrinthe, noeud_t *bornes, int nbBornes, d
     free(distance_loin);
     return file;
 }
+
+void colorierPortee(labyrinthe_t * laby, noeud_t * bornes, int nbBornes, SDL_Renderer * renderer) {
+    int i = nbBornes;
+    file_t * file = creer_file();
+    for(int k = 0; k < nbBornes; k++) {
+        enfiler(file, bornes[k]);
+        laby->tableauCellules[bornes[k]]->etat = 1;
+    }
+    int stopEnfiler = 0;
+    while (!file_est_vide(file)) {
+        noeud_t noeudCourant = tete_file(file);
+        defiler(file);
+        noeud_t * voisins = obtenirVoisins(laby, noeudCourant);
+        for(int j = 0; j < 4; j++) {
+            if((voisins[j] != -1) && (laby->tableauCellules[voisins[j]]->noeud != 1) && (!stopEnfiler)) {
+                enfiler(file, voisins[j]);
+                i++;
+            }
+        }
+        colorierVoisins(renderer, laby->tableauCellules[noeudCourant], laby->tableauCellules, laby->colonnes);
+        if(i >= laby->graphe->nbNoeuds) {
+            stopEnfiler = 1;
+        }
+    }
+    liberer_file(file);
+}

@@ -13,4 +13,5 @@ int longueurPlusCourtChemin(labyrinthe_t *, noeud_t, noeud_t);
 int distancePlusLoin(labyrinthe_t *, noeud_t, noeud_t *);
 noeud_t dfs_max(labyrinthe_t *, noeud_t );
 file_t * recuitSimule(labyrinthe_t *, noeud_t *, int, double);
+void colorierPortee(labyrinthe_t *, noeud_t *, int, SDL_Renderer *);
 #endif //PROJET_ZZ1_WIFI_PROBA_H

@@ -289,7 +289,8 @@ int main(){
 								bornes[i] = rand() % labyrinthe->graphe->nbNoeuds;
 								printf("Borne n°%d en %d\n", i, bornes[i]);
 							}
-							recuitSimule(labyrinthe, bornes, N_BORNES, 0.001);
+							//recuitSimule(labyrinthe, bornes, N_BORNES, 0.001);
+							colorierPortee(labyrinthe, bornes, N_BORNES, renderer);
 							affichageAntenne = 1;
 
 							break;
