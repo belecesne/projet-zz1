@@ -6,17 +6,17 @@ SOURCES=$(wildcard $(SRC_DIR)/*.c)
 OBJECTS=$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 .PHONY: clean all
 
-all : dir tas_bin
+all : dir graphe
 
 dir:
 	@if [ ! -d "build" ]; then mkdir $(BUILD_DIR); fi
 
-tas_bin: $(OBJECTS)
-	@$(CC) -o $@ $^ $(FLAGS) $(SDL_FLAGS)
-	@echo "Executer le programme avec ./tas_bin"
+graphe: $(OBJECTS)
+	@$(CC) -o $@ $^ $(FLAGS)
+	@echo "Executer le programme avec ./graphe"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	@$(CC) -c -o $@ $< $(FLAGS) $(SDL_FLAGS)
+	@$(CC) -c -o $@ $< $(FLAGS)
 
 clean:
 	rm -Rf $(BUILD_DIR)/*.o $(BUILD_DIR)/*.gch
