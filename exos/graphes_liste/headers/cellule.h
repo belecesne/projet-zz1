@@ -22,7 +22,7 @@ void drawCell(SDL_Renderer *, cellule_t *);
 
 void drawWall(SDL_Renderer *, SDL_Point, SDL_Point);
 
-void drawCellText(SDL_Renderer *, cellule_t *,SDL_Texture *, SDL_Texture *);
+void drawCellText(SDL_Renderer *, cellule_t *,SDL_Texture *, SDL_Texture *, SDL_Texture *);
 
 void drawText(SDL_Renderer * , SDL_Point , int , int, SDL_Texture *);
 
