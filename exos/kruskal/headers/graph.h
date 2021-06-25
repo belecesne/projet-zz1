@@ -1,6 +1,5 @@
 #ifndef GRAPH_LIST
 #define GRAPH_LIST
-#include "maillon_graphe.h"
 #include "maillon_arete.h"
 #include "partition.h"
 #include "tas.h"
