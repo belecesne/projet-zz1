@@ -41,8 +41,10 @@ file_t* creer_file() {
 /* En sortie: rien                                          										   */
 /* --------------------------------------------------------------------------------------------------- */
 void liberer_file(file_t * file){
-    free(file->tab);
-    free(file);
+    if(file != NULL) {
+        free(file->tab);
+        free(file);
+    }
 }
 
 /* --------------------------------------------------------------------------------------------------- */
@@ -159,9 +161,6 @@ void defiler(file_t * file) {
     if(!file_est_vide(file)) {
         file->tete = (file->tete + 1) % file->taille;
         file->nb_elements --;
-        if(file->nb_elements <= 0.25 * file->taille){
-            reallouer_file(file, 0.5);
-        }
     }
 }
 
