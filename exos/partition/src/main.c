@@ -19,7 +19,6 @@ int main() {
 
         fusionUnionFind(unionFind, 5, 9);
 
-
         fusionUnionFind(unionFind, 8, 7);
 
         fusionUnionFind(unionFind, 7, 9);
