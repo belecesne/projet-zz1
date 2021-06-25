@@ -267,10 +267,15 @@ int main(){
 							break;
 						case SDLK_p:
 							if(enParcours == 0 || enParcours == 4){
-								affichageAntenne = 0;
+								offset = 12;
 								delay = 0;
 								enParcours = 3;
 								printf("Dfs\n");
+								labyrinthe->entree = labyrinthe->sortie;
+								labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
+								while(labyrinthe->sortie == labyrinthe->entree){
+									labyrinthe->sortie = choisirNoeud(labyrinthe->graphe->nbNoeuds);
+								}
 								reinitEtat(labyrinthe->tableauCellules, labyrinthe->graphe->nbNoeuds);
 								fileParcours = dfs(labyrinthe, labyrinthe->entree);
 								cellCourante = labyrinthe->tableauCellules[tete_file(fileParcours)];
@@ -308,8 +313,6 @@ int main(){
 	SDL_DestroyTexture(textureAntenne);
 	SDL_DestroyTexture(textureSolGris);
 	endSdl(1, "Fermeture Normale", window, renderer);
-	generateGraphvizGraph(labyrinthe
-			                      ->graphe, "DEBUG");
 	free(parentDest);
 	libererLabyrinthe(labyrinthe);
 }
