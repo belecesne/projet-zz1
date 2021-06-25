@@ -8,7 +8,7 @@ void initGraphics() {
 }
 
 SDL_Window *createWindow(int xPos, int yPos, int width, int height) {
-    SDL_Window *window = SDL_CreateWindow("Labyrinthe", xPos, yPos, width, height, 0);
+    SDL_Window *window = SDL_CreateWindow("WIFI", xPos, yPos, width, height, 0);
     if (window == NULL) {
         endSdl(0, "Erreur dans la creation de la fenetre", window, NULL);
     }

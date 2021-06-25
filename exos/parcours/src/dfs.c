@@ -43,7 +43,6 @@ file_t *dfs(labyrinthe_t *labyrinthe, noeud_t rac) {
         }
 
     }
-
     enfiler(file, rac);
     free(d);
     free(parent);
