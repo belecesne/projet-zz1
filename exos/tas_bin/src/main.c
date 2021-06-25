@@ -30,24 +30,6 @@ void testFunctions(int lengthToTest){
 }
 
 int main(){
-	tas_t* tas = creerTas(10);
-	for(int i = 31; i > 0; i--){
-		ajoutTas(tas, i);
-	}
-
-	afficherTas(tas);
-
-	printf("------------------------\n");
-
-	for(int j = 1; j < 28; j++){
-		suppressionRacine(tas, 0);
-	}
-
-	afficherTas(tas);
-
-	libererTas(tas);
-
-
 	srand(time(NULL));
 	testFunctions(10);
 	testFunctions(100);
